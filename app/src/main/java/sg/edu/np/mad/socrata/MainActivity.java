@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import sg.edu.np.mad.socrata.databinding.ActivityMainBinding;
 
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
+
     }
 
     private void replaceFragment(Fragment fragment) {
