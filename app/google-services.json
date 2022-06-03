@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "669659646110",
+    "firebase_url": "https://socrata-b6493-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "socrata-b6493",
+    "storage_bucket": "socrata-b6493.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669659646110:android:7bc06d90c733b91a93138f",
+        "android_client_info": {
+          "package_name": "sg.edu.np.mad.socrata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669659646110-gbs5vfveeshpc7qbjvebh759dabjic60.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMw5Gdl_z53WVXYKDEjrXEzyxXRSe_aXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669659646110-gbs5vfveeshpc7qbjvebh759dabjic60.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
