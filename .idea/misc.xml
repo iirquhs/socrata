@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2985" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/add_button_shape.xml" value="0.2595" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/hero_secondary_shape.xml" value="0.17" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/hero_section_shape.xml" value="0.17" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/homework_rci_bottom_shape.xml" value="0.197" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/homework_rcv_shape.xml" value="0.197" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/homework_timer_rcv_shape.xml" value="0.197" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_account_circle_24px.xml" value="0.197" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_add_24px.xml" value="0.2595" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_assignment_24px.xml" value="0.1935" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.2595" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_home_24px.xml" value="0.197" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2985" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_more_horiz_24px.xml" value="0.2595" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_timer_24px.xml" value="0.197" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/drawable/ic_view_module_24px.xml" value="0.1935" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/layout/activity_main.xml" value="0.24954710144927536" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/layout/fragment_home.xml" value="0.1762917933130699" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/layout/fragment_homework.xml" value="0.33" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/layout/fragment_module.xml" value="0.1762917933130699" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/layout/fragment_profile.xml" value="0.1762917933130699" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/layout/homework_rcv.xml" value="0.358695652173913" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/layout/rcv_list_homework.xml" value="0.48132780082987553" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3625" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1935" />
+        <entry key="..\:/Shuqri/StudioProjects/socrata/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1935" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
