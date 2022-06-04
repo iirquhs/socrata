@@ -66,8 +66,8 @@ public class HomeworkFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         ArrayList<Module> data = new ArrayList<>();
-        Module web = new Module("Web Applications Development", R.color.secondary_color, getContext());
-        Module ooad = new Module("Object-Oriented Analysis and Design", R.color.text_color, getContext());
+        Module web = new Module("Web Applications Development", "AD", 30, R.color.secondary_color, getContext());
+        Module ooad = new Module("Object-Oriented Analysis and Design", "AD", 5, R.color.text_color, getContext());
         data.add(web);
         data.add(ooad);
         data.add(web);
