@@ -27,7 +27,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkRecyclerViewHo
     @Override
     public void onBindViewHolder(@NonNull HomeworkRecyclerViewHolder holder, int position) {
         Module m = data.get(position);
-        holder.moduleText.setText(m.getName());
+        holder.moduleText.setText(m.getModuleName());
     }
 
     @Override

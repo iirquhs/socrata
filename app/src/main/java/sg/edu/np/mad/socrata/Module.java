@@ -1,5 +1,13 @@
 package sg.edu.np.mad.socrata;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 
 public class Module {
@@ -10,11 +18,14 @@ public class Module {
 
     private float studyTime = 0f;
 
+    private @ColorInt int color;
+
     public Module() {
 
     }
 
-    public Module(String moduleName) {
+    public Module(String moduleName, @ColorRes int colorID, Context context) {
+        this.setColor(colorID, context);
         this.setModuleName(moduleName);
     }
 
@@ -40,5 +51,13 @@ public class Module {
 
     public void setStudyTime(float studyTime) {
         this.studyTime = studyTime;
+    }
+
+    public @ColorInt int getColor() {
+        return color;
+    }
+
+    public void setColor(@ColorRes int colorID, Context context) {
+        this.color = ContextCompat.getColor(context, colorID);
     }
 }

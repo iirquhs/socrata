@@ -7,12 +7,15 @@ public class Homework {
 
     private float timeSpent = 0f;
 
+    private Module module;
+
     public Homework() {
 
     }
 
-    public Homework(String homeworkName) {
+    public Homework(String homeworkName, Module module) {
         this.setHomeworkName(homeworkName);
+        this.setModule(module);
     }
 
     public String getHomeworkName() {
@@ -37,5 +40,13 @@ public class Homework {
 
     public void setTimeSpent(float timeSpent) {
         this.timeSpent = timeSpent;
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
     }
 }

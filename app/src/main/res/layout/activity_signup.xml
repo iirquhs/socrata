@@ -25,7 +25,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="@color/main_color"
+                android:background="@color/primary_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -194,7 +194,7 @@
             android:layout_height="wrap_content"
             android:text="here"
             android:layout_marginLeft="4dp"
-            android:textColor="@color/main_color"
+            android:textColor="@color/primary_color"
 
             app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
