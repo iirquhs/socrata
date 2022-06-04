@@ -1,13 +1,18 @@
 package sg.edu.np.mad.socrata;
 
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +25,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
         TextView textViewModuleName, textViewGoal, textViewTargetHours;
         Button buttonStudy;
         CardView cardViewModule;
+        ImageButton imageButtonEditModule, imageButtonDeleteModule;
 
         public ModlueViewHolder(View itemView) {
             super(itemView);
@@ -29,6 +35,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
             textViewTargetHours = itemView.findViewById(R.id.textViewTargetHours);
             buttonStudy = itemView.findViewById(R.id.buttonStudy);
             cardViewModule = itemView.findViewById(R.id.cardViewModule);
+            imageButtonEditModule = itemView.findViewById(R.id.imageButtonEditModule);
+            imageButtonDeleteModule = itemView.findViewById(R.id.imageButtonDeleteModule);
         }
     }
 
@@ -69,6 +77,40 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
             @Override
             public void onClick(View view) {
                 //Redirect to view module
+            }
+        });
+
+        holder.imageButtonEditModule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Redirect to edit module page
+            }
+        });
+
+        holder.imageButtonDeleteModule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+                builder.setMessage("Are you sure you want to delete " + moduleName + " module?");
+
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        moduleArrayList.remove(holder.getAdapterPosition());
+                        notifyItemRemoved(holder.getAdapterPosition());
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
     }

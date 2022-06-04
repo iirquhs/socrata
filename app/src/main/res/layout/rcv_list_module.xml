@@ -87,7 +87,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textViewTargetHours" />
 
                     <ImageButton
-                        android:id="@+id/imageButton"
+                        android:id="@+id/imageButtonEditModule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -96,11 +96,11 @@
                         android:minHeight="48dp"
                         android:src="@drawable/ic_outline_edit_24"
                         app:layout_constraintBottom_toBottomOf="@+id/buttonStudy"
-                        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+                        app:layout_constraintEnd_toStartOf="@+id/imageButtonDeleteModule"
                         app:layout_constraintTop_toTopOf="@+id/buttonStudy" />
 
                     <ImageButton
-                        android:id="@+id/imageButton2"
+                        android:id="@+id/imageButtonDeleteModule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -108,9 +108,9 @@
                         android:minWidth="48dp"
                         android:minHeight="48dp"
                         android:src="@drawable/ic_baseline_delete_outline_24"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageButtonEditModule"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+                        app:layout_constraintTop_toTopOf="@+id/imageButtonEditModule" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

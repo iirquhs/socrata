@@ -48,6 +48,5 @@ public class ModuleFragment extends Fragment {
         recyclerView.setAdapter(moduleAdapter);
         recyclerView.setNestedScrollingEnabled(false);
 
-
     }
 }
