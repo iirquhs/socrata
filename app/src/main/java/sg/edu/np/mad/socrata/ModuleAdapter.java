@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -39,8 +38,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
         public ModlueViewHolder(View itemView) {
             super(itemView);
 
-            textViewModuleName = itemView.findViewById(R.id.textViewModuleName);
-            textViewGoal = itemView.findViewById(R.id.textViewGoal);
+            textViewModuleName = itemView.findViewById(R.id.homework_module);
+            textViewGoal = itemView.findViewById(R.id.homeworkname);
             textViewTargetHours = itemView.findViewById(R.id.textViewTargetHours);
             buttonStudy = itemView.findViewById(R.id.buttonStudy);
             cardViewModule = itemView.findViewById(R.id.cardViewModule);
