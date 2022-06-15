@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <!--android:background="@drawable/background"-->
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="307dp"
@@ -103,92 +104,92 @@
 
         <!-- ONLY THINK ABOUT THE COMMENTED BELOW IF HAVE TIME - SHUQRI -->
 
-        <!--    <ImageView-->
-        <!--        android:id="@+id/homework_top_shape"-->
-        <!--        android:layout_width="0dp"-->
-        <!--        android:layout_height="26dp"-->
-        <!--        android:layout_marginTop="8dp"-->
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toTopOf="parent"-->
-        <!--        app:srcCompat="@drawable/homework_rci_top_shape" />-->
+<!--    <ImageView-->
+<!--        android:id="@+id/homework_top_shape"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="26dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@drawable/homework_rci_top_shape" />-->
 
-        <!--    <ImageView-->
-        <!--        android:id="@+id/homework_bottom_shape"-->
-        <!--        android:layout_width="0dp"-->
-        <!--        android:layout_height="50dp"-->
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/homework_top_shape"-->
-        <!--        app:srcCompat="@drawable/homework_rci_bottom_shape" />-->
+<!--    <ImageView-->
+<!--        android:id="@+id/homework_bottom_shape"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/homework_top_shape"-->
+<!--        app:srcCompat="@drawable/homework_rci_bottom_shape" />-->
 
-        <!--    <TextView-->
-        <!--        android:id="@+id/homework_module"-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_marginStart="16dp"-->
-        <!--        android:layout_marginTop="4dp"-->
-        <!--        android:fontFamily="@font/poppins"-->
-        <!--        android:text="Module"-->
-        <!--        android:textColor="@color/white"-->
-        <!--        app:layout_constraintBottom_toBottomOf="@+id/homework_top_shape"-->
-        <!--        app:layout_constraintStart_toStartOf="@+id/homework_top_shape"-->
-        <!--        app:layout_constraintTop_toTopOf="parent" />-->
+<!--    <TextView-->
+<!--        android:id="@+id/homework_module"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:fontFamily="@font/poppins"-->
+<!--        android:text="Module"-->
+<!--        android:textColor="@color/white"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/homework_top_shape"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/homework_top_shape"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-        <!--    <TextView-->
-        <!--        android:id="@+id/homework_name"-->
-        <!--        android:layout_width="0dp"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_marginStart="16dp"-->
-        <!--        android:layout_marginTop="8dp"-->
-        <!--        android:layout_marginEnd="16dp"-->
-        <!--        android:fontFamily="@font/poppins_medium"-->
-        <!--        android:text="Homework"-->
-        <!--        android:textColor="@color/black"-->
-        <!--        android:textSize="16sp"-->
-        <!--        app:layout_constraintEnd_toStartOf="@+id/homework_timer_shape"-->
-        <!--        app:layout_constraintHorizontal_bias="0.5"-->
-        <!--        app:layout_constraintHorizontal_chainStyle="spread_inside"-->
-        <!--        app:layout_constraintStart_toStartOf="parent"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/homework_top_shape" />-->
+<!--    <TextView-->
+<!--        android:id="@+id/homework_name"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:fontFamily="@font/poppins_medium"-->
+<!--        android:text="Homework"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/homework_timer_shape"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/homework_top_shape" />-->
 
-        <!--    <ImageView-->
-        <!--        android:id="@+id/homework_timer_shape"-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_marginStart="16dp"-->
-        <!--        android:layout_marginTop="8dp"-->
-        <!--        android:layout_marginEnd="16dp"-->
-        <!--        app:layout_constraintEnd_toEndOf="parent"-->
-        <!--        app:layout_constraintHorizontal_bias="0.5"-->
-        <!--        app:layout_constraintStart_toEndOf="@+id/homework_name"-->
-        <!--        app:layout_constraintTop_toBottomOf="@+id/homework_top_shape"-->
-        <!--        app:srcCompat="@drawable/homework_timer_rcv_shape" />-->
+<!--    <ImageView-->
+<!--        android:id="@+id/homework_timer_shape"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/homework_name"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/homework_top_shape"-->
+<!--        app:srcCompat="@drawable/homework_timer_rcv_shape" />-->
 
-        <!--    <TextView-->
-        <!--        android:id="@+id/timer"-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_marginTop="4dp"-->
-        <!--        android:layout_marginEnd="2dp"-->
-        <!--        android:fontFamily="@font/poppins"-->
-        <!--        android:text="0.3h"-->
-        <!--        android:textColor="@color/white"-->
-        <!--        android:textSize="12sp"-->
-        <!--        app:layout_constraintBottom_toBottomOf="@+id/homework_timer_shape"-->
-        <!--        app:layout_constraintEnd_toEndOf="@+id/homework_timer_shape"-->
-        <!--        app:layout_constraintStart_toEndOf="@+id/imageView7"-->
-        <!--        app:layout_constraintTop_toTopOf="@+id/homework_timer_shape" />-->
+<!--    <TextView-->
+<!--        android:id="@+id/timer"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:layout_marginEnd="2dp"-->
+<!--        android:fontFamily="@font/poppins"-->
+<!--        android:text="0.3h"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="12sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/homework_timer_shape"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/homework_timer_shape"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/imageView7"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/homework_timer_shape" />-->
 
-        <!--    <ImageView-->
-        <!--        android:id="@+id/imageView7"-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="0dp"-->
-        <!--        android:layout_marginStart="2dp"-->
-        <!--        android:layout_marginTop="2dp"-->
-        <!--        app:layout_constraintBottom_toBottomOf="@+id/homework_timer_shape"-->
-        <!--        app:layout_constraintStart_toStartOf="@+id/homework_timer_shape"-->
-        <!--        app:layout_constraintTop_toTopOf="@+id/homework_timer_shape"-->
-        <!--        app:srcCompat="@drawable/ic_timer_24px" />-->
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView7"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginStart="2dp"-->
+<!--        android:layout_marginTop="2dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/homework_timer_shape"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/homework_timer_shape"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/homework_timer_shape"-->
+<!--        app:srcCompat="@drawable/ic_timer_24px" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

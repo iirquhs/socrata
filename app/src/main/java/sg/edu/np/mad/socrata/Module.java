@@ -80,7 +80,6 @@ public class Module {
     public void setStudySessionArrayList(StudySession studySession) {
         this.studySessionArrayList.add(studySession);
     }
-
     public int getTargetHoursPerWeek() {
         return targetHoursPerWeek;
     }
