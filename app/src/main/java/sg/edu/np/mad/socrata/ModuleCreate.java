@@ -150,6 +150,11 @@ public class ModuleCreate extends AppCompatActivity{
     private ArrayList<String> comparedata(Map<String,Object> users) {
         //iterate through each user, ignoring their UID
         ArrayList<String> namelist = new ArrayList<>();
+
+        if (users == null) {
+            return namelist;
+        }
+
         for (Map.Entry<String, Object> entry : users.entrySet()){
             //Get user map
             Map singleUser = (Map) entry.getValue();
