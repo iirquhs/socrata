@@ -1,6 +1,7 @@
 package sg.edu.np.mad.socrata;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -83,7 +92,11 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
         holder.imageButtonEditModule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Redirect to edit module page
+                Intent intent = new Intent(view.getContext(), ModuleUpdate.class);
+                intent.putExtra("name", moduleName);
+                intent.putExtra("goal", targetGrade);
+                intent.putExtra("hours", targetHours);
+                view.getContext().startActivity(intent);
             }
         });
 
@@ -93,10 +106,26 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
                 builder.setMessage("Are you sure you want to delete " + moduleName + " module?");
+                String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference Module = FirebaseDatabase.getInstance().getReference("Users").child(currentuser).child("modules");
+                Query delete = Module.orderByChild("moduleName").equalTo(moduleName);
 
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        delete.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                                    appleSnapshot.getRef().removeValue();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e("tag", "onCancelled", databaseError.toException());
+                            }
+                        });
                         moduleArrayList.remove(holder.getAdapterPosition());
                         notifyItemRemoved(holder.getAdapterPosition());
                     }
