@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -81,6 +79,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         buttonStop.setOnClickListener(this);
 
         chronometer = findViewById(R.id.chronometer);
+        chronometer.setBase(SystemClock.elapsedRealtime());
 
         // Set the font here cuz its not working in the xml
         chronometer.setTypeface(ResourcesCompat.getFont(this, R.font.poppins_bold));
@@ -154,7 +153,13 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
 
     private void insertStudySession() {
         // Convert millisecond to second
-        long studyTime = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 10000;
+        double studyTime = ((double)(SystemClock.elapsedRealtime() - chronometer.getBase())) / 1000.0;
+        Log.d("TAG", Double.toString(studyTime));
+        if (studyTime <= 60) {
+            Toast.makeText(this, "You must study for more than 1 minute to save", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         StudySession studySession = new StudySession(studyTime);
 
         String uId = firebaseAuth.getCurrentUser().getUid();

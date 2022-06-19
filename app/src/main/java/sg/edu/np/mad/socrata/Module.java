@@ -1,10 +1,6 @@
 package sg.edu.np.mad.socrata;
 
-import android.content.Context;
-
 import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -49,8 +45,8 @@ public class Module {
         this.homeworkArrayList.add(homework);
     }
 
-    public float getTotalStudyTime() {
-        float sum = 0f;
+    public double getTotalStudyTime() {
+        double sum = 0f;
         for (StudySession studySession : studySessionArrayList) {
             sum += studySession.getStudyTime();
         }

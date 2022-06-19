@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class StudySession {
     // study time in seconds
-    private long studyTime;
+    private double studyTime;
 
     private LocalDateTime studyStartDateTime = LocalDateTime.now();
 
@@ -12,11 +12,11 @@ public class StudySession {
 
     }
 
-    public StudySession(long studyTime) {
+    public StudySession(double studyTime) {
         this.studyTime = studyTime;
     }
 
-    public long getStudyTime() {
+    public double getStudyTime() {
         return studyTime;
     }
 

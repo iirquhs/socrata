@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,8 +70,8 @@ public class HomeworkFragment extends Fragment {
 
         ArrayList<Module> data = new ArrayList<>();
 
-        @ColorInt int webColor = ContextCompat.getColor(getView().getContext(), R.color.secondary_color);
-        @ColorInt int ooadColor = ContextCompat.getColor(getView().getContext(), R.color.text_color);
+        @ColorInt int webColor = ContextCompat.getColor(container.getContext(), R.color.secondary_color);
+        @ColorInt int ooadColor = ContextCompat.getColor(container.getContext(), R.color.text_color);
 
         Module web = new Module("Web Applications Development", "AD", 30, webColor);
         Module ooad = new Module("Object-Oriented Analysis and Design", "AD", 5, ooadColor);
