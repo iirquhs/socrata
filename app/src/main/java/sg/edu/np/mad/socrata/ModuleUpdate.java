@@ -45,6 +45,7 @@ public class ModuleUpdate extends AppCompatActivity {
         goal = intent.getStringExtra("goal");
         hours = intent.getStringExtra("hours");
         finalcolourholder = intent.getIntExtra("colour",0);
+        updatecolour = finalcolourholder;
         Log.d("c", finalcolourholder.toString());
         modulename = findViewById(R.id.updatemodulename);
         targethours = findViewById(R.id.updatehours);
