@@ -1,5 +1,6 @@
 package sg.edu.np.mad.socrata;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -84,7 +85,8 @@ public class ModuleFragment extends Fragment{
 
     private ArrayList<Module> getModules(Map<String,Object> modules) {
         ArrayList<Module> moduleArrayList = new ArrayList<>();
-
+        int finalcolour = 17170459;
+        
         if (modules == null) {
             return null;
         }
@@ -97,7 +99,7 @@ public class ModuleFragment extends Fragment{
             int targetHoursPerWeek = ((Number) moduleMapValue.get("targetHoursPerWeek")).intValue();
             @ColorInt int colorInt = ((Number) moduleMapValue.get("color")).intValue();;
 
-            Module module = new Module(name, goal, targetHoursPerWeek, colorInt);
+            Module module = new Module(name, goal, targetHoursPerWeek, finalcolour);
 
             moduleArrayList.add(module);
         }

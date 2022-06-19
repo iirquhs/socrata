@@ -99,6 +99,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
                 intent.putExtra("name", moduleName);
                 intent.putExtra("goal", targetGrade);
                 intent.putExtra("hours", targetHours);
+                intent.putExtra("colour", color);
                 view.getContext().startActivity(intent);
             }
         });
