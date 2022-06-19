@@ -1,8 +1,6 @@
 package sg.edu.np.mad.socrata;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,19 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import com.github.dhaval2404.colorpicker.ColorPickerDialog;
-import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog;
-import com.github.dhaval2404.colorpicker.listener.ColorListener;
-import com.github.dhaval2404.colorpicker.model.ColorShape;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
 
 
 import java.util.ArrayList;
@@ -80,7 +75,7 @@ public class ModuleCreate extends AppCompatActivity{
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<String> namelist = comparedata((Map<String,Object>) dataSnapshot.getValue());
+                        ArrayList<String> namelist =  ModuleUtils.getModuleNames((Map<String,Object>) dataSnapshot.getValue());
                         Button buttoncreate = findViewById(R.id.buttonupdatemodule);
                         buttoncreate.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -116,17 +111,17 @@ public class ModuleCreate extends AppCompatActivity{
                                     return;
                                 }
 
-                                for(int i = 0; i < namelist.size();i++) {
-                                    if (name.equals(namelist.get(i))) {
-                                        modulename.setError("Module already exists");
-                                        modulename.requestFocus();
-                                        return;
-                                    }
+                                if (ModuleUtils.doesModuleExists(namelist, name)) {
+                                    modulename.setError("Module already exists");
+                                    modulename.requestFocus();
+                                    return;
                                 }
 
-
                                 String id = Module.push().getKey();
-                                Module module = new Module(name, goal, Integer.parseInt(hours), R.color.black, ModuleCreate.this);
+
+                                @ColorInt int blackColor = ContextCompat.getColor(ModuleCreate.this, R.color.black);
+
+                                Module module = new Module(name, goal, Integer.parseInt(hours), blackColor);
                                 Module.child("modules").push().setValue(module);
                                 //Module.child(id).setValue(module);
                                 Intent intent = new Intent(ModuleCreate.this, MainActivity.class);
@@ -146,23 +141,6 @@ public class ModuleCreate extends AppCompatActivity{
                 });
 
 
-    }
-    private ArrayList<String> comparedata(Map<String,Object> users) {
-        //iterate through each user, ignoring their UID
-        ArrayList<String> namelist = new ArrayList<>();
-
-        if (users == null) {
-            return namelist;
-        }
-
-        for (Map.Entry<String, Object> entry : users.entrySet()){
-            //Get user map
-            Map singleUser = (Map) entry.getValue();
-            String name = (String) singleUser.get("moduleName");
-            namelist.add(name);
-
-        }
-        return namelist;
     }
 
 }

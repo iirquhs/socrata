@@ -13,4 +13,7 @@
     <color name="text_hint_color">#AAAAAA</color>
     <color name="text_color">#625E5E</color>
     <color name="primary2_color">#5450D6</color>
+
+    <color name="green_color">#5BEA71</color>
+    <color name="red_color">#EA5B5B</color>
 </resources>

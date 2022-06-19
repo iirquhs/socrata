@@ -3,24 +3,18 @@ package sg.edu.np.mad.socrata;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,7 +44,12 @@ public class ModuleFragment extends Fragment{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Get map of users in datasnapshot
-                        ArrayList<Module> moduleArrayList = getdata((Map<String,Object>) dataSnapshot.getValue(), (Map<Integer,Object>) dataSnapshot.getValue());
+                        ArrayList<Module> moduleArrayList = getModules((Map<String,Object>) dataSnapshot.getValue());
+
+                        if (moduleArrayList == null) {
+                            return;
+                        }
+
                         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
                         ModuleAdapter moduleAdapter = new ModuleAdapter(moduleArrayList);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
@@ -83,49 +82,26 @@ public class ModuleFragment extends Fragment{
         addmodule.setOnClickListener(listener);
     }
 
-    private ArrayList<Module> getdata(Map<String,Object> users, Map<Integer,Object> users1) {
+    private ArrayList<Module> getModules(Map<String,Object> modules) {
         ArrayList<Module> moduleArrayList = new ArrayList<>();
-        ArrayList<String> namelist = new ArrayList<>();
-        ArrayList<String> goallist = new ArrayList<>();
-        ArrayList<Integer> hrlist = new ArrayList<>();
-        ArrayList<Integer> colourlist = new ArrayList<>();
-        //iterate through each user, ignoring their UID
-        if(users != null){
-            for (Map.Entry<String, Object> entry : users.entrySet()){
-                //Get user map
-                Map singleUser = (Map) entry.getValue();
-                String name = (String) singleUser.get("moduleName");
-                String goal = (String) singleUser.get("targetGrade");
-                namelist.add(name);
-                goallist.add(goal);
 
-            }
-
+        if (modules == null) {
+            return null;
         }
 
-        if(users1 != null){
-            for (Map.Entry<Integer, Object> entry : users1.entrySet()){
-                //Get user map
-                Map singleUser = (Map) entry.getValue();
-                Long hours = (Long) singleUser.get("targetHoursPerWeek");
-                Long colour = (Long) singleUser.get("color");
-                hrlist.add(Integer.parseInt(hours.toString()));
-                colourlist.add(Integer.parseInt(colour.toString()));
-                Log.d("h", hrlist.toString());
-                //16777215 - colourlist.get(i)
-            }
+        for (Map.Entry<String, Object> moduleMap : modules.entrySet()){
+            Map moduleMapValue = (Map) moduleMap.getValue();
 
-        }
-        for(int i=0; i < namelist.size(); i++){
-            Log.d("name", namelist.get(i));
-            Module module = new Module(namelist.get(i), goallist.get(i), hrlist.get(i), R.color.black, getContext());
+            String name = (String) moduleMapValue.get("moduleName");
+            String goal = (String) moduleMapValue.get("targetGrade");
+            int targetHoursPerWeek = ((Number) moduleMapValue.get("targetHoursPerWeek")).intValue();
+            @ColorInt int colorInt = ((Number) moduleMapValue.get("color")).intValue();;
+
+            Module module = new Module(name, goal, targetHoursPerWeek, colorInt);
+
             moduleArrayList.add(module);
         }
+
         return moduleArrayList;
     }
-
-
-
-
-
 }

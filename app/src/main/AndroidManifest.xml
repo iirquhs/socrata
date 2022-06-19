@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socrata">
         <activity
+            android:name=".TimerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ModuleUpdate"
             android:exported="false" />
         <activity

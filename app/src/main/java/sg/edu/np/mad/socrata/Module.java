@@ -26,8 +26,8 @@ public class Module {
 
     }
 
-    public Module(String moduleName, String targetGrade, int targetHoursPerWeek , @ColorRes int colorID, Context context) {
-        this.setColor(colorID, context);
+    public Module(String moduleName, String targetGrade, int targetHoursPerWeek , @ColorInt int color) {
+        this.setColor(color);
         this.setModuleName(moduleName);
         this.setTargetGrade(targetGrade);
         this.setTargetHoursPerWeek(targetHoursPerWeek);
@@ -61,8 +61,8 @@ public class Module {
         return color;
     }
 
-    public void setColor(@ColorRes int colorID, Context context) {
-        this.color = ContextCompat.getColor(context, colorID);
+    public void setColor(@ColorInt int color) {
+        this.color = color;
     }
 
     public String getTargetGrade() {

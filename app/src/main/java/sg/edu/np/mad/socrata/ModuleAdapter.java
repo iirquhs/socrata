@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -78,7 +79,10 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
         holder.buttonStudy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Redirect to timer
+                Gson gson = new Gson();
+                Intent intent = new Intent(view.getContext(), TimerActivity.class);
+                intent.putExtra("module_name", moduleName);
+                view.getContext().startActivity(intent);
             }
         });
 
