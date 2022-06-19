@@ -1,5 +1,6 @@
 package sg.edu.np.mad.socrata;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -89,6 +90,7 @@ public class ModuleFragment extends Fragment{
         ArrayList<String> goallist = new ArrayList<>();
         ArrayList<Integer> hrlist = new ArrayList<>();
         ArrayList<Integer> colourlist = new ArrayList<>();
+        int finalcolour = 17170459;
         //iterate through each user, ignoring their UID
         if(users != null){
             for (Map.Entry<String, Object> entry : users.entrySet()){
@@ -117,12 +119,20 @@ public class ModuleFragment extends Fragment{
 
         }
         for(int i=0; i < namelist.size(); i++){
-            Log.d("name", namelist.get(i));
-            Module module = new Module(namelist.get(i), goallist.get(i), hrlist.get(i), R.color.black, getContext());
+            if(colourlist.get(i) == -16720385){finalcolour = 17170459;}
+            else if(colourlist.get(i) == -16737844){finalcolour = 17170451;}
+            else if(colourlist.get(i) == -10053376){finalcolour = 17170453;}
+            else if(colourlist.get(i) == -30720){finalcolour = 17170457;}
+            else if(colourlist.get(i) == -6697984){finalcolour = 17170452;}
+            else if(colourlist.get(i) == -17613){finalcolour = 17170456;}
+            else if(colourlist.get(i) == -5609780){finalcolour = 17170458;}
+            else if(colourlist.get(i) == -48060){finalcolour = 17170454;}
+            @SuppressLint("ResourceType") Module module = new Module(namelist.get(i), goallist.get(i), hrlist.get(i), finalcolour, getContext());
             moduleArrayList.add(module);
         }
         return moduleArrayList;
     }
+
 
 
 

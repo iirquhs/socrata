@@ -3,9 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourbox.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle1.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle2.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle3.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle4.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle5.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle6.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle7.xml" value="0.1355" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_bottom_shape.xml" value="0.7333333333333334" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_shadow.xml" value="0.1" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_top_shape.xml" value="0.1" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/main_button.xml" value="0.1355" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/create_module.xml" value="0.22" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/fragment_module.xml" value="0.11372549019607843" />
