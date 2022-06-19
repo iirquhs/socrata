@@ -3,6 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/ic_round_play_circle_filled_24.xml" value="0.1865" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/ic_round_refresh_24.xml" value="0.345" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/ic_round_stop_24.xml" value="0.345" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/main_button.xml" value="0.345" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/play_button.xml" value="0.345" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/restart_and_stop_button.xml" value="0.345" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/activity_main.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/activity_timer.xml" value="0.29444444444444445" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/create_module.xml" value="0.13179347826086957" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/fragment_homework.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/rcv_list_homework.xml" value="0.15489130434782608" />
+        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/rcv_list_module.xml" value="0.33" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_bottom_shape.xml" value="0.7333333333333334" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_shadow.xml" value="0.1" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_top_shape.xml" value="0.1" />

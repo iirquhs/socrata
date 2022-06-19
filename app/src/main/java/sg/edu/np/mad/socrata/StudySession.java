@@ -1,17 +1,26 @@
 package sg.edu.np.mad.socrata;
 
+import java.time.LocalDateTime;
+
 public class StudySession {
-    private float studyTime;
+    // study time in seconds
+    private double studyTime;
+
+    private LocalDateTime studyStartDateTime = LocalDateTime.now();
 
     public StudySession() {
 
     }
 
-    public StudySession(float studyTime) {
+    public StudySession(double studyTime) {
         this.studyTime = studyTime;
     }
 
-    public float getStudyTime() {
+    public double getStudyTime() {
         return studyTime;
+    }
+
+    public LocalDateTime getStudyStartDateTime() {
+        return studyStartDateTime;
     }
 }

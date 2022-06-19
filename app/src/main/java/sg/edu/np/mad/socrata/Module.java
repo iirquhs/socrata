@@ -1,10 +1,6 @@
 package sg.edu.np.mad.socrata;
 
-import android.content.Context;
-
 import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -26,8 +22,8 @@ public class Module {
 
     }
 
-    public Module(String moduleName, String targetGrade, int targetHoursPerWeek , @ColorRes int colorID, Context context) {
-        this.setColor(colorID, context);
+    public Module(String moduleName, String targetGrade, int targetHoursPerWeek , @ColorInt int color) {
+        this.setColor(color);
         this.setModuleName(moduleName);
         this.setTargetGrade(targetGrade);
         this.setTargetHoursPerWeek(targetHoursPerWeek);
@@ -49,8 +45,8 @@ public class Module {
         this.homeworkArrayList.add(homework);
     }
 
-    public float getTotalStudyTime() {
-        float sum = 0f;
+    public double getTotalStudyTime() {
+        double sum = 0f;
         for (StudySession studySession : studySessionArrayList) {
             sum += studySession.getStudyTime();
         }
@@ -61,8 +57,8 @@ public class Module {
         return color;
     }
 
-    public void setColor(@ColorRes int colorID, Context context) {
-        this.color = ContextCompat.getColor(context, colorID);
+    public void setColor(@ColorInt int color) {
+        this.color = color;
     }
 
     public String getTargetGrade() {

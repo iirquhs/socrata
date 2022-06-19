@@ -52,7 +52,7 @@ public class ModuleUpdate extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<String> namelist = comparedata((Map<String,Object>) dataSnapshot.getValue());
+                        ArrayList<String> namelist = ModuleUtils.getModuleNames((Map<String,Object>) dataSnapshot.getValue());
                         Button buttonupdate = findViewById(R.id.buttonupdatemodule);
                         buttonupdate.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -136,17 +136,5 @@ public class ModuleUpdate extends AppCompatActivity {
                         return;
                     }
                 });
-    }
-    private ArrayList<String> comparedata(Map<String,Object> users) {
-        //iterate through each user, ignoring their UID
-        ArrayList<String> namelist = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : users.entrySet()){
-            //Get user map
-            Map singleUser = (Map) entry.getValue();
-            String name = (String) singleUser.get("moduleName");
-            namelist.add(name);
-
-        }
-        return namelist;
     }
 }
