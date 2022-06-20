@@ -96,10 +96,9 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ModuleUpdate.class);
-                intent.putExtra("name", moduleName);
-                intent.putExtra("goal", targetGrade);
-                intent.putExtra("hours", targetHours);
-                intent.putExtra("colour", color);
+                Gson gson = new Gson();
+                String moduleString = gson.toJson(module);
+                intent.putExtra("module", moduleString);
                 view.getContext().startActivity(intent);
             }
         });
