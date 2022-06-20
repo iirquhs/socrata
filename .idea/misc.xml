@@ -3,26 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/ic_round_play_circle_filled_24.xml" value="0.1865" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/ic_round_refresh_24.xml" value="0.345" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/ic_round_stop_24.xml" value="0.345" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/main_button.xml" value="0.345" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/play_button.xml" value="0.345" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/drawable/restart_and_stop_button.xml" value="0.345" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/activity_main.xml" value="0.2755208333333333" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/activity_timer.xml" value="0.29444444444444445" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/create_module.xml" value="0.13179347826086957" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/fragment_homework.xml" value="0.2755208333333333" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/rcv_list_homework.xml" value="0.15489130434782608" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/rcv_list_module.xml" value="0.33" />
-        <entry key="..\:/Users/Leoyu/Documents/Year 2/Semester 1/MAD/socrata/app/src/main/res/layout/updatemodule.xml" value="0.15489130434782608" />
+        <entry key="..\:/Users/rayzi/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.16666666666666666" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourbox.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle1.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle2.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle3.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle4.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle5.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle6.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/colourcircle7.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/custom_input.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/hero_secondary_shape.xml" value="0.1" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_bottom_shape.xml" value="0.7333333333333334" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_shadow.xml" value="0.1" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/homework_rci_top_shape.xml" value="0.1" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/drawable/main_button.xml" value="0.1355" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/activity_create_homework.xml" value="0.22" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/create_module.xml" value="0.22" />
-        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/fragment_module.xml" value="0.11372549019607843" />
-        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/rcv_list_homework.xml" value="0.4466666666666667" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/fragment_homework.xml" value="0.3333333333333333" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/fragment_module.xml" value="0.3333333333333333" />
+        <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/rcv_list_homework.xml" value="0.3333333333333333" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/rcv_list_module.xml" value="0.3333333333333333" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/testing.xml" value="0.42802303262955854" />
         <entry key="..\:/school stuff/y2/MAD/socrata/app/src/main/res/layout/updatemodule.xml" value="0.16666666666666666" />

@@ -10,24 +10,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkRecyclerViewHolder> {
-    ArrayList<Module> data;
-    public HomeworkAdapter(ArrayList<Module> data) {this.data = data;}
+    ArrayList<Homework> data;
+    public HomeworkAdapter(ArrayList<Homework> data) {this.data = data;}
     @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
+    public int getItemViewType(int position) { return position; }
 
     @NonNull
     @Override
     public HomeworkRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final View c = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_list_homework, null, false);
-        return new HomeworkRecyclerViewHolder(c);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_list_homework, parent, false);
+        HomeworkRecyclerViewHolder homeworkRecyclerViewHolder = new HomeworkRecyclerViewHolder(view);
+        return homeworkRecyclerViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull HomeworkRecyclerViewHolder holder, int position) {
-        Module m = data.get(position);
-        holder.moduleText.setText(m.getModuleName());
+        Homework h = data.get(position);
+        String moduleName = h.getModule().getModuleName();
+        String homeworkName = h.getHomeworkName();
+        holder.moduleText.setText(moduleName);
+        holder.homeworkName.setText(homeworkName);
     }
 
     @Override

@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeworkRecyclerViewHolder extends RecyclerView.ViewHolder {
 
-    TextView moduleText;
+    TextView moduleText, homeworkName, timing;
     public HomeworkRecyclerViewHolder(@NonNull View itemView) {
         super(itemView);
-        moduleText = itemView.findViewById(R.id.homework_module);
+        moduleText = itemView.findViewById(R.id.homeworkModule);
+        homeworkName = itemView.findViewById(R.id.homeworkname);
+        timing = itemView.findViewById(R.id.timing);
     }
 
     public TextView getView() {

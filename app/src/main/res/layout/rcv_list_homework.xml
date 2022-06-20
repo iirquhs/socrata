@@ -31,7 +31,7 @@
                             android:layout_height="match_parent">
 
                                 <TextView
-                                    android:id="@+id/homework_module"
+                                    android:id="@+id/homeworkModule"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/primary_color"
@@ -55,8 +55,8 @@
                                     android:contentDescription="more"
                                     app:guidelineUseRtl="false"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="@+id/homework_module"
-                                    app:layout_constraintTop_toTopOf="@+id/homework_module"
+                                    app:layout_constraintEnd_toEndOf="@+id/homeworkModule"
+                                    app:layout_constraintTop_toTopOf="@+id/homeworkModule"
                                     app:srcCompat="@drawable/ic_more_horiz_24px"
                                     tools:ignore="TouchTargetSizeCheck" />
 
