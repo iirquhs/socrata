@@ -95,7 +95,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-                builder.setMessage("Are you sure you want to delete " + homework.getHomeworkName() + " module?");
+                builder.setMessage("Are you sure you want to delete " + homework.getHomeworkName() + " homework?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

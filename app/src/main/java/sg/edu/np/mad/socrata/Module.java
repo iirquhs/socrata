@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class Module {
 
+    //TODO ADD GETTER AND SETTOR FOR ARRAY LIST SO THAT THE FIREBASE HomeworkCREATE can UPDATE AND CAN PASS THE WHOLE MODULE OBJECT
+
     private String moduleName;
     private String targetGrade;
 
@@ -41,7 +43,7 @@ public class Module {
         return homeworkArrayList;
     }
 
-    public void addHomeworkArrayList(Homework homework) {
+    public void addHomework(Homework homework) {
         this.homeworkArrayList.add(homework);
     }
 
@@ -73,7 +75,7 @@ public class Module {
         return studySessionArrayList;
     }
 
-    public void setStudySessionArrayList(StudySession studySession) {
+    public void addStudySession(StudySession studySession) {
         this.studySessionArrayList.add(studySession);
     }
     public int getTargetHoursPerWeek() {
