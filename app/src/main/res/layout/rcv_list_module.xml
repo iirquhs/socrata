@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -31,9 +30,10 @@
                 android:background="@color/primary_color"
                 android:fontFamily="@font/roboto"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="Mobile Application Development"
+                android:text="@string/mobile_application_development"
                 android:textColor="@color/white" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
-                        android:text="Goal: AD"
+                        android:text="@string/goal_ad"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,7 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
-                        android:text="Target hours (per week): 30h"
+                        android:text="@string/target_hours_per_week_30h"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewHomeworkName" />
 
@@ -79,7 +79,7 @@
                         android:layout_marginTop="16dp"
                         android:backgroundTint="@color/primary_color"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="Study"
+                        android:text="@string/study"
                         android:textAllCaps="false"
                         app:cornerRadius="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -91,7 +91,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:contentDescription="Edit Module"
+                        android:contentDescription="@string/edit_module"
                         android:minWidth="48dp"
                         android:minHeight="48dp"
                         android:src="@drawable/ic_outline_edit_24"
@@ -104,7 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:contentDescription="Delete  Module"
+                        android:contentDescription="@string/delete_module"
                         android:minWidth="48dp"
                         android:minHeight="48dp"
                         android:src="@drawable/ic_baseline_delete_outline_24"

@@ -1,12 +1,16 @@
 package sg.edu.np.mad.socrata;
 
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +26,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         TextView moduleText, textViewHomeworkName, textViewTimeLeft;
 
+        ImageButton imageButtonDeleteHomework;
+
+        Button buttonMarkDone;
+
         ConstraintLayout constraintUrgentIndicator;
 
         public HomeworkRecyclerViewHolder(@NonNull View itemView) {
@@ -29,6 +37,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             moduleText = itemView.findViewById(R.id.homeworkModule);
             textViewHomeworkName = itemView.findViewById(R.id.textViewHomeworkName);
             textViewTimeLeft = itemView.findViewById(R.id.textViewTimeLeft);
+
+            imageButtonDeleteHomework = itemView.findViewById(R.id.imageButtonDeleteHomework);
+
+            buttonMarkDone = itemView.findViewById(R.id.buttonMarkDone);
 
             constraintUrgentIndicator = itemView.findViewById(R.id.constraintUrgentIndicator);
         }
@@ -70,6 +82,37 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         } else {
             holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(holder.constraintUrgentIndicator.getContext(), R.color.red_color));
         }
+
+        holder.buttonMarkDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homework.setHasDoneHomework(true);
+            }
+        });
+
+        holder.imageButtonDeleteHomework.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+                builder.setMessage("Are you sure you want to delete " + homework.getHomeworkName() + " module?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //TODO Delete homework
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                builder.create().show();
+
+            }
+        });
 
     }
 

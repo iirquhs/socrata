@@ -13,6 +13,8 @@ public class Homework{
 
     private Module module;
 
+    private boolean hasDoneHomework;
+
     public Homework() {
 
     }
@@ -61,5 +63,13 @@ public class Homework{
 
     public void setDueDateTime(LocalDateTime dueDateTime) {
         this.dueDateTime = dueDateTime;
+    }
+
+    public boolean isHasDoneHomework() {
+        return hasDoneHomework;
+    }
+
+    public void setHasDoneHomework(boolean hasDoneHomework) {
+        this.hasDoneHomework = hasDoneHomework;
     }
 }

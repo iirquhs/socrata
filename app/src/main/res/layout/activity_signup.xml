@@ -69,13 +69,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:textColor="@color/black"
             android:textSize="32sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:autofillHints="username"
             android:id="@+id/editTextUsername"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -84,7 +85,7 @@
             android:drawableStart="@drawable/ic_baseline_person_24"
             android:drawablePadding="8dp"
             android:ems="10"
-            android:hint="Username"
+            android:hint="@string/username"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             android:paddingStart="15dp"
@@ -97,6 +98,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
         <EditText
+            android:autofillHints="emailAddress"
             android:id="@+id/editTextEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,7 +107,7 @@
             android:drawableStart="@drawable/ic_baseline_email_24"
             android:drawablePadding="8dp"
             android:ems="10"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             android:paddingStart="15dp"
@@ -118,6 +120,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextUsername" />
 
         <EditText
+            android:autofillHints="password"
             android:id="@+id/editTextPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -126,7 +129,7 @@
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="8dp"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:paddingStart="15dp"
@@ -140,6 +143,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
         <EditText
+            android:autofillHints="password"
             android:id="@+id/editTextConfirmPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -148,7 +152,7 @@
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="8dp"
             android:ems="10"
-            android:hint="Confirm Password"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:paddingStart="15dp"
@@ -169,7 +173,7 @@
             android:background="@drawable/main_button"
             android:fontFamily="@font/poppins_bold"
             android:minHeight="48dp"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:textAllCaps="false"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -181,7 +185,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Have a account? Log in"
+            android:text="@string/have_a_account_log_in"
             app:layout_constraintEnd_toStartOf="@+id/toLoginTextView"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -192,8 +196,8 @@
             android:id="@+id/toLoginTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="here"
-            android:layout_marginLeft="4dp"
+            android:text="@string/here"
+            android:layout_marginStart="4dp"
             android:textColor="@color/primary_color"
 
             app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
