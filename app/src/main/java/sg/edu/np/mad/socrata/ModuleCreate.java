@@ -109,7 +109,7 @@ public class ModuleCreate extends AppCompatActivity{
                 darkbluetick.setVisibility(v.INVISIBLE);
                 ImageView lineColorCode = findViewById(R.id.colourselector);
                 lineColorCode.setColorFilter(Color.parseColor("#ff00ddff"));
-                finalcolour = 17170459;
+                finalcolour = Color.parseColor("#ff00ddff");
             }
         };
         yellow.setOnClickListener(listener1);
@@ -126,7 +126,7 @@ public class ModuleCreate extends AppCompatActivity{
                 darkbluetick.setVisibility(v.INVISIBLE);
                 ImageView lineColorCode = findViewById(R.id.colourselector);
                 lineColorCode.setColorFilter(Color.parseColor("#ff0099cc"));
-                finalcolour = 17170451;
+                finalcolour = Color.parseColor("#ff0099cc");
             }
         };
         orange.setOnClickListener(listener2);
@@ -143,7 +143,7 @@ public class ModuleCreate extends AppCompatActivity{
                 darkbluetick.setVisibility(v.INVISIBLE);
                 ImageView lineColorCode = findViewById(R.id.colourselector);
                 lineColorCode.setColorFilter(Color.parseColor("#ff669900"));
-                finalcolour = 17170453;
+                finalcolour = Color.parseColor("#ff669900");
 
             }
         };
@@ -160,8 +160,9 @@ public class ModuleCreate extends AppCompatActivity{
                 purpletick.setVisibility(v.INVISIBLE);
                 darkbluetick.setVisibility(v.INVISIBLE);
                 ImageView lineColorCode = findViewById(R.id.colourselector);
+
                 lineColorCode.setColorFilter(Color.parseColor("#ffff8800"));
-                finalcolour = 17170457;
+                finalcolour = Color.parseColor("#ffff8800");
 
             }
         };
@@ -179,7 +180,7 @@ public class ModuleCreate extends AppCompatActivity{
                 darkbluetick.setVisibility(v.INVISIBLE);
                 ImageView lineColorCode = findViewById(R.id.colourselector);
                 lineColorCode.setColorFilter(Color.parseColor("#ff99cc00"));
-                finalcolour = 17170452;
+                finalcolour = Color.parseColor("#ff99cc00");
             }
         };
         lightblue.setOnClickListener(listener5);
@@ -196,7 +197,7 @@ public class ModuleCreate extends AppCompatActivity{
                 darkbluetick.setVisibility(v.INVISIBLE);
                 ImageView lineColorCode = findViewById(R.id.colourselector);
                 lineColorCode.setColorFilter(Color.parseColor("#ffffbb33"));
-                finalcolour = 17170456 ;
+                finalcolour = Color.parseColor("#ffffbb33");
             }
         };
         blue.setOnClickListener(listener6);
@@ -213,7 +214,7 @@ public class ModuleCreate extends AppCompatActivity{
                 darkbluetick.setVisibility(v.INVISIBLE);
                 ImageView lineColorCode = findViewById(R.id.colourselector);
                 lineColorCode.setColorFilter(Color.parseColor("#ffaa66cc"));
-                finalcolour = 17170458 ;
+                finalcolour = Color.parseColor("#ffaa66cc");
             }
         };
         purple.setOnClickListener(listener7);
@@ -230,7 +231,7 @@ public class ModuleCreate extends AppCompatActivity{
                 darkbluetick.setVisibility(v.VISIBLE);
                 ImageView lineColorCode = findViewById(R.id.colourselector);
                 lineColorCode.setColorFilter(Color.parseColor("#ffff4444"));
-                finalcolour = 17170454;
+                finalcolour = Color.parseColor("#ffff4444");
             }
         };
         darkblue.setOnClickListener(listener8);
