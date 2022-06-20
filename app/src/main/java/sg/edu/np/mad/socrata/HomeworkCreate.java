@@ -15,9 +15,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,14 +32,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class HomeworkCreate extends AppCompatActivity {
     EditText homeworkName, DueDate;
-    Spinner Modules, Difficulty;
-    String hwName, Module, difficulty, duedate;
+    Spinner Modules;
+    String hwName, Module, duedate, refKey;
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
+    FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +49,10 @@ public class HomeworkCreate extends AppCompatActivity {
         initDatePicker();
         dateButton = findViewById(R.id.datePickerButton);
         dateButton.setText(getTodaysDate());
-        Difficulty = findViewById(R.id.Difficulty);
-        String[] items = new String[]{"Easy", "Medium", "Hard"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        Difficulty.setAdapter(adapter);
+        //Difficulty = findViewById(R.id.Difficulty);
+        //String[] items = new String[]{"Easy", "Medium", "Hard"};
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        //Difficulty.setAdapter(adapter);
         String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference check = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
         check.addListenerForSingleValueEvent(
@@ -66,24 +71,45 @@ public class HomeworkCreate extends AppCompatActivity {
                             public void onClick(View v) {
                                 homeworkName = findViewById(R.id.homeworkName);
                                 Module = Modules.getSelectedItem().toString();
-                                difficulty = Difficulty.getSelectedItem().toString();
+                                getModuleRefKey(Module);
+                                //difficulty = Difficulty.getSelectedItem().toString();
                                 hwName = homeworkName.getText().toString().trim();
-                                Module module;
+                                Log.d("name", hwName);
+                                Log.d("moduke", Module);
+                                Module module = null;
                                 if (hwName.isEmpty()) {
                                     homeworkName.setError("Name is required");
                                     homeworkName.requestFocus();
                                     return;
                                 }
-                                for (int i =0; i < moduleArrayList.size(); i++){
-                                    if(moduleArrayList.get(i).getModuleName().equals(Module)){
+                                for (int i =0; i < moduleArrayList.size(); i++) {
+                                    if (moduleArrayList.get(i).getModuleName().equals(Module)) {
                                         module = moduleArrayList.get(i);
-                                        Homework homework = new Homework(hwName, module);
-                                        String id = check.push().getKey();
-                                        Query moduleQuery = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules")
-                                                .orderByChild("moduleName").equalTo(Module);
-                                        break;
                                     }
                                 }
+                                Homework homework = new Homework(hwName, module);
+                                //Query moduleQuery = check.orderByChild("moduleName").equalTo(Module);
+                                getModuleRefKey(Module);
+                                Log.d("refkey", refKey);
+                                DatabaseReference check2 = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules").child(refKey);
+                                check2.child("homework").push().setValue(homework);
+                                /*moduleQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                                            DatabaseReference homework = appleSnapshot.getRef().child("homework");
+                                            Map<String, Object> studySessionMap = new HashMap<>();
+                                            studySessionMap.put(homework.push().getKey(), homework);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.e("tag", "onCancelled", databaseError.toException());
+                                    }
+                                });*/
+
+
 
 
                             }
@@ -198,6 +224,26 @@ public class HomeworkCreate extends AppCompatActivity {
         }
 
         return moduleArrayList;
+    }
+
+    private void getModuleRefKey(String moduleName) {
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Query q = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules").orderByChild("moduleName").equalTo(moduleName);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot module : snapshot.getChildren()) {
+                    Log.d("TAGss", module.getKey());
+
+                    refKey = module.getKey();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }

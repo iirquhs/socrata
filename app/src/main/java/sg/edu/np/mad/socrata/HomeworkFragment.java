@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,12 +95,12 @@ public class HomeworkFragment extends Fragment {
         //@ColorInt int webColor = ContextCompat.getColor(container.getContext(), R.color.secondary_color);
         //@ColorInt int ooadColor = ContextCompat.getColor(container.getContext(), R.color.text_color);
 
-        Module web = new Module("Web Applications Development", "AD", 30, getResources().getColor(R.color.black));
+        /*Module web = new Module("Web Applications Development", "AD", 30, getResources().getColor(R.color.black));
         Module ooad = new Module("Object-Oriented Analysis and Design", "AD", 5, getResources().getColor(R.color.black));
         Homework homework1 = new Homework("assignment gg", web);
         Homework homework2 = new Homework("assignenwer", ooad);
         data.add(homework1);
-        data.add(homework2);
+        data.add(homework2);*/
         RecyclerView rv = view.findViewById(R.id.homework_rcv);
         HomeworkAdapter adapter = new HomeworkAdapter(data);
         LinearLayoutManager layout = new LinearLayoutManager(view.getContext());
@@ -124,12 +125,14 @@ public class HomeworkFragment extends Fragment {
                 });
     }
     public void addHomework(ArrayList<String> nameList){
-        FloatingActionButton addHomework = getView().findViewById(R.id.createhomework);
+        FloatingActionButton addHomework = requireView().findViewById(R.id.createhomework);
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent activityName = new Intent(HomeworkFragment.this.getActivity() ,HomeworkCreate.class);
+                startActivity(activityName);
                 if(nameList.isEmpty() == true){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeworkFragment.this.getContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setMessage("Please create a module in the module page before making a homework");
                     builder.setCancelable(true);
                     builder.setPositiveButton(
@@ -152,8 +155,8 @@ public class HomeworkFragment extends Fragment {
                     alert11.show();
                 }
                 else{
-                    Intent activityName = new Intent(HomeworkFragment.this.getActivity() ,HomeworkCreate.class);
-                    startActivity(activityName);
+                    Intent intent = new Intent(HomeworkFragment.this.getActivity() ,HomeworkCreate.class);
+                    startActivity(intent);
                 }
             }
         };
