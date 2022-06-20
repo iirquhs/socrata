@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -75,16 +76,18 @@ public class HomeworkFragment extends Fragment {
 
         Module web = new Module("Web Applications Development", "AD", 30, webColor);
         Module ooad = new Module("Object-Oriented Analysis and Design", "AD", 5, ooadColor);
-        Homework homework1 = new Homework("help", web);
-        Homework homework2 = new Homework("help1", ooad);
+
+        Homework homework1 = new Homework("help", LocalDateTime.now().plusHours(5), web);
+        Homework homework2 = new Homework("help1", LocalDateTime.now().plusDays(5), ooad);
+
         data.add(homework1);
         data.add(homework2);
-
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_homework, container, false);
 
         RecyclerView rv = view.findViewById(R.id.homework_rcv);
+
         HomeworkAdapter adapter = new HomeworkAdapter(data);
         LinearLayoutManager layout = new LinearLayoutManager(view.getContext());
 

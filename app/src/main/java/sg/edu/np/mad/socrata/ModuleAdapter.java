@@ -40,7 +40,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
             super(itemView);
 
             textViewModuleName = itemView.findViewById(R.id.homework_module);
-            textViewGoal = itemView.findViewById(R.id.homeworkname);
+            textViewGoal = itemView.findViewById(R.id.textViewHomeworkName);
             textViewTargetHours = itemView.findViewById(R.id.textViewTargetHours);
             buttonStudy = itemView.findViewById(R.id.buttonStudy);
             cardViewModule = itemView.findViewById(R.id.cardViewModule);

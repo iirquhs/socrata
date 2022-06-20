@@ -1,5 +1,7 @@
 package sg.edu.np.mad.socrata;
 
+import java.time.LocalDateTime;
+
 public class Homework{
 
     private String homeworkName;
@@ -7,15 +9,18 @@ public class Homework{
 
     private float timeSpent = 0f;
 
+    private LocalDateTime dueDateTime;
+
     private Module module;
 
     public Homework() {
 
     }
 
-    public Homework(String homeworkName, Module module) {
+    public Homework(String homeworkName, LocalDateTime dueDateTime, Module module) {
         this.setHomeworkName(homeworkName);
         this.setModule(module);
+        this.setDueDateTime(dueDateTime);
     }
 
     public String getHomeworkName() {
@@ -48,5 +53,13 @@ public class Homework{
 
     public void setModule(Module module) {
         this.module = module;
+    }
+
+    public LocalDateTime getDueDateTime() {
+        return dueDateTime;
+    }
+
+    public void setDueDateTime(LocalDateTime dueDateTime) {
+        this.dueDateTime = dueDateTime;
     }
 }
