@@ -68,29 +68,17 @@ public class HomeworkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ArrayList<Module> data = new ArrayList<>();
+        ArrayList<Homework> data = new ArrayList<>();
 
         @ColorInt int webColor = ContextCompat.getColor(container.getContext(), R.color.secondary_color);
         @ColorInt int ooadColor = ContextCompat.getColor(container.getContext(), R.color.text_color);
 
         Module web = new Module("Web Applications Development", "AD", 30, webColor);
         Module ooad = new Module("Object-Oriented Analysis and Design", "AD", 5, ooadColor);
-        data.add(web);
-        data.add(ooad);
-        data.add(web);
-        data.add(ooad);
-        data.add(web);
-        data.add(ooad);
-        data.add(web);
-        data.add(ooad);
-        data.add(web);
-        data.add(ooad);
-        data.add(web);
-        data.add(ooad);
-        data.add(web);
-        data.add(ooad);
-        data.add(web);
-        data.add(ooad);
+        Homework homework1 = new Homework("help", web);
+        Homework homework2 = new Homework("help1", ooad);
+        data.add(homework1);
+        data.add(homework2);
 
 
         // Inflate the layout for this fragment

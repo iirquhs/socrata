@@ -1,6 +1,6 @@
 package sg.edu.np.mad.socrata;
 
-public class Homework {
+public class Homework{
 
     private String homeworkName;
     private String status = "In Progress";
