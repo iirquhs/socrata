@@ -76,7 +76,7 @@ public class ModuleFragment extends Fragment{
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityName = new Intent(ModuleFragment.this.getActivity() ,ModuleCreate.class);
+                Intent activityName = new Intent(ModuleFragment.this.getActivity() ,ModuleUpdate.class);
                 startActivity(activityName);
             }
         };

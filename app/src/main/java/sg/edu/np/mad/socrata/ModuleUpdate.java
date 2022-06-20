@@ -1,6 +1,7 @@
 package sg.edu.np.mad.socrata;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,384 +26,364 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
-import java.net.Inet4Address;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ModuleUpdate extends AppCompatActivity {
-    EditText modulename, targethours, goals;
-    View colour;
-    String name;
-    String hours;
-    String goal;
-    Integer finalcolourholder;
-    Integer finalcolour;
-    Integer updatecolour;
+
+    ImageView lightBlueTick, blueTick,
+            darkGreenTick, orangeTick,
+            lightGreenTick,
+            yellowTick, purpleTick, redTick;
+
+    ImageView colourSelector, colourBox, close;
+
+    EditText editTextModuleName, editTextTargetHours, editTextGoal;
+
+    TextView textViewTitle;
+
+    ConstraintLayout background;
+
+    Map<ImageView, Integer> colourSelectorToColour = new LinkedHashMap<>();
+
+    @ColorInt int colours[] = {
+        Color.parseColor("#ff00ddff"),
+        Color.parseColor("#ff0099cc"),
+        Color.parseColor("#ff669900"),
+        Color.parseColor("#ffff8800"),
+        Color.parseColor("#ff99cc00"),
+        Color.parseColor("#ffffbb33"),
+        Color.parseColor("#ffaa66cc"),
+        Color.parseColor("#ffff4444")
+    };
+
+    @ColorInt Integer selectedColour = colours[0];
+
+    Map<Integer, View> colourToView = new LinkedHashMap<Integer, View>();
+
+    List<String> moduleNameList = new ArrayList<>();
+
+    DatabaseReference myRef;
+
+    String refKey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.updatemodule);
-        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Intent intent = getIntent();
-        name = intent.getStringExtra("name");
-        goal = intent.getStringExtra("goal");
-        hours = intent.getStringExtra("hours");
-        finalcolourholder = intent.getIntExtra("colour",0);
-        Log.d("c", finalcolourholder.toString());
-        modulename = findViewById(R.id.updatemodulename);
-        targethours = findViewById(R.id.updatehours);
-        goals = findViewById(R.id.updategoal);
-        modulename.setText(name, TextView.BufferType.EDITABLE);
-        targethours.setText(hours, TextView.BufferType.EDITABLE);
-        goals.setText(goal, TextView.BufferType.EDITABLE);
-        View colourselect = findViewById(R.id.colourselector);
-        View colourbox = findViewById(R.id.colourbox);
-        View yellow = findViewById(R.id.yelllow);
-        View orange = findViewById(R.id.orange);
-        View red = findViewById(R.id.red);
-        View green = findViewById(R.id.green);
-        View lightblue = findViewById(R.id.lightblue);
-        View blue = findViewById(R.id.blue);
-        View purple = findViewById(R.id.purple);
-        View darkblue = findViewById(R.id.darkblue);
-        View yellowtick = findViewById(R.id.yellowtick);
-        View orangetick = findViewById(R.id.orangetick);
-        View redtick = findViewById(R.id.redtick);
-        View greentick = findViewById(R.id.greentick);
-        View lightbluetick = findViewById(R.id.lightbluetick);
-        View bluetick = findViewById(R.id.bluetick);
-        View purpletick = findViewById(R.id.purpletick);
-        View darkbluetick = findViewById(R.id.darkbluetick);
-        View background = findViewById(R.id.background);
-        View close = findViewById(R.id.close);
+
+        myRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
+        refKey = myRef.push().getKey();
+
+        Gson gson = new Gson();
+        Module module = gson.fromJson(intent.getStringExtra("module"), Module.class);
+
+        textViewTitle = findViewById(R.id.textViewTitle);
+
+        if (module != null) {
+            textViewTitle.setText("Edit Module");
+            selectedColour = module.getColor();
+            getModuleNames(myRef, module.getModuleName());
+            getModuleRefKey(module.getModuleName());
+
+        } else {
+            getModuleNames(myRef, null);
+        }
+
+        //Gets the colour
+        colourPicker();
+
+        editTextModuleName = findViewById(R.id.updatemodulename);
+        editTextTargetHours = findViewById(R.id.updatehours);
+        editTextGoal = findViewById(R.id.updategoal);
+
+        if (module != null) {
+            editTextModuleName.setText(module.getModuleName());
+            editTextTargetHours.setText(Integer.toString(module.getTargetHoursPerWeek()));
+            editTextGoal.setText(module.getTargetGrade());
+            selectedColour = module.getColor();
+        }
+
+        Button buttonUpdate = findViewById(R.id.buttonupdatemodule);
+        buttonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editTextModuleName.getText().toString().trim();
+                String targetHours = editTextTargetHours.getText().toString().trim();
+                String goal = editTextGoal.getText().toString().trim();
+
+                if (!isInputValid(name, targetHours, goal)) return;
+
+                Module module = new Module(name, goal, Integer.parseInt(targetHours), selectedColour);
+
+                Map<String, Object> moduleMap = new HashMap<>();
+
+                moduleMap.put(refKey, module);
+
+                Log.d("TAG", moduleMap.toString());
+
+                myRef.updateChildren(moduleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d("TAG", task.toString());
+                            return;
+                        }
+                        Intent intent = new Intent(ModuleUpdate.this, MainActivity.class);
+                        Toast.makeText(ModuleUpdate.this,"Module updated", Toast.LENGTH_SHORT).show();
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+        });
+
+    }
+
+    private void getModuleRefKey(String moduleName) {
+        Query q = myRef.orderByChild("moduleName").equalTo(moduleName);
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot module : snapshot.getChildren()) {
+                    Log.d("TAGss", module.getKey());
+
+                    refKey = module.getKey();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private boolean isInputValid(String name, String targetHours, String goal) {
+        if (name.isEmpty()) {
+            editTextModuleName.setError("Name is required");
+            editTextModuleName.requestFocus();
+            return false;
+        }
+
+        if (targetHours.isEmpty()) {
+            ModuleUpdate.this.editTextTargetHours.setError("set the target hours");
+            ModuleUpdate.this.editTextTargetHours.requestFocus();
+            return false;
+        }
+        if (goal.isEmpty()) {
+            editTextGoal.setError("set a goal");
+            editTextGoal.requestFocus();
+            return false;
+        }
+        if(Integer.parseInt(targetHours) > 168){
+            ModuleUpdate.this.editTextTargetHours.setError("a week only has 168 hours");
+            ModuleUpdate.this.editTextTargetHours.requestFocus();
+            return false;
+        }
+        if(Integer.parseInt(targetHours) < 0 || Integer.parseInt(targetHours) == 0){
+            ModuleUpdate.this.editTextTargetHours.setError("value cant be 0 or less");
+            ModuleUpdate.this.editTextTargetHours.requestFocus();
+            return false;
+        }
+
+        if (moduleNameList.contains(name)) {
+            editTextModuleName.setError("Module already exists");
+            editTextModuleName.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private void getModuleNames(DatabaseReference myRef, String currentModuleName) {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Map<String, Object> moduleMap = (Map<String, Object>) snapshot.getValue();
+
+                if (moduleMap == null) {
+                    return;
+                }
+
+                for (Map.Entry<String, Object> entry : moduleMap.entrySet()) {
+                    //Get user map
+                    Map singleUser = (Map) entry.getValue();
+                    String name = (String) singleUser.get("moduleName");
+
+                    if (name.equals(currentModuleName)) {
+                        continue;
+                    }
+
+                    moduleNameList.add(name);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    //#ff00ddff, #ff0099cc, #ff669900, #ffff8800,  #ff99cc00, #ffffbb33, #ffaa66cc, #ffff4444
+    private void colourPicker() {
+        colourSelector = findViewById(R.id.colourselector);
+        colourSelector.setBackgroundTintList(ColorStateList.valueOf(selectedColour));
+
+        colourBox = findViewById(R.id.colourbox);
+
+        colourSelectorToColour.put(findViewById(R.id.lightBlue), colours[0]);
+        colourSelectorToColour.put(findViewById(R.id.blue), colours[1]);
+        colourSelectorToColour.put(findViewById(R.id.darkGreen), colours[2]);
+        colourSelectorToColour.put(findViewById(R.id.orange), colours[3]);
+        colourSelectorToColour.put(findViewById(R.id.lightGreen), colours[4]);
+        colourSelectorToColour.put(findViewById(R.id.yellow), colours[5]);
+        colourSelectorToColour.put(findViewById(R.id.purple), colours[6]);
+        colourSelectorToColour.put(findViewById(R.id.red), colours[7]);
+
+        for (int i = 0; i < colourSelectorToColour.keySet().size(); i++) {
+            ImageView colourSelector = (ImageView) colourSelectorToColour.keySet().toArray()[i];
+            colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[i]));
+        }
+
         //#ff00ddff, #ff0099cc, #ff669900, #ffff8800,  #ff99cc00, #ffffbb33, #ffaa66cc, #ffff4444
-        if(finalcolourholder == -16720385){
-            finalcolour = 17170459;
-            ImageView lineColorCode = findViewById(R.id.colourselector);
-            lineColorCode.setColorFilter(Color.parseColor("#ff00ddff"));
-        }
-        else if(finalcolourholder == -16737844){
-            finalcolour = 17170451;
-            ImageView lineColorCode = findViewById(R.id.colourselector);
-            lineColorCode.setColorFilter(Color.parseColor("#ff0099cc"));
-        }
-        else if(finalcolourholder == -10053376){
-            finalcolour = 17170453;
-            ImageView lineColorCode = findViewById(R.id.colourselector);
-            lineColorCode.setColorFilter(Color.parseColor("#ff669900"));
-        }
-        else if(finalcolourholder == -30720){
-            finalcolour = 17170457;
-            ImageView lineColorCode = findViewById(R.id.colourselector);
-            lineColorCode.setColorFilter(Color.parseColor("#ffff8800"));
-        }
-        else if(finalcolourholder == -6697984){
-            finalcolour = 17170452;
-            ImageView lineColorCode = findViewById(R.id.colourselector);
-            lineColorCode.setColorFilter(Color.parseColor("#ff99cc00"));
-        }
-        else if(finalcolourholder == -17613){
-            finalcolour = 17170456;
-            ImageView lineColorCode = findViewById(R.id.colourselector);
-            lineColorCode.setColorFilter(Color.parseColor("#ffffbb33"));
-        }
-        else if(finalcolourholder == -5609780){
-            finalcolour = 17170458;
-            ImageView lineColorCode = findViewById(R.id.colourselector);
-            lineColorCode.setColorFilter(Color.parseColor("#ffaa66cc"));
-        }
-        else if(finalcolourholder == -48060){
-            finalcolour = 17170454;
-            ImageView lineColorCode = findViewById(R.id.colourselector);
-            lineColorCode.setColorFilter(Color.parseColor("#ffff4444"));
-        }
+        lightBlueTick = findViewById(R.id.lightBlueTick);
+        blueTick = findViewById(R.id.blueTick);
+        darkGreenTick = findViewById(R.id.darkGreenTick);
+        orangeTick = findViewById(R.id.orangeTick);
+        lightGreenTick = findViewById(R.id.lightGreenTick);
+        yellowTick = findViewById(R.id.yellowTick);
+        purpleTick = findViewById(R.id.purpleTick);
+        redTick = findViewById(R.id.redTick);
+
+        colourToView.put(colours[0], lightBlueTick);
+        colourToView.put(colours[1], blueTick);
+        colourToView.put(colours[2], darkGreenTick);
+        colourToView.put(colours[3], orangeTick);
+        colourToView.put(colours[4], lightGreenTick);
+        colourToView.put(colours[5], yellowTick);
+        colourToView.put(colours[6], purpleTick);
+        colourToView.put(colours[7], redTick);
+
+        background = findViewById(R.id.background);
+        close = findViewById(R.id.close);
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                colourbox.setVisibility(v.VISIBLE);
-                yellow.setVisibility(v.VISIBLE);
-                orange.setVisibility(v.VISIBLE);
-                red.setVisibility(v.VISIBLE);
-                green.setVisibility(v.VISIBLE);
-                lightblue.setVisibility(v.VISIBLE);
-                blue.setVisibility(v.VISIBLE);
-                purple.setVisibility(v.VISIBLE);
-                darkblue.setVisibility(v.VISIBLE);
+                colourBox.setVisibility(v.VISIBLE);
+
+                for (ImageView colourSelector : colourSelectorToColour.keySet()) {
+                    colourSelector.setVisibility(v.VISIBLE);
+                }
+
                 close.setVisibility(v.VISIBLE);
-                if(finalcolour == 17170459){ yellowtick.setVisibility(View.VISIBLE);}
-                else if(finalcolour == 17170451){
-                    orangetick.setVisibility(View.VISIBLE);}
-                else if(finalcolour == 17170453){
-                    redtick.setVisibility(View.VISIBLE);}
-                else if(finalcolour == 17170457){
-                    greentick.setVisibility(View.VISIBLE);}
-                else if(finalcolour == 17170452){
-                    lightbluetick.setVisibility(View.VISIBLE);}
-                else if(finalcolour == 17170456 ){
-                    bluetick.setVisibility(View.VISIBLE);
-                    }
-                else if(finalcolour == 17170458 ){
-                    purpletick.setVisibility(View.VISIBLE);
-                }
-                else if(finalcolour == 17170454){
-                    darkbluetick.setVisibility(View.VISIBLE);
-                }
+
+                Log.d("TAG", selectedColour.toString());
+                Log.d("TAG", colourToView.toString());
+
+                View colourTick = colourToView.get(selectedColour);
+                colourTick.setVisibility(View.VISIBLE);
             }
         };
-        View.OnClickListener listener9 = new View.OnClickListener() {
+
+        View.OnClickListener hideColorSelectListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                colourbox.setVisibility(v.INVISIBLE);
-                yellow.setVisibility(v.INVISIBLE);
-                orange.setVisibility(v.INVISIBLE);
-                red.setVisibility(v.INVISIBLE);
-                green.setVisibility(v.INVISIBLE);
-                lightblue.setVisibility(v.INVISIBLE);
-                blue.setVisibility(v.INVISIBLE);
-                purple.setVisibility(v.INVISIBLE);
-                darkblue.setVisibility(v.INVISIBLE);
-                yellowtick.setVisibility(v.INVISIBLE);
-                orangetick.setVisibility(v.INVISIBLE);
-                redtick.setVisibility(v.INVISIBLE);
-                greentick.setVisibility(v.INVISIBLE);
-                lightbluetick.setVisibility(v.INVISIBLE);
-                bluetick.setVisibility(v.INVISIBLE);
-                purpletick.setVisibility(v.INVISIBLE);
-                darkbluetick.setVisibility(v.INVISIBLE);
-                close.setVisibility(v.INVISIBLE);
+                closeColourPicker(v);
             }
         };
-        background.setOnClickListener(listener9);
-        close.setOnClickListener(listener9);
-        DatabaseReference check = FirebaseDatabase.getInstance().getReference("Users").child(currentuser).child("modules");
-        check.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        ArrayList<String> namelist = ModuleUtils.getModuleNames((Map<String,Object>) dataSnapshot.getValue());
-                        colourselect.setOnClickListener(listener);
-                        View.OnClickListener listener1 = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yellowtick.setVisibility(v.VISIBLE);
-                                orangetick.setVisibility(v.INVISIBLE);
-                                redtick.setVisibility(v.INVISIBLE);
-                                greentick.setVisibility(v.INVISIBLE);
-                                lightbluetick.setVisibility(v.INVISIBLE);
-                                bluetick.setVisibility(v.INVISIBLE);
-                                purpletick.setVisibility(v.INVISIBLE);
-                                darkbluetick.setVisibility(v.INVISIBLE);
-                                ImageView lineColorCode = findViewById(R.id.colourselector);
-                                lineColorCode.setColorFilter(Color.parseColor("#ff00ddff"));
-                                updatecolour = -16720385;
-                            }
-                        };
-                        yellow.setOnClickListener(listener1);
-                        View.OnClickListener listener2 = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yellowtick.setVisibility(v.INVISIBLE);
-                                orangetick.setVisibility(v.VISIBLE);
-                                redtick.setVisibility(v.INVISIBLE);
-                                greentick.setVisibility(v.INVISIBLE);
-                                lightbluetick.setVisibility(v.INVISIBLE);
-                                bluetick.setVisibility(v.INVISIBLE);
-                                purpletick.setVisibility(v.INVISIBLE);
-                                darkbluetick.setVisibility(v.INVISIBLE);
-                                ImageView lineColorCode = findViewById(R.id.colourselector);
-                                lineColorCode.setColorFilter(Color.parseColor("#ff0099cc"));
-                                updatecolour = -16737844;
-                            }
-                        };
-                        orange.setOnClickListener(listener2);
-                        View.OnClickListener listener3 = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yellowtick.setVisibility(v.INVISIBLE);
-                                orangetick.setVisibility(v.INVISIBLE);
-                                redtick.setVisibility(v.VISIBLE);
-                                greentick.setVisibility(v.INVISIBLE);
-                                lightbluetick.setVisibility(v.INVISIBLE);
-                                bluetick.setVisibility(v.INVISIBLE);
-                                purpletick.setVisibility(v.INVISIBLE);
-                                darkbluetick.setVisibility(v.INVISIBLE);
-                                ImageView lineColorCode = findViewById(R.id.colourselector);
-                                lineColorCode.setColorFilter(Color.parseColor("#ff669900"));
-                                updatecolour = -10053376;
+        background.setOnClickListener(hideColorSelectListener);
+        close.setOnClickListener(hideColorSelectListener);
 
-                            }
-                        };
-                        red.setOnClickListener(listener3);
-                        View.OnClickListener listener4 = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yellowtick.setVisibility(v.INVISIBLE);
-                                orangetick.setVisibility(v.INVISIBLE);
-                                redtick.setVisibility(v.INVISIBLE);
-                                greentick.setVisibility(v.VISIBLE);
-                                lightbluetick.setVisibility(v.INVISIBLE);
-                                bluetick.setVisibility(v.INVISIBLE);
-                                purpletick.setVisibility(v.INVISIBLE);
-                                darkbluetick.setVisibility(v.INVISIBLE);
-                                ImageView lineColorCode = findViewById(R.id.colourselector);
-                                lineColorCode.setColorFilter(Color.parseColor("#ffff8800"));
-                                updatecolour = -30720;
+        colourSelector.setOnClickListener(listener);
 
-                            }
-                        };
-                        green.setOnClickListener(listener4);
-                        View.OnClickListener listener5 = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yellowtick.setVisibility(v.INVISIBLE);
-                                orangetick.setVisibility(v.INVISIBLE);
-                                redtick.setVisibility(v.INVISIBLE);
-                                greentick.setVisibility(v.INVISIBLE);
-                                lightbluetick.setVisibility(v.VISIBLE);
-                                bluetick.setVisibility(v.INVISIBLE);
-                                purpletick.setVisibility(v.INVISIBLE);
-                                darkbluetick.setVisibility(v.INVISIBLE);
-                                ImageView lineColorCode = findViewById(R.id.colourselector);
-                                lineColorCode.setColorFilter(Color.parseColor("#ff99cc00"));
-                                updatecolour = -6697984;
-                            }
-                        };
-                        lightblue.setOnClickListener(listener5);
-                        View.OnClickListener listener6 = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yellowtick.setVisibility(v.INVISIBLE);
-                                orangetick.setVisibility(v.INVISIBLE);
-                                redtick.setVisibility(v.INVISIBLE);
-                                greentick.setVisibility(v.INVISIBLE);
-                                lightbluetick.setVisibility(v.INVISIBLE);
-                                bluetick.setVisibility(v.VISIBLE);
-                                purpletick.setVisibility(v.INVISIBLE);
-                                darkbluetick.setVisibility(v.INVISIBLE);
-                                ImageView lineColorCode = findViewById(R.id.colourselector);
-                                lineColorCode.setColorFilter(Color.parseColor("#ffffbb33"));
-                                updatecolour = -17613 ;
-                            }
-                        };
-                        blue.setOnClickListener(listener6);
-                        View.OnClickListener listener7 = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yellowtick.setVisibility(v.INVISIBLE);
-                                orangetick.setVisibility(v.INVISIBLE);
-                                redtick.setVisibility(v.INVISIBLE);
-                                greentick.setVisibility(v.INVISIBLE);
-                                lightbluetick.setVisibility(v.INVISIBLE);
-                                bluetick.setVisibility(v.INVISIBLE);
-                                purpletick.setVisibility(v.VISIBLE);
-                                darkbluetick.setVisibility(v.INVISIBLE);
-                                ImageView lineColorCode = findViewById(R.id.colourselector);
-                                lineColorCode.setColorFilter(Color.parseColor("#ffaa66cc"));
-                                updatecolour = -5609780 ;
-                            }
-                        };
-                        purple.setOnClickListener(listener7);
-                        View.OnClickListener listener8 = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                yellowtick.setVisibility(v.INVISIBLE);
-                                orangetick.setVisibility(v.INVISIBLE);
-                                redtick.setVisibility(v.INVISIBLE);
-                                greentick.setVisibility(v.INVISIBLE);
-                                lightbluetick.setVisibility(v.INVISIBLE);
-                                bluetick.setVisibility(v.INVISIBLE);
-                                purpletick.setVisibility(v.INVISIBLE);
-                                darkbluetick.setVisibility(v.VISIBLE);
-                                ImageView lineColorCode = findViewById(R.id.colourselector);
-                                lineColorCode.setColorFilter(Color.parseColor("#ffff4444"));
-                                updatecolour = -48060;
-                            }
-                        };
-                        darkblue.setOnClickListener(listener8);
-                        Button buttonupdate = findViewById(R.id.buttonupdatemodule);
-                        buttonupdate.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                modulename = findViewById(R.id.updatemodulename);
-                                targethours = findViewById(R.id.updatehours);
-                                goals = findViewById(R.id.updategoal);
-                                String updatename = modulename.getText().toString().trim();
-                                String updatehours = targethours.getText().toString().trim();
-                                String updategoal = goals.getText().toString().trim();
-                                Log.d("updatecik", updatecolour.toString());
-                                if (updatename.isEmpty()) {
-                                    modulename.setError("Name is required");
-                                    modulename.requestFocus();
-                                    return;
-                                }
+        View.OnClickListener changeTick = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideAllTick(view);
+                int colourImageViewId = view.getId();
+                Log.d("TAG", Integer.toString(colourImageViewId));
 
-                                if (updatehours.isEmpty()) {
-                                    targethours.setError("set the target hours");
-                                    targethours.requestFocus();
-                                    return;
-                                }
-                                if (updategoal.isEmpty()) {
-                                    goals.setError("set a goal");
-                                    goals.requestFocus();
-                                    return;
-                                }
-                                if(Integer.parseInt(updatehours) > 168){
-                                    targethours.setError("a week only has 168 hours");
-                                    targethours.requestFocus();
-                                    return;
-                                }
-                                if(Integer.parseInt(updatehours) < 0 || Integer.parseInt(updatehours) == 0){
-                                    targethours.setError("value cant be 0 or less");
-                                    targethours.requestFocus();
-                                    return;
-                                }
+                switch (colourImageViewId){
+                    case R.id.lightBlue:
+                        lightBlueTick.setVisibility(View.VISIBLE);
+                        selectedColour = colours[0];
+                        colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[0]));
+                        break;
+                    case R.id.blue:
+                        blueTick.setVisibility(View.VISIBLE);
+                        selectedColour = colours[1];
+                        colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[1]));
+                        break;
+                    case R.id.darkGreen:
+                        darkGreenTick.setVisibility(View.VISIBLE);
+                        selectedColour = colours[2];
+                        colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[2]));
+                        break;
+                    case R.id.orange:
+                        orangeTick.setVisibility(View.VISIBLE);
+                        selectedColour = colours[3];
+                        colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[3]));
+                        break;
+                    case R.id.lightGreen:
+                        lightGreenTick.setVisibility(View.VISIBLE);
+                        selectedColour = colours[4];
+                        colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[4]));
+                        break;
+                    case R.id.yellow:
+                        yellowTick.setVisibility(View.VISIBLE);
+                        selectedColour = colours[5];
+                        colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[5]));
+                        break;
+                    case R.id.purple:
+                        purpleTick.setVisibility(View.VISIBLE);
+                        selectedColour = colours[6];
+                        colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[6]));
+                        break;
+                    case R.id.red:
+                        redTick.setVisibility(View.VISIBLE);
+                        selectedColour = colours[7];
+                        colourSelector.setBackgroundTintList(ColorStateList.valueOf(colours[7]));
+                        break;
+                }
+                closeColourPicker(view);
+            }
+        };
 
-                                for(int i = 0; i < namelist.size();i++) {
-                                    if (updatename.equals(namelist.get(i))) {
-                                        if(updatename.equals(name)){
-                                            continue;
-                                        }
-                                        else {
-                                            modulename.setError("Module already exists");
-                                            modulename.requestFocus();
-                                            return;
-                                        }
-                                    }
+        for (ImageView colourSelector : colourSelectorToColour.keySet()) {
+            colourSelector.setOnClickListener(changeTick);
+        }
+    }
 
-                                }
-                                Query update = check.orderByChild("moduleName").equalTo(name);
-                                update.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot updateSnapshot: dataSnapshot.getChildren()) {
-                                            updateSnapshot.getRef().child("moduleName").setValue(updatename);
-                                            updateSnapshot.getRef().child("targetGrade").setValue(updategoal);
-                                            updateSnapshot.getRef().child("targetHoursPerWeek").setValue(Integer.parseInt(updatehours));
-                                            updateSnapshot.getRef().child("color").setValue(updatecolour);
-                                        }
-                                    }
+    private void closeColourPicker(View view) {
+        colourBox.setVisibility(view.INVISIBLE);
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        Log.e("tag", "onCancelled", databaseError.toException());
-                                    }
-                                });
-                                Intent intent = new Intent(ModuleUpdate.this, MainActivity.class);
-                                Toast.makeText(ModuleUpdate.this,"Module updated", Toast.LENGTH_SHORT).show();
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+        for (ImageView colourSelector : colourSelectorToColour.keySet()) {
+            colourSelector.setVisibility(View.INVISIBLE);
+        }
 
-                            }
+        hideAllTick(view);
 
-                        });
+        close.setVisibility(view.INVISIBLE);
+    }
 
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        return;
-                    }
-                });
+    private void hideAllTick(View v) {
+        lightBlueTick.setVisibility(v.INVISIBLE);
+        blueTick.setVisibility(v.INVISIBLE);
+        darkGreenTick.setVisibility(v.INVISIBLE);
+        orangeTick.setVisibility(v.INVISIBLE);
+        lightGreenTick.setVisibility(v.INVISIBLE);
+        yellowTick.setVisibility(v.INVISIBLE);
+        purpleTick.setVisibility(v.INVISIBLE);
+        redTick.setVisibility(v.INVISIBLE);
     }
 }
