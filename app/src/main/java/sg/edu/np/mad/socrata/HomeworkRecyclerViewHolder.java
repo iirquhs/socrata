@@ -11,7 +11,7 @@ public class HomeworkRecyclerViewHolder extends RecyclerView.ViewHolder {
     TextView moduleText;
     public HomeworkRecyclerViewHolder(@NonNull View itemView) {
         super(itemView);
-        moduleText = itemView.findViewById(R.id.homework_module);
+        moduleText = itemView.findViewById(R.id.homeworkModule);
     }
 
     public TextView getView() {
