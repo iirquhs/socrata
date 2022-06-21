@@ -1,6 +1,5 @@
 package sg.edu.np.mad.socrata;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -37,9 +36,12 @@ public class ModuleFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference Module = FirebaseDatabase.getInstance().getReference("Users").child(currentuser).child("modules");
-        addmodule();
+
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference Module = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
+
+        addModule();
+
         Module.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -52,8 +54,10 @@ public class ModuleFragment extends Fragment{
                         }
 
                         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+
                         ModuleAdapter moduleAdapter = new ModuleAdapter(moduleArrayList);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
+
                         recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(moduleAdapter);
@@ -71,8 +75,8 @@ public class ModuleFragment extends Fragment{
     }
 
 
-    public void addmodule(){
-        FloatingActionButton addmodule = (FloatingActionButton) getView().findViewById(R.id.addmodule);
+    public void addModule(){
+        FloatingActionButton addModule = (FloatingActionButton) getView().findViewById(R.id.addmodule);
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +84,7 @@ public class ModuleFragment extends Fragment{
                 startActivity(activityName);
             }
         };
-        addmodule.setOnClickListener(listener);
+        addModule.setOnClickListener(listener);
     }
 
     private ArrayList<Module> getModules(Map<String,Object> modules) {

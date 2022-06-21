@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ import java.util.Map;
 
 public class HomeworkCreateActivity extends AppCompatActivity {
     String hwName, moduleName, duedate;
-    ArrayList<Module> moduleArrayList;
+    Map<String, Module> moduleMap;
 
     EditText editTextHomeworkName, DueDate;
 
@@ -73,8 +74,8 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         check.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                moduleArrayList = getModules((Map<String, Object>) dataSnapshot.getValue());
-                setModuleDropDown(moduleArrayList);
+                moduleMap = getModules((Map<String, Object>) dataSnapshot.getValue());
+                setModuleDropDown(moduleMap.values());
             }
 
             @Override
@@ -100,39 +101,29 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
+                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
 
-                Query q = myRef.orderByChild("moduleName").equalTo(moduleName);
-                q.addListenerForSingleValueEvent(new ValueEventListener() {
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot moduleSnapshot : snapshot.getChildren()) {
-                            Module module = getModule(moduleArrayList, moduleName);
+                        String moduleKey = getModule(moduleMap, moduleName);
 
-                            String dueDateTimeString = dateButton.getText() + " 23:59";
-                            DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                                    .parseCaseInsensitive().appendPattern("MMM dd yyyy HH:mm")
-                                    .toFormatter(Locale.ENGLISH);
+                        String dueDateTimeString = dateButton.getText() + " 23:59";
 
-                            LocalDateTime dueDateDateTime = LocalDateTime.parse(dueDateTimeString, formatter);
+                        Map<String, Object> homeworkMap = new HashMap<>();
 
-                            Map<String, Object> homeworkMap = new HashMap<>();
+                        String refKey = snapshot.child("homework").getRef().push().getKey();
 
-                            String refKey = moduleSnapshot.child("homework").getRef().push().getKey();
+                        Homework homework = new Homework(hwName, dueDateTimeString, moduleKey);
 
-                            Homework homework = new Homework(hwName, dueDateDateTime, module);
+                        homeworkMap.put(refKey, homework);
 
-                            homeworkMap.put(refKey, homework);
-
-                            Log.d("TAG", moduleSnapshot.getRef().toString());
-
-                            moduleSnapshot.child("homework").getRef().updateChildren(homeworkMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    finish();
-                                }
-                            });
-                        }
+                        snapshot.child("homework").getRef().updateChildren(homeworkMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                finish();
+                            }
+                        });
                     }
 
                     @Override
@@ -144,16 +135,16 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         });
     }
 
-    private Module getModule(List<Module> moduleArrayList, String moduleName) {
-        for (int i = 0; i < moduleArrayList.size(); i++) {
-            if (moduleArrayList.get(i).getModuleName().equals(moduleName)) {
-                return moduleArrayList.get(i);
+    private String getModule(Map<String, Module> moduleMap, String moduleName) {
+        for (Map.Entry<String, Module> moduleEntry : moduleMap.entrySet()) {
+            if (moduleEntry.getValue().getModuleName().equals(moduleName)) {
+                return moduleEntry.getKey();
             }
         }
         return null;
     }
 
-    private void setModuleDropDown (ArrayList<Module> moduleArrayList)
+    private void setModuleDropDown (Collection<Module> moduleArrayList)
     {
         ArrayList<String> nameList = new ArrayList<>();
 
@@ -245,15 +236,15 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private ArrayList<Module> getModules (Map < String, Object > modules){
-        ArrayList<Module> moduleArrayList = new ArrayList<>();
+    private Map<String, Module> getModules (Map < String, Object > modules){
+        Map<String, Module> moduleMap = new HashMap<>();
 
         if (modules == null) {
             return null;
         }
 
-        for (Map.Entry<String, Object> moduleMap : modules.entrySet()) {
-            Map moduleMapValue = (Map) moduleMap.getValue();
+        for (Map.Entry<String, Object> moduleMapEntry : modules.entrySet()) {
+            Map moduleMapValue = (Map) moduleMapEntry.getValue();
 
             String name = (String) moduleMapValue.get("moduleName");
             String goal = (String) moduleMapValue.get("targetGrade");
@@ -263,10 +254,10 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
             Module module = new Module(name, goal, targetHoursPerWeek, colorInt);
 
-            moduleArrayList.add(module);
+            moduleMap.put(moduleMapEntry.getKey(), module);
         }
 
-        return moduleArrayList;
+        return moduleMap;
     }
 
 }

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 public class Module {
 
-    //TODO ADD GETTER AND SETTOR FOR ARRAY LIST SO THAT THE FIREBASE HomeworkCREATE can UPDATE AND CAN PASS THE WHOLE MODULE OBJECT
-
     private String moduleName;
     private String targetGrade;
 

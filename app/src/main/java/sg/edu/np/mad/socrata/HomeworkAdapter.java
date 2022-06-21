@@ -1,12 +1,12 @@
 package sg.edu.np.mad.socrata;
 
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.HomeworkRecyclerViewHolder> {
-    ArrayList<Homework> data;
+    ArrayList<Homework> homeworkArrayList;
+
+    Map<String, Module> moduleMap;
 
     public class HomeworkRecyclerViewHolder extends RecyclerView.ViewHolder {
 
@@ -46,7 +50,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         }
     }
 
-    public HomeworkAdapter(ArrayList<Homework> data) {this.data = data;}
+    public HomeworkAdapter(ArrayList<Homework> homeworkArrayList, Map<String, Module> moduleMap) {
+        this.homeworkArrayList = homeworkArrayList;
+        this.moduleMap = moduleMap;
+    }
     @Override
     public int getItemViewType(int position) {
         return position;
@@ -61,17 +68,22 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
     @Override
     public void onBindViewHolder(@NonNull HomeworkRecyclerViewHolder holder, int position) {
-        Homework homework = data.get(position);
-        holder.moduleText.setBackgroundColor(homework.getModule().getColor());
-        holder.moduleText.setText(homework.getModule().getModuleName());
+        Homework homework = homeworkArrayList.get(position);
+
+        String moduleRef = homework.getModuleRef();
+
+        Module module =  moduleMap.get(moduleRef);
+
+        holder.moduleText.setBackgroundColor(module.getColor());
+        holder.moduleText.setText(module.getModuleName());
         holder.textViewHomeworkName.setText(homework.getHomeworkName());
 
-        LocalDateTime dueDateTime = homework.getDueDateTime();
+        LocalDateTime dueDateTime = homework.ConvertDueDateTime(homework.getDueDateTimeString());
 
         Duration duration = Duration.between(LocalDateTime.now(), dueDateTime);
         Long second = duration.getSeconds();
 
-        holder.textViewTimeLeft.setText(String.format("%.2f", second.floatValue() / 3600.0) + "h");
+        holder.textViewTimeLeft.setText(String.format("%.2f h", second.floatValue() / 3600.0));
 
         // 7 Days
         if (second > 604800) {
@@ -86,7 +98,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         holder.buttonMarkDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homework.setHasDoneHomework(true);
+                homework.setStatus("Completed");
             }
         });
 
@@ -118,6 +130,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return homeworkArrayList.size();
     }
 }
