@@ -3,6 +3,7 @@ package sg.edu.np.mad.socrata;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
 
-
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:
@@ -52,6 +52,19 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
+        Intent intent = getIntent();
+        String fragmentToLoad = intent.getStringExtra("fragment");
+
+        if (fragmentToLoad == null) {
+            return;
+        }
+
+        if (fragmentToLoad.equals("module")) {
+            replaceFragment(new ModuleFragment());
+        } else if (fragmentToLoad.equals("homework")) {
+            replaceFragment(new HomeworkFragment());
+        }
 
 
     }
