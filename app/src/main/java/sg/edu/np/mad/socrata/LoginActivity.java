@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     //Redirect to main activity
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
 
                                 } else {

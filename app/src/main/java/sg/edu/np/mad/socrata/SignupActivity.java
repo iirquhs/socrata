@@ -122,6 +122,7 @@ public class SignupActivity extends AppCompatActivity {
                                                 Toast.makeText(SignupActivity.this, "Sign Up successful", Toast.LENGTH_SHORT).show();
 
                                                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
                                             } else {
                                                 Toast.makeText(SignupActivity.this, "Failed to register. Please try again", Toast.LENGTH_SHORT).show();
