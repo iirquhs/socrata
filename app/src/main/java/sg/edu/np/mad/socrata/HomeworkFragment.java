@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,24 +36,17 @@ import java.util.Map;
 
 public class HomeworkFragment extends Fragment {
 
+    TextView textViewCompleted, textViewInProgress;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        @ColorInt int webColor = ContextCompat.getColor(container.getContext(), R.color.secondary_color);
-//        @ColorInt int ooadColor = ContextCompat.getColor(container.getContext(), R.color.text_color);
-
-//        Module web = new Module("Web Applications Development", "AD", 30, webColor);
-//        Module ooad = new Module("Object-Oriented Analysis and Design", "AD", 5, ooadColor);
-//
-//        Homework homework1 = new Homework("help", LocalDateTime.now().plusHours(5), web);
-//        Homework homework2 = new Homework("help1", LocalDateTime.now().plusDays(5), ooad);
-//
-//        data.add(homework1);
-//        data.add(homework2);
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_homework, container, false);
+
+        textViewCompleted = view.findViewById(R.id.textViewCompleted);
+        textViewInProgress = view.findViewById(R.id.textViewInProgress);
 
         RecyclerView recyclerView = view.findViewById(R.id.homework_rcv);
 
@@ -64,6 +58,38 @@ public class HomeworkFragment extends Fragment {
         String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
+
+        DatabaseReference homeworkReference = userReference.child("homework");
+
+        homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int homeworkInProgressCount = 0;
+                int homeworkCompletedCount = 0;
+
+                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
+                    Homework homework = homeworkSnapshot.getValue(Homework.class);
+
+                    String homeworkStatus = homework.getStatus();
+
+                    if (homeworkStatus.equals("In Progress")) {
+                        homeworkInProgressCount++;
+                    } else if (homeworkStatus.equals("Done")) {
+                        homeworkCompletedCount++;
+                    }
+                }
+
+                textViewCompleted.setText(Integer.toString(homeworkCompletedCount));
+                textViewInProgress.setText(Integer.toString(homeworkInProgressCount));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         DatabaseReference moduleReference = userReference.child("modules");
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -194,7 +194,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/textViewInProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -215,10 +215,10 @@
                     android:textSize="14sp"
                     app:layout_constraintBottom_toTopOf="@+id/imageView2"
                     app:layout_constraintStart_toStartOf="@+id/imageView2"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewInProgress" />
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/textViewCompleted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -239,7 +239,7 @@
                     android:textSize="14sp"
                     app:layout_constraintBottom_toTopOf="@+id/imageView3"
                     app:layout_constraintStart_toStartOf="@+id/imageView3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewCompleted" />
 
                 <TextView
                     android:id="@+id/textView10"
