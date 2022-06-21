@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -158,7 +159,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
                                 Log.e("tag", "onCancelled", databaseError.toException());
                             }
                         });
-
+                        Toast.makeText(view.getContext(), "Module deleted", Toast.LENGTH_SHORT).show();
                         moduleMap.values().remove((Module) moduleMap.values().toArray()[holder.getAdapterPosition()]);
                         notifyItemRemoved(holder.getAdapterPosition());
                     }

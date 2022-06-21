@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -42,6 +43,10 @@ public class ModuleFragment extends Fragment{
 
         addModule();
 
+        Intent intent = getActivity().getIntent();
+        Gson gson = new Gson();
+        Module module = gson.fromJson(intent.getStringExtra("module"), Module.class);
+
         Module.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -51,6 +56,10 @@ public class ModuleFragment extends Fragment{
 
                         if (moduleMap == null) {
                             return;
+                        }
+
+                        if(module != null){
+                            moduleArrayList.remove(module);
                         }
 
                         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
