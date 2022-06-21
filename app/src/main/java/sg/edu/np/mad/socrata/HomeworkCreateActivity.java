@@ -229,7 +229,12 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
     private String makeDateString ( int day, int month, int year)
     {
-        return getMonthFormat(month) + " " + day + " " + year;
+        if (day >= 10) {
+            return getMonthFormat(month) + " " + day + " " + year;
+        }
+        else {
+            return getMonthFormat(month) + " 0" + day + " " + year;
+        }
     }
 
     private String getMonthFormat ( int month)
