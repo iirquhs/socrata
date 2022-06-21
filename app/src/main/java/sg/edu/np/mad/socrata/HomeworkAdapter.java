@@ -83,6 +83,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         Module module =  moduleMap.get(moduleRef);
 
+        if (module == null) {
+            return;
+        }
+
         holder.moduleText.setBackgroundColor(module.getColor());
         holder.moduleText.setText(module.getModuleName());
         holder.textViewHomeworkName.setText(homework.getHomeworkName());

@@ -136,9 +136,12 @@ public class ModuleUpdate extends AppCompatActivity {
                             Log.d("TAG", task.toString());
                             return;
                         }
-
-                        finish();
                         Toast.makeText(ModuleUpdate.this,"Module updated", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(ModuleUpdate.this, MainActivity.class);
+                        intent.putExtra("fragment", "module");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                     }
                 });
             }

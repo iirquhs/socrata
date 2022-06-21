@@ -133,7 +133,10 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                         snapshot.child("homework").getRef().updateChildren(homeworkMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                finish();
+                                Intent intent = new Intent(HomeworkCreateActivity.this, MainActivity.class);
+                                intent.putExtra("fragment", "homework");
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
                             }
                         });
                     }
