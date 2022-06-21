@@ -2,7 +2,6 @@ package sg.edu.np.mad.socrata;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.HomeworkRecyclerViewHolder> {
     ArrayList<Homework> homeworkArrayList;
@@ -82,6 +79,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         String moduleRef = homework.getModuleRef();
 
+        if (moduleMap == null) {
+            return;
+        }
+
         Module module =  moduleMap.get(moduleRef);
 
         if (module == null) {
@@ -94,10 +95,9 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         LocalDateTime dueDateTime = homework.ConvertDueDateTime(homework.getDueDateTimeString());
 
-        Duration duration = Duration.between(LocalDateTime.now(), dueDateTime);
-        Long second = duration.getSeconds();
+        long second = homework.CalculateSecondsLeftBeforeDueDate(dueDateTime);
 
-        holder.textViewTimeLeft.setText(String.format("%.2f h", second.floatValue() / 3600.0));
+        holder.textViewTimeLeft.setText(String.format("%.2f h", (float) second / 3600.0));
 
         // 7 Days
         if (second > 604800) {

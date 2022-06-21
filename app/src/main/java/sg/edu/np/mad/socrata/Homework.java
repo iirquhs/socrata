@@ -1,6 +1,8 @@
 package sg.edu.np.mad.socrata;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
@@ -62,6 +64,15 @@ public class Homework{
 
         LocalDateTime dueDateTime = LocalDateTime.parse(dueDateTimeString, formatter);
         return dueDateTime;
+    }
+
+    public long CalculateSecondsLeftBeforeDueDate(LocalDateTime dueDateTime) {
+        ZoneId zoneId = ZoneId.of("Asia/Singapore");
+        LocalDateTime currentTime = LocalDateTime.now(zoneId);
+
+        Duration duration = Duration.between(currentTime, dueDateTime);
+
+        return duration.getSeconds();
     }
 
     //PUT IN MMM dd yyyy HH:mm format

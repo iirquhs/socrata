@@ -8,8 +8,8 @@
             android:id="@+id/cardViewModule"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="2dp"
@@ -34,8 +34,8 @@
                                     android:background="@color/primary_color"
                                     android:fontFamily="@font/roboto"
                                     android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
                                     android:paddingTop="8dp"
+                                    android:paddingEnd="16dp"
                                     android:paddingBottom="8dp"
                                     android:text="@string/mobile_application_development"
                                     android:textColor="@color/white"
@@ -91,11 +91,11 @@
                                                     app:layout_constraintTop_toTopOf="parent" />
 
                                                 <ImageView
-                                                    android:contentDescription="@string/time_left"
                                                     android:id="@+id/imageView6"
                                                     android:layout_width="15dp"
                                                     android:layout_height="17dp"
                                                     android:layout_marginStart="16dp"
+                                                    android:contentDescription="@string/time_left"
                                                     app:layout_constraintBottom_toBottomOf="parent"
                                                     app:layout_constraintEnd_toStartOf="@+id/textViewTimeLeft"
                                                     app:layout_constraintStart_toStartOf="parent"
