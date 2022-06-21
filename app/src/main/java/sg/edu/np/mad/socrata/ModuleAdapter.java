@@ -26,9 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueViewHolder> {
-    ArrayList<Module> moduleArrayList;
+    Map<String, Module> moduleMap;
 
     public class ModlueViewHolder extends RecyclerView.ViewHolder {
         TextView textViewModuleName, textViewGoal, textViewTargetHours;
@@ -49,21 +50,23 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
         }
     }
 
-    public ModuleAdapter(ArrayList<Module> moduleArrayList) {
-        this.moduleArrayList = moduleArrayList;
+    public ModuleAdapter(Map<String, Module> moduleMap) {
+        this.moduleMap = moduleMap;
     }
 
     @NonNull
     @Override
     public ModlueViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_list_module, parent, false);
-        ModlueViewHolder modlueViewHolder = new ModlueViewHolder(view);
-        return modlueViewHolder;
+
+        return new ModlueViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ModlueViewHolder holder, int position) {
-        Module module = moduleArrayList.get(position);
+
+        Module module = (Module) moduleMap.values().toArray()[position];
+        String moduleRef = (String) moduleMap.keySet().toArray()[position];
         String moduleName = module.getModuleName();
         String targetHours = String.valueOf(module.getTargetHoursPerWeek());
         String targetGrade = module.getTargetGrade();
@@ -113,14 +116,36 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
                 builder.setMessage("Are you sure you want to delete " + moduleName + " module?");
+
                 String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference Module = FirebaseDatabase.getInstance().getReference("Users").child(currentuser).child("modules");
-                Query delete = Module.orderByChild("moduleName").equalTo(moduleName);
+
+                DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentuser);
+
+                DatabaseReference homeworkRef = userReference.child("homework");
+
+                Query homeworkDeleteQuery = homeworkRef.orderByChild("moduleRef").equalTo(moduleRef);
+                homeworkDeleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
+                            homeworkSnapshot.getRef().removeValue();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                DatabaseReference moduleRef = userReference.child("modules");
+
+                Query moduleDeleteQuery = moduleRef.orderByChild("moduleName").equalTo(moduleName);
 
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        delete.addListenerForSingleValueEvent(new ValueEventListener() {
+                        moduleDeleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
@@ -133,7 +158,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
                                 Log.e("tag", "onCancelled", databaseError.toException());
                             }
                         });
-                        moduleArrayList.remove(holder.getAdapterPosition());
+
+                        moduleMap.values().remove((Module) moduleMap.values().toArray()[holder.getAdapterPosition()]);
                         notifyItemRemoved(holder.getAdapterPosition());
                     }
                 });
@@ -153,6 +179,6 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
 
     @Override
     public int getItemCount() {
-        return moduleArrayList.size();
+        return moduleMap.size();
     }
 }

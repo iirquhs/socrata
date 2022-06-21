@@ -80,7 +80,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         currentUserRef.child("modules").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                moduleMap = getModules((Map<String, Object>) dataSnapshot.getValue());
+                moduleMap = ModuleUtlis.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
 
                 assert moduleMap != null;
                 setModuleDropDown(moduleMap.values());
@@ -266,30 +266,6 @@ public class HomeworkCreateActivity extends AppCompatActivity {
     public void openDatePicker (View view)
     {
         datePickerDialog.show();
-    }
-
-    private Map<String, Module> getModules (Map < String, Object > modules){
-        Map<String, Module> moduleMap = new HashMap<>();
-
-        if (modules == null) {
-            return null;
-        }
-
-        for (Map.Entry<String, Object> moduleMapEntry : modules.entrySet()) {
-            Map moduleMapValue = (Map) moduleMapEntry.getValue();
-
-            String name = (String) moduleMapValue.get("moduleName");
-            String goal = (String) moduleMapValue.get("targetGrade");
-            int targetHoursPerWeek = ((Number) moduleMapValue.get("targetHoursPerWeek")).intValue();
-            @ColorInt int colorInt = ((Number) moduleMapValue.get("color")).intValue();
-            ;
-
-            Module module = new Module(name, goal, targetHoursPerWeek, colorInt);
-
-            moduleMap.put(moduleMapEntry.getKey(), module);
-        }
-
-        return moduleMap;
     }
 
 }

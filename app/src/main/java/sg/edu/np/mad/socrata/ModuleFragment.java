@@ -47,15 +47,15 @@ public class ModuleFragment extends Fragment{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Get map of users in datasnapshot
-                        ArrayList<Module> moduleArrayList = getModules((Map<String,Object>) dataSnapshot.getValue());
+                        Map<String, Module> moduleMap = ModuleUtlis.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
 
-                        if (moduleArrayList == null) {
+                        if (moduleMap == null) {
                             return;
                         }
 
                         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
-                        ModuleAdapter moduleAdapter = new ModuleAdapter(moduleArrayList);
+                        ModuleAdapter moduleAdapter = new ModuleAdapter(moduleMap);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
 
                         recyclerView.setLayoutManager(linearLayoutManager);
@@ -85,28 +85,5 @@ public class ModuleFragment extends Fragment{
             }
         };
         addModule.setOnClickListener(listener);
-    }
-
-    private ArrayList<Module> getModules(Map<String,Object> modules) {
-        ArrayList<Module> moduleArrayList = new ArrayList<>();
-
-        if (modules == null) {
-            return null;
-        }
-
-        for (Map.Entry<String, Object> moduleMap : modules.entrySet()){
-            Map moduleMapValue = (Map) moduleMap.getValue();
-
-            String name = (String) moduleMapValue.get("moduleName");
-            String goal = (String) moduleMapValue.get("targetGrade");
-            int targetHoursPerWeek = ((Number) moduleMapValue.get("targetHoursPerWeek")).intValue();
-            @ColorInt int colorInt = ((Number) moduleMapValue.get("color")).intValue();;
-
-            Module module = new Module(name, goal, targetHoursPerWeek, colorInt);
-
-            moduleArrayList.add(module);
-        }
-
-        return moduleArrayList;
     }
 }
