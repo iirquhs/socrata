@@ -25,9 +25,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -39,7 +37,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/welcome_back"
@@ -52,25 +50,26 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginStart="24dp"
             android:fontFamily="@font/poppins_bold"
             android:text="@string/username_welcome"
             android:textColor="@color/ic_launcher_background"
-            android:textSize="18sp"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <ImageView
-            android:contentDescription="@string/this_week"
             android:id="@+id/imageView"
             android:layout_width="0dp"
             android:layout_height="190dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="@string/this_week"
             android:src="@drawable/hero_section_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/username" />
 
         <TextView
             android:id="@+id/textView4"
@@ -87,7 +86,6 @@
             app:layout_constraintTop_toTopOf="@+id/imageView" />
 
         <ImageView
-            android:contentDescription="@string/studying"
             android:id="@+id/imageView2"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -95,6 +93,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="24dp"
+            android:contentDescription="@string/studying"
             android:src="@drawable/hero_secondary_shape"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toStartOf="@+id/imageView3"
@@ -103,7 +102,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <ImageView
-            android:contentDescription="@string/homework"
             android:id="@+id/imageView3"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -111,6 +109,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"
+            android:contentDescription="@string/homework"
             android:src="@drawable/hero_secondary_shape"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -170,18 +169,20 @@
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/poppins_bold"
             android:text="@string/urgent"
             android:textColor="?android:textColorPrimary"
-            android:textSize="24sp"
+            android:textSize="32sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="361dp"
-            android:layout_height="219dp"
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />

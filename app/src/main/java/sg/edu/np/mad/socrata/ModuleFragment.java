@@ -3,7 +3,6 @@ package sg.edu.np.mad.socrata;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class ModuleFragment extends Fragment{
@@ -52,7 +50,7 @@ public class ModuleFragment extends Fragment{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Get map of users in datasnapshot
-                        Map<String, Module> moduleMap = ModuleUtlis.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
+                        Map<String, Module> moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
 
                         if (moduleMap == null) {
                             return;
