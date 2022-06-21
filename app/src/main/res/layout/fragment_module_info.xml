@@ -113,18 +113,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp">
+                android:layout_marginTop="8dp">
 
 
                 <TextView
                     android:id="@+id/moduleName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="30dp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="Module name"
@@ -137,7 +135,7 @@
                     android:id="@+id/moduleName2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
                     android:text="Targetted hours (per week)"
@@ -165,7 +163,7 @@
                     android:id="@+id/moduleName5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/roboto"
                     android:text="In progress"
@@ -179,7 +177,7 @@
                     android:id="@+id/moduleName3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="14dp"
                     android:fontFamily="@font/roboto"
                     android:text="Goal"
@@ -194,32 +192,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="79dp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="30"
                     android:textColor="@color/ic_launcher_background"
                     android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/moduleName2"
                     app:layout_constraintStart_toEndOf="@+id/moduleName2"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/moduleName2" />
 
                 <TextView
                     android:id="@+id/goal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="11dp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="AD"
                     android:textColor="@color/ic_launcher_background"
                     android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/moduleName3"
                     app:layout_constraintStart_toEndOf="@+id/moduleName3"
-                    app:layout_constraintTop_toBottomOf="@+id/moduleName2" />
+                    app:layout_constraintTop_toTopOf="@+id/moduleName3" />
 
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="190dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
                     android:src="@drawable/hero_section_shape"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -321,7 +321,7 @@
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="32dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Current Homework"
@@ -334,7 +334,7 @@
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="70dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Progress"
@@ -347,12 +347,12 @@
                     android:id="@+id/percentageProgressbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="19.6h "
                     android:textColor="@color/ic_launcher_background"
                     android:textSize="15sp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/activeProgress"
                     app:layout_constraintTop_toBottomOf="@+id/activeProgress" />
 
                 <TextView
@@ -363,8 +363,9 @@
                     android:text="/ 30h"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/percentageProgressbar"
                     app:layout_constraintStart_toEndOf="@+id/percentageProgressbar"
-                    app:layout_constraintTop_toBottomOf="@+id/activeProgress" />
+                    app:layout_constraintTop_toTopOf="@+id/percentageProgressbar" />
 
                 <TextView
                     android:id="@+id/textView16"
@@ -405,8 +406,9 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView2"
-                    android:layout_width="361dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
@@ -456,12 +458,16 @@
 
                 <Button
                     android:id="@+id/buttonStudy"
-                    android:layout_width="143dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
                     android:backgroundTint="@color/primary_color"
                     android:fontFamily="@font/poppins_medium"
+                    android:paddingLeft="24dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="24dp"
+                    android:paddingBottom="10dp"
                     android:text="Study"
                     android:textAllCaps="false"
                     app:cornerRadius="10dp"

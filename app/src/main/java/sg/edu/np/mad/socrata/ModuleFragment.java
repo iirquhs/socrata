@@ -41,10 +41,6 @@ public class ModuleFragment extends Fragment{
 
         addModule();
 
-        Intent intent = getActivity().getIntent();
-        Gson gson = new Gson();
-        Module module = gson.fromJson(intent.getStringExtra("module"), Module.class);
-
         Module.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -54,10 +50,6 @@ public class ModuleFragment extends Fragment{
 
                         if (moduleMap == null) {
                             return;
-                        }
-
-                        if(module != null){
-                            moduleArrayList.remove(module);
                         }
 
                         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);

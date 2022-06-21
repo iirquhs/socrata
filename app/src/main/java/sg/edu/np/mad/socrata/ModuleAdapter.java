@@ -26,7 +26,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueViewHolder> {
@@ -92,7 +91,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
         holder.cardViewModule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ModuleInfo.class);
+                Intent intent = new Intent(view.getContext(), ModuleInfoActivity.class);
                 Gson gson = new Gson();
                 String moduleString = gson.toJson(module);
                 intent.putExtra("module", moduleString);

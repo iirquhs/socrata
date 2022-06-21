@@ -34,15 +34,18 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ModuleInfo extends AppCompatActivity {
+public class ModuleInfoActivity extends AppCompatActivity {
     TextView moduleName, hours, goal, purplePercentage, greyPercentage, viewMore, percentageText;
     ImageButton backButton;
     ImageView edit, delete;
     ProgressBar progressBar;
+
+    Button buttonStudy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.moduleinfo);
+        setContentView(R.layout.fragment_module_info);
         Intent intent = getIntent();
         Gson gson = new Gson();
         Module module = gson.fromJson(intent.getStringExtra("module"), Module.class);
@@ -53,11 +56,20 @@ public class ModuleInfo extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> finish());
 
+        buttonStudy = findViewById(R.id.buttonStudy);
+        buttonStudy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent timerIntent = new Intent(ModuleInfoActivity.this, TimerActivity.class);
+                startActivity(timerIntent);
+            }
+        });
+
         edit = findViewById(R.id.editmodule);
         View.OnClickListener editModule = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent editInfo = new Intent(ModuleInfo.this, ModuleUpdate.class);
+                Intent editInfo = new Intent(ModuleInfoActivity.this, ModuleUpdate.class);
                 Gson gson = new Gson();
                 String moduleString = gson.toJson(module);
                 editInfo.putExtra("module", moduleString);
@@ -70,7 +82,7 @@ public class ModuleInfo extends AppCompatActivity {
         View.OnClickListener deleteModule = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ModuleInfo.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ModuleInfoActivity.this);
 
                 builder.setMessage("Are you sure you want to delete " + module.getModuleName() + " module?");
                 String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -93,11 +105,11 @@ public class ModuleInfo extends AppCompatActivity {
                                 Log.e("tag", "onCancelled", databaseError.toException());
                             }
                         });
-                        Intent goBack = new Intent(ModuleInfo.this, MainActivity.class);
+                        Intent goBack = new Intent(ModuleInfoActivity.this, MainActivity.class);
                         Gson gson = new Gson();
                         String moduleString = gson.toJson(module);
                         goBack.putExtra("module", moduleString);
-                        Toast.makeText(ModuleInfo.this,"Module deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ModuleInfoActivity.this,"Module deleted", Toast.LENGTH_SHORT).show();
                         startActivity(goBack);
                     }
                 });
@@ -120,7 +132,7 @@ public class ModuleInfo extends AppCompatActivity {
         hours.setText(H.toString());
         goal.setText(module.getTargetGrade());
         RecyclerView recyclerView = findViewById(R.id.recyclerView2);
-        LinearLayoutManager layout = new LinearLayoutManager(ModuleInfo.this);
+        LinearLayoutManager layout = new LinearLayoutManager(ModuleInfoActivity.this);
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
         String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -205,7 +217,7 @@ public class ModuleInfo extends AppCompatActivity {
         View.OnClickListener viewMoreHw = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent editInfo = new Intent(ModuleInfo.this, MainActivity.class);
+                Intent editInfo = new Intent(ModuleInfoActivity.this, MainActivity.class);
                 startActivity(editInfo);
             }
         };

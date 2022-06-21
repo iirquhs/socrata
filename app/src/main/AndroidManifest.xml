@@ -13,7 +13,7 @@
             android:name=".UpdatePassword"
             android:exported="false" />
         <activity
-            android:name=".ModuleInfo"
+            android:name=".ModuleInfoActivity"
             android:exported="false" />
         <activity
             android:name=".TimerActivity"
