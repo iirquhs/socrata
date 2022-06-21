@@ -93,8 +93,12 @@ public class HomeworkFragment extends Fragment {
 
                         for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
                             Homework homework = homeworkSnapshot.getValue(Homework.class);
-                            //LocalDateTime dueDateTime = LocalDateTime.of()
-                            //Log.d("TAG", dueDateTime.toString());
+
+                            assert homework != null;
+                            if (homework.getStatus().equals("Done")) {
+                                continue;
+                            }
+
                             homeworkArrayList.add(homework);
                         }
 

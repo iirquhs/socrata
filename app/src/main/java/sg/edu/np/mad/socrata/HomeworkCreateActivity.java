@@ -2,6 +2,7 @@ package sg.edu.np.mad.socrata;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +40,9 @@ import java.util.Map;
 
 public class HomeworkCreateActivity extends AppCompatActivity {
     String hwName, moduleName, duedate;
+
     Map<String, Module> moduleMap;
+    ArrayList<Homework> homeworkArrayList = new ArrayList<>();
 
     EditText editTextHomeworkName, DueDate;
 
@@ -49,7 +52,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
     private Button dateButton;
 
-    FirebaseDatabase database;
+    DatabaseReference currentUserRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,12 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_homework);
 
         initDatePicker();
+
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        currentUserRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
+
+        getHomework();
 
         dateButton = findViewById(R.id.datePickerButton);
         dateButton.setText(getTodaysDate());
@@ -68,13 +77,12 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         //Difficulty.setAdapter(adapter);
 
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference check = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
-
-        check.addListenerForSingleValueEvent(new ValueEventListener() {
+        currentUserRef.child("modules").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 moduleMap = getModules((Map<String, Object>) dataSnapshot.getValue());
+
+                assert moduleMap != null;
                 setModuleDropDown(moduleMap.values());
             }
 
@@ -99,11 +107,15 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                     return;
                 }
 
-                String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                for (Homework homework : homeworkArrayList) {
+                    if (homework.getHomeworkName().equals(hwName) && moduleMap.get(homework.getModuleRef()).getModuleName().equals(moduleName)) {
+                        editTextHomeworkName.setError("Homework name is taken");
+                        editTextHomeworkName.requestFocus();
+                        return;
+                    }
+                }
 
-                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
-
-                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String moduleKey = getModule(moduleMap, moduleName);
@@ -131,6 +143,23 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
                     }
                 });
+            }
+        });
+    }
+
+    private void getHomework() {
+        currentUserRef.child("homework").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
+                    Homework homework = homeworkSnapshot.getValue(Homework.class);
+                    homeworkArrayList.add(homework);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
