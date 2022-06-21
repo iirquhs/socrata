@@ -75,7 +75,7 @@ public class ModuleUpdate extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.updatemodule);
+        setContentView(R.layout.activity_update_module);
         String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Intent intent = getIntent();
 

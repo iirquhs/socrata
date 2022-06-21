@@ -1,6 +1,9 @@
 package sg.edu.np.mad.socrata;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Locale;
 
 public class Homework{
 
@@ -9,20 +12,19 @@ public class Homework{
 
     private float timeSpent = 0f;
 
-    private LocalDateTime dueDateTime;
+    private String dueDateTimeString;
 
-    private Module module;
-
-    private boolean hasDoneHomework;
+    // The path for the specific module
+    private String moduleRef;
 
     public Homework() {
 
     }
 
-    public Homework(String homeworkName, LocalDateTime dueDateTime, Module module) {
+    public Homework(String homeworkName, String dueDateTimeString, String moduleRef) {
         this.setHomeworkName(homeworkName);
-        this.setModule(module);
-        this.setDueDateTime(dueDateTime);
+        this.setDueDateTimeString(dueDateTimeString);
+        this.setModuleRef(moduleRef);
     }
 
     public String getHomeworkName() {
@@ -49,27 +51,29 @@ public class Homework{
         this.timeSpent = timeSpent;
     }
 
-    public Module getModule() {
-        return module;
+    public String getDueDateTimeString() {
+        return dueDateTimeString;
     }
 
-    public void setModule(Module module) {
-        this.module = module;
-    }
+    public LocalDateTime ConvertDueDateTime(String dueDateTimeString) {
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .parseCaseInsensitive().appendPattern("MMM dd yyyy HH:mm")
+                .toFormatter(Locale.ENGLISH);
 
-    public LocalDateTime getDueDateTime() {
+        LocalDateTime dueDateTime = LocalDateTime.parse(dueDateTimeString, formatter);
         return dueDateTime;
     }
 
-    public void setDueDateTime(LocalDateTime dueDateTime) {
-        this.dueDateTime = dueDateTime;
+    //PUT IN MMM dd yyyy HH:mm format
+    public void setDueDateTimeString(String dueDateTimeString) {
+        this.dueDateTimeString = dueDateTimeString;
     }
 
-    public boolean isHasDoneHomework() {
-        return hasDoneHomework;
+    public String getModuleRef() {
+        return moduleRef;
     }
 
-    public void setHasDoneHomework(boolean hasDoneHomework) {
-        this.hasDoneHomework = hasDoneHomework;
+    public void setModuleRef(String moduleRef) {
+        this.moduleRef = moduleRef;
     }
 }

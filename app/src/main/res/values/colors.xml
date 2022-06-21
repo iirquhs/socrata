@@ -16,4 +16,8 @@
 
     <color name="green_color">#5BEA71</color>
     <color name="red_color">#EA5B5B</color>
+
+    <color name="homework_green_color">#22A206</color>
+    <color name="homework_red_color">#ff7676</color>
+    <color name="homework_yellow_color">#FFC452</color>
 </resources>

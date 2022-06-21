@@ -41,7 +41,7 @@ public class Module {
         return homeworkArrayList;
     }
 
-    public void addHomeworkArrayList(Homework homework) {
+    public void addHomework(Homework homework) {
         this.homeworkArrayList.add(homework);
     }
 
@@ -73,7 +73,7 @@ public class Module {
         return studySessionArrayList;
     }
 
-    public void setStudySessionArrayList(StudySession studySession) {
+    public void addStudySession(StudySession studySession) {
         this.studySessionArrayList.add(studySession);
     }
     public int getTargetHoursPerWeek() {

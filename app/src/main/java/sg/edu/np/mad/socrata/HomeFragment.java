@@ -2,6 +2,7 @@ package sg.edu.np.mad.socrata;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -18,7 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 public class HomeFragment extends Fragment {
+
+    TextView textViewUsername;
 
     String username;
 
@@ -30,16 +35,18 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        TextView usernamebox = getView().findViewById(R.id.username);
-        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference getusername = FirebaseDatabase.getInstance().getReference("Users").child(currentuser);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        textViewUsername = view.findViewById(R.id.username);
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DatabaseReference getusername = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
         DatabaseReference usernameref = getusername.child("username");
+
         usernameref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 username = dataSnapshot.getValue(String.class);
-                usernamebox.setText(username + "!" + " \uD83D\uDC4B");
+                textViewUsername.setText(username + "!" + " \uD83D\uDC4B");
             }
 
             @Override
