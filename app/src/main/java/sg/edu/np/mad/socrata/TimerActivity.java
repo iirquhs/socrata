@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -37,6 +38,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
     ImageButton buttonStart, buttonRestart, buttonStop, buttonBack;
     Chronometer chronometer;
     LottieAnimationView lottieAnimation;
+    TextView textViewModuleName;
 
     String moduleName;
 
@@ -60,6 +62,9 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         Gson gson = new Gson();
 
         moduleName = intent.getStringExtra("module_name");
+
+        textViewModuleName = findViewById(R.id.textViewModuleName);
+        textViewModuleName.setText("Studying " + moduleName);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
