@@ -88,7 +88,11 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
         holder.cardViewModule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Redirect to view module
+                Intent intent = new Intent(view.getContext(), ModuleInfo.class);
+                Gson gson = new Gson();
+                String moduleString = gson.toJson(module);
+                intent.putExtra("module", moduleString);
+                view.getContext().startActivity(intent);
             }
         });
 
