@@ -79,7 +79,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/inProgresscount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -100,10 +100,10 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView2"
                 app:layout_constraintStart_toStartOf="@+id/imageView2"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/inProgresscount" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/completedCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -124,7 +124,7 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView3"
                 app:layout_constraintStart_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                app:layout_constraintTop_toBottomOf="@+id/completedCount" />
 
             <TextView
                 android:id="@+id/textView10"
