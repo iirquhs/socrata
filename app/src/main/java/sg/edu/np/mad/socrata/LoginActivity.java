@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -88,6 +89,12 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                progressDialog.setTitle("Logging in");
+                progressDialog.setMessage("Please wait...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -99,9 +106,11 @@ public class LoginActivity extends AppCompatActivity {
                                     //Redirect to main activity
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    progressDialog.dismiss();
                                     startActivity(intent);
 
                                 } else {
+                                    progressDialog.dismiss();
                                     Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
                                 }
 

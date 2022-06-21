@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -106,6 +107,12 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
 
+                ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this);
+                progressDialog.setTitle("Creating your account");
+                progressDialog.setMessage("Please wait...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -123,8 +130,10 @@ public class SignupActivity extends AppCompatActivity {
 
                                                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                progressDialog.dismiss();
                                                 startActivity(intent);
                                             } else {
+                                                progressDialog.dismiss();
                                                 Toast.makeText(SignupActivity.this, "Failed to register. Please try again", Toast.LENGTH_SHORT).show();
                                             }
                                         }

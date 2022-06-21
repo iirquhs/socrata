@@ -98,17 +98,30 @@
         app:layout_constraintTop_toBottomOf="@id/emailTitle" />
 
     <TextView
-        android:id="@+id/signOut"
+        android:id="@+id/signOutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
+        android:fontFamily="@font/poppins_bold"
         android:text="SIGN OUT"
         android:textColor="#F44336"
         android:textSize="16sp"
-        android:fontFamily="@font/poppins_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileEmail" />
+
+    <TextView
+        android:id="@+id/deleteAccBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="DELETE ACCOUNT"
+        android:textColor="#F44336"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signOutBtn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
