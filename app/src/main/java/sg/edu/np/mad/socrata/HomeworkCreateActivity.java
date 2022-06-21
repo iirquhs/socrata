@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -32,6 +33,8 @@ import java.util.Map;
 
 public class HomeworkCreateActivity extends AppCompatActivity {
     String hwName, moduleName, duedate;
+
+    String createNewModule = "Create New Module + ";
 
     Map<String, Module> moduleMap;
     ArrayList<Homework> homeworkArrayList = new ArrayList<>();
@@ -89,6 +92,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 moduleName = spinnerModules.getSelectedItem().toString();
+
                 hwName = editTextHomeworkName.getText().toString().trim();
 
                 //difficulty = Difficulty.getSelectedItem().toString();
@@ -176,7 +180,26 @@ public class HomeworkCreateActivity extends AppCompatActivity {
             nameList.add(module.getModuleName());
         }
 
+        nameList.add(createNewModule);
+
         spinnerModules = findViewById(R.id.moduleDropdown);
+
+        spinnerModules.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                moduleName = spinnerModules.getSelectedItem().toString();
+
+                if (moduleName.equals(createNewModule)) {
+                    Intent intent = new Intent(HomeworkCreateActivity.this, ModuleUpdate.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(HomeworkCreateActivity.this, android.R.layout.simple_spinner_item, nameList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
