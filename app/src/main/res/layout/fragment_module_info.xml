@@ -163,14 +163,13 @@
                     android:id="@+id/moduleName5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/roboto"
                     android:text="In progress"
                     android:textColor="#AAAAAA"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView13"
                     app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
                 <TextView
@@ -196,9 +195,8 @@
                     android:text="30"
                     android:textColor="@color/ic_launcher_background"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/moduleName2"
-                    app:layout_constraintStart_toEndOf="@+id/moduleName2"
-                    app:layout_constraintTop_toTopOf="@+id/moduleName2" />
+                    app:layout_constraintBaseline_toBaselineOf="@+id/moduleName2"
+                    app:layout_constraintStart_toEndOf="@+id/moduleName2" />
 
                 <TextView
                     android:id="@+id/goal"
@@ -209,9 +207,8 @@
                     android:text="AD"
                     android:textColor="@color/ic_launcher_background"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/moduleName3"
-                    app:layout_constraintStart_toEndOf="@+id/moduleName3"
-                    app:layout_constraintTop_toTopOf="@+id/moduleName3" />
+                    app:layout_constraintBaseline_toBaselineOf="@+id/moduleName3"
+                    app:layout_constraintStart_toEndOf="@+id/moduleName3" />
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -371,7 +368,7 @@
                     android:id="@+id/textView16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="You are "
@@ -458,14 +455,15 @@
                 <ProgressBar
                     android:id="@+id/activeProgress"
                     style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="300dp"
-                    android:layout_height="21dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_weight="1"
                     android:progress="66"
                     android:progressDrawable="@drawable/rounded_corners_progress_bar"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/moduleName5"
                     app:layout_constraintTop_toBottomOf="@+id/moduleName5" />
 
                 <Button
@@ -474,6 +472,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
                     android:backgroundTint="@color/primary_color"
                     android:fontFamily="@font/poppins_medium"
                     android:paddingLeft="24dp"
@@ -483,6 +482,7 @@
                     android:text="Study"
                     android:textAllCaps="false"
                     app:cornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView18" />
 

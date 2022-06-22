@@ -1,5 +1,6 @@
 package sg.edu.np.mad.socrata;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -146,10 +147,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
                 homeworkArrayList.remove(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
 
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                intent.putExtra("fragment", "homework");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                view.getContext().startActivity(intent);
             }
         });
 
@@ -190,10 +187,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
                         homeworkArrayList.remove(holder.getAdapterPosition());
                         notifyItemRemoved(holder.getAdapterPosition());
 
-                        Intent intent = new Intent(view.getContext(), MainActivity.class);
-                        intent.putExtra("fragment", "homework");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        view.getContext().startActivity(intent);
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

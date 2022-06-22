@@ -76,11 +76,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:autofillHints="username"
             android:id="@+id/editTextUsername"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
+            android:autofillHints="username"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_baseline_person_24"
             android:drawablePadding="8dp"
@@ -90,7 +90,7 @@
             android:minHeight="48dp"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
-            android:paddingEnd="0dp"
+            android:paddingEnd="15dp"
             android:paddingBottom="15dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,11 +98,11 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
         <EditText
-            android:autofillHints="emailAddress"
             android:id="@+id/editTextEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:autofillHints="emailAddress"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_baseline_email_24"
             android:drawablePadding="8dp"
@@ -112,7 +112,7 @@
             android:minHeight="48dp"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
-            android:paddingEnd="0dp"
+            android:paddingEnd="15dp"
             android:paddingBottom="15dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -120,11 +120,11 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextUsername" />
 
         <EditText
-            android:autofillHints="password"
             android:id="@+id/editTextPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:autofillHints="password"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="8dp"
@@ -134,7 +134,7 @@
             android:minHeight="48dp"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
-            android:paddingEnd="0dp"
+            android:paddingEnd="15dp"
             android:paddingBottom="15dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -143,11 +143,11 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
         <EditText
-            android:autofillHints="password"
             android:id="@+id/editTextConfirmPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:autofillHints="password"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="8dp"
@@ -157,7 +157,7 @@
             android:minHeight="48dp"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
-            android:paddingEnd="0dp"
+            android:paddingEnd="15dp"
             android:paddingBottom="15dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
