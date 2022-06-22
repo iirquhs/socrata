@@ -191,15 +191,10 @@
             android:id="@+id/colourbox"
             android:layout_width="207dp"
             android:layout_height="99dp"
-            android:layout_marginStart="90dp"
-            android:layout_marginBottom="270dp"
+            android:layout_marginEnd="16dp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.49"
+            app:layout_constraintEnd_toStartOf="@+id/colourselector"
+            app:layout_constraintTop_toTopOf="@+id/colourselector"
             app:srcCompat="@drawable/colourbox" />
 
         <ImageView
@@ -213,19 +208,6 @@
             app:layout_constraintStart_toStartOf="@+id/colourbox"
             app:layout_constraintTop_toTopOf="@+id/colourbox"
             app:layout_constraintVertical_bias="0.208" />
-
-        <ImageView
-            android:id="@+id/colourselector"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="305dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#000"
-            app:layout_constraintBottom_toBottomOf="@+id/updatemodulename"
-            app:layout_constraintEnd_toEndOf="@+id/updatemodulename"
-            app:layout_constraintStart_toStartOf="@+id/updatemodulename"
-            app:layout_constraintTop_toTopOf="@+id/updatemodulename" />
 
         <ImageView
             android:id="@+id/blue"
@@ -403,6 +385,18 @@
             app:layout_constraintStart_toStartOf="@+id/colourbox"
             app:layout_constraintTop_toTopOf="@+id/colourbox"
             app:srcCompat="@drawable/ic_baseline_close_24" />
+
+        <ImageView
+            android:id="@+id/colourselector"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#000"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@+id/updatemodulename"
+            app:layout_constraintEnd_toEndOf="@+id/updatemodulename"
+            app:layout_constraintTop_toTopOf="@+id/updatemodulename" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -86,7 +86,10 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot studySessionSnapshot : moduleSnapshot.child("studySessions").getChildren()) {
                         StudySession studySession = studySessionSnapshot.getValue(StudySession.class);
 
-                        assert studySession != null;
+                        if (studySession == null) {
+                            continue;
+                        }
+
                         LocalDateTime studyStartDateTime = studySession.ConvertDueDateTime(studySession.getStudyStartDateTime());
 
                         LocalDateTime previousSunday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));

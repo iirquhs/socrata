@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -147,7 +148,10 @@ public class HomeworkCreateActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
 
-                assert moduleMap != null;
+                if (moduleMap == null) {
+                    moduleMap = new HashMap<>();
+                }
+
                 setModuleDropDown(moduleMap.values());
             }
 
@@ -187,6 +191,10 @@ public class HomeworkCreateActivity extends AppCompatActivity {
     private void setModuleDropDown (Collection<Module> moduleArrayList)
     {
         ArrayList<String> nameList = new ArrayList<>();
+
+        if (moduleArrayList.size() <= 0) {
+            Toast.makeText(this, "You must create a module first before creating a new homework.", Toast.LENGTH_SHORT).show();
+        }
 
         for (Module module : moduleArrayList) {
             nameList.add(module.getModuleName());
