@@ -28,16 +28,16 @@ import com.google.gson.Gson;
 
 import java.util.Map;
 
-public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueViewHolder> {
+public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleViewHolder> {
     Map<String, Module> moduleMap;
 
-    public class ModlueViewHolder extends RecyclerView.ViewHolder {
+    public class ModuleViewHolder extends RecyclerView.ViewHolder {
         TextView textViewModuleName, textViewGoal, textViewTargetHours;
         Button buttonStudy;
         CardView cardViewModule;
         ImageButton imageButtonEditModule, imageButtonDeleteModule;
 
-        public ModlueViewHolder(View itemView) {
+        public ModuleViewHolder(View itemView) {
             super(itemView);
 
             textViewModuleName = itemView.findViewById(R.id.homework_module);
@@ -56,14 +56,14 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
 
     @NonNull
     @Override
-    public ModlueViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_list_module, parent, false);
 
-        return new ModlueViewHolder(view);
+        return new ModuleViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ModlueViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ModuleViewHolder holder, int position) {
 
         Module module = (Module) moduleMap.values().toArray()[position];
         String moduleRef = (String) moduleMap.keySet().toArray()[position];
@@ -117,9 +117,9 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
 
                 builder.setMessage("Are you sure you want to delete " + moduleName + " module?");
 
-                String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentuser);
+                DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
 
                 DatabaseReference homeworkRef = userReference.child("homework");
 
