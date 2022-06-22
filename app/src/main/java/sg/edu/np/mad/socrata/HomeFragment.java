@@ -83,39 +83,41 @@ public class HomeFragment extends Fragment {
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Map<String, Module> moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) snapshot.getValue());
+                if (snapshot.exists()) {
+                    Map<String, Module> moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) snapshot.getValue());
 
-                Log.d("TAG", moduleMap.toString());
+                    Log.d("TAG", moduleMap.toString());
 
-                DatabaseReference homeworkReference = userReference.child("homework");
-                homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ArrayList<Homework> urgentHomeworkArrayList = new ArrayList<>();
+                    DatabaseReference homeworkReference = userReference.child("homework");
+                    homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            ArrayList<Homework> urgentHomeworkArrayList = new ArrayList<>();
 
-                        for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                            Homework homework = homeworkSnapshot.getValue(Homework.class);
+                            for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
+                                Homework homework = homeworkSnapshot.getValue(Homework.class);
 
-                            assert homework != null;
-                            LocalDateTime homeworkDueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
+                                assert homework != null;
+                                LocalDateTime homeworkDueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
 
-                            long secondsLeft = homework.CalculateSecondsLeftBeforeDueDate(homeworkDueDate);
+                                long secondsLeft = homework.CalculateSecondsLeftBeforeDueDate(homeworkDueDate);
 
-                            if (secondsLeft / 3600.0 < 24 && homework.getStatus().equals("In Progress")) {
-                                urgentHomeworkArrayList.add(homework);
+                                if (secondsLeft / 3600.0 < 24 && homework.getStatus().equals("In Progress")) {
+                                    urgentHomeworkArrayList.add(homework);
+                                }
                             }
+
+                            HomeworkAdapter homeworkAdapter = new HomeworkAdapter(urgentHomeworkArrayList, moduleMap);
+
+                            recyclerView.setAdapter(homeworkAdapter);
                         }
 
-                        HomeworkAdapter homeworkAdapter = new HomeworkAdapter(urgentHomeworkArrayList, moduleMap);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                        recyclerView.setAdapter(homeworkAdapter);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                        }
+                    });
+                }
             }
 
             @Override
