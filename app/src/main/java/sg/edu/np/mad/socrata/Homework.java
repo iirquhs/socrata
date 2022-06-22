@@ -67,8 +67,8 @@ public class Homework{
     }
 
     public long CalculateSecondsLeftBeforeDueDate(LocalDateTime dueDateTime) {
-        ZoneId zoneId = ZoneId.of("Asia/Singapore");
-        LocalDateTime currentTime = LocalDateTime.now(zoneId);
+
+        LocalDateTime currentTime = LocalDateTime.now();
 
         Duration duration = Duration.between(currentTime, dueDateTime);
 
