@@ -35,11 +35,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ModuleInfoActivity extends AppCompatActivity {
-    TextView moduleName, hours, goal, purplePercentage, greyPercentage, viewMore, percentageText;
+    TextView moduleName, hours, goal, purplePercentage, greyPercentage, viewMore, percentageText, completedStatus, inProgressStatus, addHomework;
     ImageButton backButton;
     ImageView edit, delete;
     ProgressBar progressBar;
-
     Button buttonStudy;
 
     @Override
@@ -52,6 +51,13 @@ public class ModuleInfoActivity extends AppCompatActivity {
         moduleName = findViewById(R.id.moduleName);
         hours = findViewById(R.id.targetHours);
         goal = findViewById(R.id.goal);
+        completedStatus = findViewById(R.id.textViewCompleted);
+        inProgressStatus = findViewById(R.id.textViewInProgress);
+        purplePercentage = findViewById(R.id.percentageProgressbar);
+        greyPercentage = findViewById(R.id.overallPercentage);
+        percentageText = findViewById(R.id.percentageText);
+        progressBar = findViewById(R.id.activeProgress);
+        addHomework = findViewById(R.id.addHomework);
 
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> finish());
@@ -61,6 +67,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent timerIntent = new Intent(ModuleInfoActivity.this, TimerActivity.class);
+                timerIntent.putExtra("module_name", module.getModuleName());
                 startActivity(timerIntent);
             }
         });
@@ -109,6 +116,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         String moduleString = gson.toJson(module);
                         goBack.putExtra("module", moduleString);
+                        goBack.putExtra("fragment", "module");
                         Toast.makeText(ModuleInfoActivity.this,"Module deleted", Toast.LENGTH_SHORT).show();
                         startActivity(goBack);
                     }
@@ -125,6 +133,26 @@ public class ModuleInfoActivity extends AppCompatActivity {
             }
         };
         delete.setOnClickListener(deleteModule);
+
+        viewMore = findViewById(R.id.viewmore);
+        View.OnClickListener viewMoreHw = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editInfo = new Intent(ModuleInfoActivity.this, MainActivity.class);
+                editInfo.putExtra("fragment", "homework");
+                startActivity(editInfo);
+            }
+        };
+        viewMore.setOnClickListener(viewMoreHw);
+
+        View.OnClickListener createHw = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addHw = new Intent(ModuleInfoActivity.this, HomeworkCreateActivity.class);
+                startActivity(addHw);
+            }
+        };
+        addHomework.setOnClickListener(createHw);
 
 
         Integer H = module.getTargetHoursPerWeek();
@@ -164,16 +192,28 @@ public class ModuleInfoActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<Homework> homeworkArrayList = new ArrayList<>(3);
-
+                        ArrayList<Homework> doneHomeworkArrayList = new ArrayList<>();
                         for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
                             Homework homework = homeworkSnapshot.getValue(Homework.class);
                             //LocalDateTime dueDateTime = LocalDateTime.of()
                             //Log.d("TAG", dueDateTime.toString());
                             String moduleRef = homework.getModuleRef();
                             Module moduleCheck =  moduleMap.get(moduleRef);
-                            if(moduleCheck.getModuleName().equals(module.getModuleName()) && homeworkArrayList.size() < 3){
+                            if(moduleCheck.getModuleName().equals(module.getModuleName()) && homeworkArrayList.size() < 3 && homework.getStatus().equals("In Progress")){
                                 homeworkArrayList.add(homework);
+                                Integer i = homeworkArrayList.size();
+                                inProgressStatus.setText(i.toString());
                             }
+                            if(moduleCheck.getModuleName().equals(module.getModuleName()) && homework.getStatus().equals("Done")){
+                                doneHomeworkArrayList.add(homework);
+                                Integer c = doneHomeworkArrayList.size();
+                                completedStatus.setText(c.toString());
+                            }
+
+                        }
+                        if(homeworkArrayList.size() == 0){
+                            addHomework.setVisibility(View.VISIBLE);
+                            viewMore.setVisibility(View.INVISIBLE);
 
                         }
 
@@ -187,24 +227,40 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
                     }
                 });
-                /*Log.d("m ref", thisModuleRef);
-                DatabaseReference studySessionRef = userReference.child("modules").child(thisModuleRef).child("studySession");
-                homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                ArrayList<Double> studyTimings = new ArrayList<>();
+                DatabaseReference studySessionReference = userReference.child("modules").child(thisModuleRef).child("studySessions");
+                studySessionReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        for (DataSnapshot totalStudyTime : snapshot.getChildren()) {
-                            collectTimings((Map<Integer,Object>) totalStudyTime.getValue());
+                        for (DataSnapshot studySessionSnapshot : snapshot.getChildren()) {
+                            Double time = studySessionSnapshot.child("studyTime").getValue(Double.class);
+                            studyTimings.add(time);
+                            Log.d("Asdasdf", time.toString());
+                        }
+                        Double holder = getTotalStudyTime(studyTimings);
+                        module.setStudyTime(holder);
+                        DecimalFormat df = new DecimalFormat("#.#");
+                        checkWeek();
+                        greyPercentage.setText(" / "+module.getTargetHoursPerWeek()+"h");
+                        purplePercentage.setText(df.format(module.getStudyTime())+"h");
+                        int a = (int) Math.round(holder);
+                        progressBar.setProgress(a);
+                        Double percentage = (module.getStudyTime()/module.getTargetHoursPerWeek()) * 100;
+                        percentageText.setText((df.format(percentage)+"%"));
+                        if(percentage >= 100){
+                            percentageText.setTextColor( getResources().getColor(com.github.dhaval2404.colorpicker.R.color.light_green_A700));
 
                         }
                     }
+
+
 
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
-                });*/
+                });
             }
 
             @Override
@@ -213,52 +269,26 @@ public class ModuleInfoActivity extends AppCompatActivity {
             }
         });
 
-        viewMore = findViewById(R.id.viewmore);
-        View.OnClickListener viewMoreHw = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent editInfo = new Intent(ModuleInfoActivity.this, MainActivity.class);
-                startActivity(editInfo);
-            }
-        };
-        viewMore.setOnClickListener(viewMoreHw);
-        purplePercentage = findViewById(R.id.percentageProgressbar);
-        greyPercentage = findViewById(R.id.overallPercentage);
-        percentageText = findViewById(R.id.percentageText);
-        progressBar = findViewById(R.id.activeProgress);
-        Double holder = module.getTotalStudyTime();
+
+
+
+    }
+    public void checkWeek(){
         int lastCallDate = Calendar.MONDAY;
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_WEEK);
         if (day %lastCallDate ==0){
             progressBar.setProgress(0);
         }
-        int time = (int)Math.round(holder);
-        purplePercentage.setText(holder.toString()+"h");
-        greyPercentage.setText(" / "+module.getTargetHoursPerWeek()+"h");
-        progressBar.setProgress(time);
-        DecimalFormat df = new DecimalFormat("#.#");
-        Double percentage = (holder/module.getTargetHoursPerWeek()) * 100;
-        percentageText.setText((df.format(percentage)+"%"));
-        if(percentage >= 100){
-            percentageText.setTextColor( getResources().getColor(com.github.dhaval2404.colorpicker.R.color.light_green_A700));
-        }
-
-
-        //String moduleRef = homework;
-        //DatabaseReference studyTimeReference = userReference.child("modules");
-
-
-
-
-
-
-
-
-
 
     }
-
+    public double getTotalStudyTime(ArrayList<Double> timeList) {
+        double sum = 0f;
+        for (Double i : timeList) {
+            sum += i;
+        }
+        return sum/3600;
+    }
 
 
 }

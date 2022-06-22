@@ -12,7 +12,7 @@ public class Module {
     private ArrayList<Homework> homeworkArrayList = new ArrayList<>();
     private ArrayList<StudySession> studySessionArrayList = new ArrayList<>();
 
-    private float totalStudyTime;
+    private Double totalStudyTime;
 
     private int targetHoursPerWeek;
 
@@ -67,6 +67,14 @@ public class Module {
 
     public void setTargetGrade(String targetGrade) {
         this.targetGrade = targetGrade;
+    }
+
+    public Double getStudyTime() {
+        return totalStudyTime;
+    }
+
+    public void setStudyTime(Double totalStudyTime) {
+        this.totalStudyTime = totalStudyTime;
     }
 
     public ArrayList<StudySession> getStudySessionArrayList() {

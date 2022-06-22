@@ -274,7 +274,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="10"
+                    android:text="0"
                     android:textColor="#FFFFFF"
                     android:textSize="32sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView6"
@@ -298,7 +298,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="3"
+                    android:text="0"
                     android:textColor="#FFFFFF"
                     android:textSize="32sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView9"
@@ -421,6 +421,18 @@
                     android:fontFamily="@font/roboto"
                     android:text="View more"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
+
+                <TextView
+                    android:id="@+id/addHomework"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="Add homework"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
 
                 <ImageView
