@@ -75,7 +75,7 @@ public class Homework{
         return duration.getSeconds();
     }
 
-    //PUT IN MMM dd yyyy HH:mm format
+    //PUT IN MMM dd yyyy HH:mm format eg JUN 12 2022
     public void setDueDateTimeString(String dueDateTimeString) {
         this.dueDateTimeString = dueDateTimeString;
     }
