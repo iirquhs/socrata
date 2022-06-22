@@ -46,8 +46,8 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        textViewHoursStudied = view.findViewById(R.id.textViewHoursStudied);
-        textViewHomeworkDueThisWeek = view.findViewById(R.id.textViewHomeworkDueThisWeek);
+        textViewHoursStudied = view.findViewById(R.id.textViewInProgress);
+        textViewHomeworkDueThisWeek = view.findViewById(R.id.textViewCompleted);
 
         textViewUsername = view.findViewById(R.id.username);
 

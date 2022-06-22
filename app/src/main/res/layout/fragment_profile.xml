@@ -11,8 +11,10 @@
         android:id="@+id/profileBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="-4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="-8dp"
         android:src="@drawable/background_grey"
         app:layout_constraintBottom_toBottomOf="@+id/profileEmail"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/poppins_medium"
         android:text="Hello 👋,"
         android:textColor="?android:textColorPrimary"
@@ -40,7 +42,7 @@
         android:fontFamily="@font/poppins_medium"
         android:text="user!"
         android:textColor="?android:textColorPrimary"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/helloProfile" />
@@ -55,8 +57,7 @@
         android:text="YOUR PROFILE"
         android:textColor="?android:textColorPrimary"
         android:textSize="18sp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profileBackground"
         app:layout_constraintTop_toBottomOf="@id/accountName" />
 
     <TextView
@@ -69,7 +70,7 @@
         android:text="USERNAME"
         android:textSize="10sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profileBackground"
         app:layout_constraintTop_toBottomOf="@id/yourProfile" />
 
     <TextView
@@ -81,7 +82,7 @@
         android:text="username"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profileBackground"
         app:layout_constraintTop_toBottomOf="@id/usernameTitle" />
 
     <TextView
@@ -94,7 +95,7 @@
         android:text="EMAIL"
         android:textSize="10sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profileBackground"
         app:layout_constraintTop_toBottomOf="@id/profileUsername" />
 
     <TextView
@@ -106,7 +107,7 @@
         android:text="email"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profileBackground"
         app:layout_constraintTop_toBottomOf="@id/emailTitle" />
 
     <TextView
@@ -114,25 +115,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_bold"
         android:text="SIGN OUT"
         android:textColor="#F44336"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/profileBackground" />
 
     <TextView
         android:id="@+id/editProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_bold"
         android:text="EDIT"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountName" />
+        app:layout_constraintEnd_toEndOf="@+id/profileBackground"
+        app:layout_constraintTop_toTopOf="@+id/profileBackground" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

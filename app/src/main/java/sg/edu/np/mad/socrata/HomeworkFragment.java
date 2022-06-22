@@ -42,8 +42,8 @@ public class HomeworkFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_homework, container, false);
 
-        textViewCompleted = view.findViewById(R.id.textViewHomeworkDueThisWeek);
-        textViewInProgress = view.findViewById(R.id.textViewHoursStudied);
+        textViewCompleted = view.findViewById(R.id.textViewCompleted);
+        textViewInProgress = view.findViewById(R.id.textViewInProgress);
 
         recyclerView = view.findViewById(R.id.homework_rcv);
 
