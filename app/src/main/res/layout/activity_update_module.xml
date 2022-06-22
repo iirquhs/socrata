@@ -217,7 +217,7 @@
         <ImageView
             android:id="@+id/colourselector"
             android:layout_width="28dp"
-            android:layout_height="27dp"
+            android:layout_height="28dp"
             android:layout_marginStart="305dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/rounded_button"
