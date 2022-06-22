@@ -21,13 +21,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
-    TextView textViewUsername;
+    TextView textViewUsername, textViewHoursStudied, textViewHomeworkDueThisWeek;
 
     String username;
 
@@ -44,6 +46,9 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        textViewHoursStudied = view.findViewById(R.id.textViewHoursStudied);
+        textViewHomeworkDueThisWeek = view.findViewById(R.id.textViewHomeworkDueThisWeek);
+
         textViewUsername = view.findViewById(R.id.username);
 
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -59,8 +64,86 @@ public class HomeFragment extends Fragment {
 
         setHomeworkAdapter();
 
-        DatabaseReference usernameReference = userReference.child("username");
+        DatabaseReference moduleReference = userReference.child("modules");
+        updateTotalTimeStudiedThisWeek(moduleReference);
 
+        DatabaseReference homeworkReference = userReference.child("homework");
+        updateHomeworkDueThisWeek(homeworkReference);
+
+        DatabaseReference usernameReference = userReference.child("username");
+        updateUsername(usernameReference);
+
+    }
+
+    private void updateTotalTimeStudiedThisWeek(DatabaseReference moduleReference) {
+        moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Double totalStudyTimeForThisWeek = 0.0;
+
+                for (DataSnapshot moduleSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot studySessionSnapshot : moduleSnapshot.child("studySessions").getChildren()) {
+                        StudySession studySession = studySessionSnapshot.getValue(StudySession.class);
+
+                        assert studySession != null;
+                        LocalDateTime studyStartDateTime = studySession.ConvertDueDateTime(studySession.getStudyStartDateTime());
+
+                        LocalDateTime previousSunday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
+                        LocalDateTime nextSunday = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+                        if (studyStartDateTime.isAfter(previousSunday) && studyStartDateTime.isBefore(nextSunday)) {
+                            totalStudyTimeForThisWeek += studySession.getStudyTime();
+                        }
+                    }
+                }
+
+                // Convert second to hour
+                totalStudyTimeForThisWeek /= 3600;
+
+                textViewHoursStudied.setText(String.format("%.2fh", totalStudyTimeForThisWeek));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void updateHomeworkDueThisWeek(DatabaseReference homeworkReference) {
+        homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int homeworkDueThisWeek = 0;
+
+                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
+                    Homework homework = homeworkSnapshot.getValue(Homework.class);
+
+                    LocalDateTime dueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
+
+                    LocalDateTime previousSunday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
+                    LocalDateTime nextSunday = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+                    if (dueDate.isAfter(previousSunday) && dueDate.isBefore(nextSunday) && homework.getStatus().equals("In Progress")) {
+                        homeworkDueThisWeek++;
+                    }
+
+                }
+
+                textViewHomeworkDueThisWeek.setText(Integer.toString(homeworkDueThisWeek));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void updateUsername(DatabaseReference usernameReference) {
         usernameReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -73,9 +156,6 @@ public class HomeFragment extends Fragment {
                 Log.w("tah", "onCancelled", databaseError.toException());
             }
         });
-
-
-
     }
 
     private void setHomeworkAdapter() {

@@ -67,8 +67,7 @@ public class MotivationBackgroundService extends Service {
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
-                        //TODO SET THE APP LOGO ICON
-                        .setSmallIcon(R.drawable.ic_account_circle_24px)
+                        .setSmallIcon(R.mipmap.ic_launcher_round)
                         .setContentTitle("Quote of the day!")
                         .setContentText(randomQuote + " Start studying now!")
                         .setContentIntent(pendingIntent)
@@ -77,6 +76,7 @@ public class MotivationBackgroundService extends Service {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
                 notificationManager.notify(1, builder.build());
+            // 21600000ms = 6h
             }
             //21600000ms is 6h
         }, 21600000, 21600000);
