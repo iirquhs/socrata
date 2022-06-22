@@ -32,14 +32,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HomeworkCreateActivity extends AppCompatActivity {
-    String hwName, moduleName, duedate;
+    String hwName, moduleName, dueDate;
 
     String createNewModule = "Create New Module + ";
 
     Map<String, Module> moduleMap;
     ArrayList<Homework> homeworkArrayList = new ArrayList<>();
 
-    EditText editTextHomeworkName, DueDate;
+    EditText editTextHomeworkName;
 
     Spinner spinnerModules;
 
@@ -72,20 +72,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         //Difficulty.setAdapter(adapter);
 
-        currentUserRef.child("modules").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
-
-                assert moduleMap != null;
-                setModuleDropDown(moduleMap.values());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        updateModuleDropDownList();
 
         Button buttonCreate = findViewById(R.id.buttoncreatehomework);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +101,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                 currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String moduleKey = getModule(moduleMap, moduleName);
+                        String moduleKey = findModule(moduleMap, moduleName);
 
                         String dueDateTimeString = dateButton.getText() + " 23:59";
 
@@ -129,10 +116,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                         snapshot.child("homework").getRef().updateChildren(homeworkMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Intent intent = new Intent(HomeworkCreateActivity.this, MainActivity.class);
-                                intent.putExtra("fragment", "homework");
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                finish();
                             }
                         });
                     }
@@ -142,6 +126,29 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
                     }
                 });
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateModuleDropDownList();
+    }
+
+    private void updateModuleDropDownList() {
+        currentUserRef.child("modules").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
+
+                assert moduleMap != null;
+                setModuleDropDown(moduleMap.values());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -163,7 +170,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         });
     }
 
-    private String getModule(Map<String, Module> moduleMap, String moduleName) {
+    private String findModule(Map<String, Module> moduleMap, String moduleName) {
         for (Map.Entry<String, Module> moduleEntry : moduleMap.entrySet()) {
             if (moduleEntry.getValue().getModuleName().equals(moduleName)) {
                 return moduleEntry.getKey();
@@ -190,7 +197,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                 moduleName = spinnerModules.getSelectedItem().toString();
 
                 if (moduleName.equals(createNewModule)) {
-                    Intent intent = new Intent(HomeworkCreateActivity.this, ModuleUpdate.class);
+                    Intent intent = new Intent(HomeworkCreateActivity.this, ModuleUpdateActivity.class);
                     startActivity(intent);
                 }
             }
@@ -225,7 +232,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                 month = month + 1;
                 String date = makeDateString(day, month, year);
                 dateButton.setText(date);
-                duedate = date;
+                dueDate = date;
             }
         };
 

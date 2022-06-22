@@ -102,7 +102,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModlueView
         holder.imageButtonEditModule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ModuleUpdate.class);
+                Intent intent = new Intent(view.getContext(), ModuleUpdateActivity.class);
                 Gson gson = new Gson();
                 String moduleString = gson.toJson(module);
                 intent.putExtra("module", moduleString);

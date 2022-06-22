@@ -69,7 +69,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
         View.OnClickListener editModule = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent editInfo = new Intent(ModuleInfoActivity.this, ModuleUpdate.class);
+                Intent editInfo = new Intent(ModuleInfoActivity.this, ModuleUpdateActivity.class);
                 Gson gson = new Gson();
                 String moduleString = gson.toJson(module);
                 editInfo.putExtra("module", moduleString);

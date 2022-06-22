@@ -34,7 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModuleUpdate extends AppCompatActivity {
+public class ModuleUpdateActivity extends AppCompatActivity {
 
     ImageView lightBlueTick, blueTick,
             darkGreenTick, orangeTick,
@@ -136,12 +136,9 @@ public class ModuleUpdate extends AppCompatActivity {
                             Log.d("TAG", task.toString());
                             return;
                         }
-                        Toast.makeText(ModuleUpdate.this,"Module updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ModuleUpdateActivity.this,"Module updated", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(ModuleUpdate.this, MainActivity.class);
-                        intent.putExtra("fragment", "module");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        finish();
                     }
                 });
             }
@@ -177,8 +174,8 @@ public class ModuleUpdate extends AppCompatActivity {
         }
 
         if (targetHours.isEmpty()) {
-            ModuleUpdate.this.editTextTargetHours.setError("set the target hours");
-            ModuleUpdate.this.editTextTargetHours.requestFocus();
+            ModuleUpdateActivity.this.editTextTargetHours.setError("set the target hours");
+            ModuleUpdateActivity.this.editTextTargetHours.requestFocus();
             return false;
         }
         if (goal.isEmpty()) {
@@ -187,13 +184,13 @@ public class ModuleUpdate extends AppCompatActivity {
             return false;
         }
         if(Integer.parseInt(targetHours) > 168){
-            ModuleUpdate.this.editTextTargetHours.setError("a week only has 168 hours");
-            ModuleUpdate.this.editTextTargetHours.requestFocus();
+            ModuleUpdateActivity.this.editTextTargetHours.setError("a week only has 168 hours");
+            ModuleUpdateActivity.this.editTextTargetHours.requestFocus();
             return false;
         }
         if(Integer.parseInt(targetHours) < 0 || Integer.parseInt(targetHours) == 0){
-            ModuleUpdate.this.editTextTargetHours.setError("value cant be 0 or less");
-            ModuleUpdate.this.editTextTargetHours.requestFocus();
+            ModuleUpdateActivity.this.editTextTargetHours.setError("value cant be 0 or less");
+            ModuleUpdateActivity.this.editTextTargetHours.requestFocus();
             return false;
         }
 

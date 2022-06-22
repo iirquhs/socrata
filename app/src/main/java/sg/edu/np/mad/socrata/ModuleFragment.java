@@ -19,11 +19,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.util.Map;
 
 public class ModuleFragment extends Fragment{
+
+    String currentUser;
+    DatabaseReference moduleReference;
 
     public ModuleFragment() {
         super(R.layout.fragment_module);
@@ -36,12 +38,26 @@ public class ModuleFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference Module = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
+        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        moduleReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
 
-        addModule();
+        setAddModuleButton();
 
-        Module.addListenerForSingleValueEvent(
+        updateModuleRecyclerView(view);
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateModuleRecyclerView(requireView());
+
+    }
+
+    private void updateModuleRecyclerView(@NonNull View view) {
+        moduleReference.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -68,18 +84,14 @@ public class ModuleFragment extends Fragment{
                         //handle databaseError
                     }
                 });
-
-
-
     }
 
-
-    public void addModule(){
+    public void setAddModuleButton(){
         FloatingActionButton addModule = (FloatingActionButton) getView().findViewById(R.id.addmodule);
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityName = new Intent(ModuleFragment.this.getActivity() ,ModuleUpdate.class);
+                Intent activityName = new Intent(ModuleFragment.this.getActivity() , ModuleUpdateActivity.class);
                 startActivity(activityName);
             }
         };

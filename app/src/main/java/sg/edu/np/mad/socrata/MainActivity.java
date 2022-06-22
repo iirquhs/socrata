@@ -53,20 +53,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        Intent intent = getIntent();
-        String fragmentToLoad = intent.getStringExtra("fragment");
-
-        if (fragmentToLoad == null) {
-            return;
-        }
-
-        if (fragmentToLoad.equals("module")) {
-            replaceFragment(new ModuleFragment());
-        } else if (fragmentToLoad.equals("homework")) {
-            replaceFragment(new HomeworkFragment());
-        }
-
-
     }
 
     private void replaceFragment(Fragment fragment) {

@@ -22,7 +22,7 @@
             android:name=".HomeworkCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".ModuleUpdate"
+            android:name=".ModuleUpdateActivity"
             android:exported="false" />
         <activity
             android:name=".SignupActivity"

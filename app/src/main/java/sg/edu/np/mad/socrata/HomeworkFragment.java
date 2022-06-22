@@ -38,6 +38,11 @@ public class HomeworkFragment extends Fragment {
 
     TextView textViewCompleted, textViewInProgress;
 
+    RecyclerView recyclerView;
+
+    String currentUser;
+    DatabaseReference userReference;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,49 +53,36 @@ public class HomeworkFragment extends Fragment {
         textViewCompleted = view.findViewById(R.id.textViewCompleted);
         textViewInProgress = view.findViewById(R.id.textViewInProgress);
 
-        RecyclerView recyclerView = view.findViewById(R.id.homework_rcv);
+        recyclerView = view.findViewById(R.id.homework_rcv);
 
         LinearLayoutManager layout = new LinearLayoutManager(view.getContext());
 
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
 
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
+        userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
 
-        DatabaseReference homeworkReference = userReference.child("homework");
+        updateHomeworkStatus();
 
-        homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        updateHomework();
 
-                int homeworkInProgressCount = 0;
-                int homeworkCompletedCount = 0;
+        setAddHomeworkButton(view);
 
-                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                    Homework homework = homeworkSnapshot.getValue(Homework.class);
+        return view;
+    }
 
-                    String homeworkStatus = homework.getStatus();
+    @Override
+    public void onResume() {
+        super.onResume();
 
-                    if (homeworkStatus.equals("In Progress")) {
-                        homeworkInProgressCount++;
-                    } else if (homeworkStatus.equals("Done")) {
-                        homeworkCompletedCount++;
-                    }
-                }
+        updateHomeworkStatus();
+        updateHomework();
 
-                textViewCompleted.setText(Integer.toString(homeworkCompletedCount));
-                textViewInProgress.setText(Integer.toString(homeworkInProgressCount));
+    }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+    private void updateHomework() {
         DatabaseReference moduleReference = userReference.child("modules");
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -145,7 +137,43 @@ public class HomeworkFragment extends Fragment {
 
             }
         });
+    }
 
+    private void updateHomeworkStatus() {
+        DatabaseReference homeworkReference = userReference.child("homework");
+
+        homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int homeworkInProgressCount = 0;
+                int homeworkCompletedCount = 0;
+
+                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
+                    Homework homework = homeworkSnapshot.getValue(Homework.class);
+
+                    String homeworkStatus = homework.getStatus();
+
+                    if (homeworkStatus.equals("In Progress")) {
+                        homeworkInProgressCount++;
+                    } else if (homeworkStatus.equals("Done")) {
+                        homeworkCompletedCount++;
+                    }
+                }
+
+                textViewCompleted.setText(Integer.toString(homeworkCompletedCount));
+                textViewInProgress.setText(Integer.toString(homeworkInProgressCount));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void setAddHomeworkButton(View view) {
         FloatingActionButton addHomework = view.findViewById(R.id.createhomework);
         addHomework.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,63 +182,5 @@ public class HomeworkFragment extends Fragment {
                 startActivity(activityName);
             }
         });
-
-//        String currentuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-//        DatabaseReference check = FirebaseDatabase.getInstance().getReference("Users").child(currentuser).child("modules");
-//        check.addListenerForSingleValueEvent( new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                //ArrayList<String> nameList = ModuleUtils.getModuleNames((Map<String, Object>) dataSnapshot.getValue());
-//                //addHomework(nameList);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-        return view;
     }
-
-//    public void addHomework(ArrayList<String> nameList){
-//        FloatingActionButton addHomework = requireView().findViewById(R.id.createhomework);
-//        View.OnClickListener listener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent activityName = new Intent(HomeworkFragment.this.getActivity() ,HomeworkCreate.class);
-//                startActivity(activityName);
-//                if(nameList.isEmpty() == true){
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//                    builder.setMessage("Please create a module in the module page before making a homework");
-//                    builder.setCancelable(true);
-//                    builder.setPositiveButton(
-//                            "CREATE MODULE", new
-//                                    DialogInterface.OnClickListener(){
-//                                        public void onClick(DialogInterface dialog, int id){
-//                                            Intent activityName = new Intent(HomeworkFragment.this.getActivity(),ModuleCreate.class);
-//                                            startActivity(activityName);
-//
-//                                        }
-//                                    });
-//                    builder.setNegativeButton("CLOSE", new
-//                            DialogInterface.OnClickListener(){
-//                                public void onClick(DialogInterface dialog, int id){
-//                                    dialog.cancel();
-//
-//                                }
-//                            });
-//                    AlertDialog alert11 = builder.create();
-//                    alert11.show();
-//                }
-//                else{
-//                    Intent intent = new Intent(HomeworkFragment.this.getActivity() ,HomeworkCreate.class);
-//                    startActivity(intent);
-//                }
-//            }
-//        };
-//        addHomework.setOnClickListener(listener);
-//    }
 }
