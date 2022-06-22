@@ -81,7 +81,6 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         holder.buttonStudy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Gson gson = new Gson();
                 Intent intent = new Intent(view.getContext(), TimerActivity.class);
                 intent.putExtra("module_name", moduleName);
                 view.getContext().startActivity(intent);

@@ -51,8 +51,8 @@ public class ModuleInfoActivity extends AppCompatActivity {
         moduleName = findViewById(R.id.moduleName);
         hours = findViewById(R.id.targetHours);
         goal = findViewById(R.id.goal);
-        completedStatus = findViewById(R.id.textViewHomeworkDueThisWeek);
-        inProgressStatus = findViewById(R.id.textViewHoursStudied);
+        completedStatus = findViewById(R.id.textViewCompleted);
+        inProgressStatus = findViewById(R.id.textViewInProgress);
         purplePercentage = findViewById(R.id.percentageProgressbar);
         greyPercentage = findViewById(R.id.overallPercentage);
         percentageText = findViewById(R.id.percentageText);
