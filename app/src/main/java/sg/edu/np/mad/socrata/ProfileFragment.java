@@ -43,6 +43,15 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        TextView editProfileBtn = getView().findViewById(R.id.editProfileBtn);
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // SIGN OUT FROM ACCOUNT
         TextView signOutButton = getView().findViewById(R.id.signOutBtn);
         signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -96,43 +105,43 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // DELETE ACCOUNT FROM DATABASE
-        TextView deleteAccBtn = getView().findViewById(R.id.deleteAccBtn);
-        deleteAccBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder
-                        .setTitle("PLEASE CONFIRM")
-                        .setMessage("Are you sure you want to delete your account?")
-                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                ProgressDialog dialog = ProgressDialog.show(getActivity(), "Deleting your account", "Loading. Please wait...", true);
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                user.delete()
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    dialog.dismiss();
-                                                    startActivity(intent);
-                                                }
-                                            }
-                                        });
-                            }
-                        })
-                        .show();
-            }
-        });
+//        // DELETE ACCOUNT FROM DATABASE
+//        TextView deleteAccBtn = getView().findViewById(R.id.deleteAccBtn);
+//        deleteAccBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                builder
+//                        .setTitle("PLEASE CONFIRM")
+//                        .setMessage("Are you sure you want to delete your account?")
+//                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                            }
+//                        })
+//                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                ProgressDialog dialog = ProgressDialog.show(getActivity(), "Deleting your account", "Loading. Please wait...", true);
+//                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                                user.delete()
+//                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                if (task.isSuccessful()) {
+//                                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+//                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                                    dialog.dismiss();
+//                                                    startActivity(intent);
+//                                                }
+//                                            }
+//                                        });
+//                            }
+//                        })
+//                        .show();
+//            }
+//        });
 
 
 

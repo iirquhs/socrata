@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socrata">
         <activity
-            android:name=".UpdatePassword"
+            android:name=".UpdatePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ModuleInfoActivity"

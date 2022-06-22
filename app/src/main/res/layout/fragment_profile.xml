@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
+    <ImageView
+        android:id="@+id/profileBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="-4dp"
+        android:src="@drawable/background_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/profileEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountName" />
+
     <TextView
         android:id="@+id/helloProfile"
         android:layout_width="wrap_content"
@@ -38,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="YOUR PROFILE"
         android:textColor="?android:textColorPrimary"
@@ -111,17 +123,16 @@
         app:layout_constraintTop_toBottomOf="@id/profileEmail" />
 
     <TextView
-        android:id="@+id/deleteAccBtn"
+        android:id="@+id/editProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="DELETE ACCOUNT"
-        android:textColor="#F44336"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signOutBtn" />
+        android:text="EDIT"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
