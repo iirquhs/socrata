@@ -201,6 +201,8 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
                 ArrayList<Homework> inProgressHomeworkArrayList = new ArrayList<>();
 
+                ArrayList<Homework> doneHomeworkArrayList = new ArrayList<>();
+
                 for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
                     Homework homework = homeworkSnapshot.getValue(Homework.class);
 
@@ -213,12 +215,25 @@ public class ModuleInfoActivity extends AppCompatActivity {
                         inProgressHomeworkArrayList.add(homework);
                     }
 
+                    assert moduleCheck != null;
+                    if(moduleCheck.getModuleName().equals(module.getModuleName()) && homework.getStatus().equals("Done")){
+                        doneHomeworkArrayList.add(homework);
+                    }
+
                 }
 
                 if(inProgressHomeworkArrayList.size() <= 0){
                     addHomework.setVisibility(View.VISIBLE);
                     viewMore.setVisibility(View.INVISIBLE);
                 }
+
+                Integer inProgress = inProgressHomeworkArrayList.size();
+
+                Integer done = doneHomeworkArrayList.size();
+
+                inProgressStatus.setText(inProgress.toString());
+
+                completedStatus.setText(done.toString());
 
                 HomeworkAdapter adapter = new HomeworkAdapter(inProgressHomeworkArrayList, moduleMap);
 
