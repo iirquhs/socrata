@@ -132,24 +132,39 @@ public class ModuleUpdateActivity extends AppCompatActivity {
 
                 Module module = new Module(name, goal, Integer.parseInt(targetHours), selectedColour);
 
-                Map<String, Object> moduleMap = new HashMap<>();
-
-                moduleMap.put(refKey, module);
-
-                Log.d("TAG", moduleMap.toString());
-
-                myRef.updateChildren(moduleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                myRef.child(refKey).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (!task.isSuccessful()) {
-                            Log.d("TAG", task.toString());
-                            return;
-                        }
-                        Toast.makeText(ModuleUpdateActivity.this,"Module updated", Toast.LENGTH_SHORT).show();
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        myRef.child(refKey).child("color").setValue(module.getColor());
+                        myRef.child(refKey).child("moduleName").setValue(module.getModuleName());
+                        myRef.child(refKey).child("targetGrade").setValue(module.getTargetGrade());
+                        myRef.child(refKey).child("targetHoursPerWeek").setValue(module.getTargetHoursPerWeek());
 
                         finish();
                     }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
                 });
+//
+//                moduleMap.put(refKey, module);
+//
+//                Log.d("TAG", moduleMap.toString());
+//
+//                myRef.updateChildren(moduleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.d("TAG", task.toString());
+//                            return;
+//                        }
+//                        Toast.makeText(ModuleUpdateActivity.this,"Module updated", Toast.LENGTH_SHORT).show();
+//
+//                        finish();
+//                    }
+//                });
             }
 
         });

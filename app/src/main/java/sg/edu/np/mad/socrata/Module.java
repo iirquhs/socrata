@@ -12,8 +12,6 @@ public class Module {
     private ArrayList<Homework> homeworkArrayList = new ArrayList<>();
     private ArrayList<StudySession> studySessionArrayList = new ArrayList<>();
 
-    private Double totalStudyTime;
-
     private int targetHoursPerWeek;
 
     private @ColorInt int color;
@@ -45,14 +43,6 @@ public class Module {
         this.homeworkArrayList.add(homework);
     }
 
-    public double getTotalStudyTime() {
-        double sum = 0f;
-        for (StudySession studySession : studySessionArrayList) {
-            sum += studySession.getStudyTime();
-        }
-        return sum;
-    }
-
     public @ColorInt int getColor() {
         return color;
     }
@@ -67,14 +57,6 @@ public class Module {
 
     public void setTargetGrade(String targetGrade) {
         this.targetGrade = targetGrade;
-    }
-
-    public Double getStudyTime() {
-        return totalStudyTime;
-    }
-
-    public void setStudyTime(Double totalStudyTime) {
-        this.totalStudyTime = totalStudyTime;
     }
 
     public ArrayList<StudySession> getStudySessionArrayList() {

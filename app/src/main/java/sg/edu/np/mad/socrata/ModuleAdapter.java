@@ -91,9 +91,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ModuleInfoActivity.class);
-                Gson gson = new Gson();
-                String moduleString = gson.toJson(module);
-                intent.putExtra("module", moduleString);
+                intent.putExtra("moduleRef", moduleRef);
                 view.getContext().startActivity(intent);
             }
         });
