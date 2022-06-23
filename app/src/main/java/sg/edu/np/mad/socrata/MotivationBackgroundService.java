@@ -69,7 +69,7 @@ public class MotivationBackgroundService extends Service {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
                         .setSmallIcon(R.mipmap.ic_launcher_round)
                         .setContentTitle("Quote of the day!")
-                        .setContentText(randomQuote + " Start studying now!")
+                        .setContentText(randomQuote) //+ " Start studying now!")
                         .setContentIntent(pendingIntent)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
@@ -79,7 +79,7 @@ public class MotivationBackgroundService extends Service {
             // 21600000ms = 6h
             }
             //21600000ms is 6h
-        }, 21600000, 21600000);
+        }, 0, 21600000);
 
         return super.onStartCommand(intent, flags, startId);
     }
