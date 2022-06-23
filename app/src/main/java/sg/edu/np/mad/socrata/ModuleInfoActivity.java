@@ -46,7 +46,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
     DatabaseReference userReference;
 
-    Module module;
+    String moduleRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +56,15 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Gson gson = new Gson();
-
-        module = gson.fromJson(intent.getStringExtra("module"), Module.class);
+        moduleRef = intent.getStringExtra("moduleRef");
 
         textViewModuleName = findViewById(R.id.moduleName);
         hours = findViewById(R.id.targetHours);
         goal = findViewById(R.id.goal);
+
         completedStatus = findViewById(R.id.textViewCompleted);
         inProgressStatus = findViewById(R.id.textViewInProgress);
+
         purplePercentage = findViewById(R.id.percentageProgressbar);
         greyPercentage = findViewById(R.id.overallPercentage);
         percentageText = findViewById(R.id.percentageText);
@@ -75,30 +75,15 @@ public class ModuleInfoActivity extends AppCompatActivity {
         backButton.setOnClickListener(view -> finish());
 
         buttonStudy = findViewById(R.id.buttonStudy);
-        buttonStudy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent timerIntent = new Intent(ModuleInfoActivity.this, TimerActivity.class);
-                timerIntent.putExtra("module_name", module.getModuleName());
-                startActivity(timerIntent);
-            }
-        });
 
         edit = findViewById(R.id.editmodule);
-        editModule(module);
 
         delete = findViewById(R.id.deletemodule);
-        deleteModule(module);
 
         viewMore = findViewById(R.id.viewmore);
         viewMoreHomework();
 
         createHomeWork();
-
-        int H = module.getTargetHoursPerWeek();
-        textViewModuleName.setText(module.getModuleName());
-        hours.setText(Integer.toString(H));
-        goal.setText(module.getTargetGrade());
 
         recyclerView = findViewById(R.id.recyclerView2);
 
@@ -111,12 +96,45 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
         userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
 
+    }
+
+    private void startTimer(Module module) {
+        buttonStudy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent timerIntent = new Intent(ModuleInfoActivity.this, TimerActivity.class);
+                timerIntent.putExtra("module_name", module.getModuleName());
+                startActivity(timerIntent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         DatabaseReference moduleReference = userReference.child("modules");
+        updateModuleInfo(moduleReference);
+    }
+
+    private void updateModuleInfo(DatabaseReference moduleReference) {
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) snapshot.getValue());
+
+                assert moduleMap != null;
+                Module module = moduleMap.get(moduleRef);
+
+                startTimer(module);
+                editModule(module);
+                deleteModule(module);
+
+                assert module != null;
+                int H = module.getTargetHoursPerWeek();
+                textViewModuleName.setText(module.getModuleName());
+                hours.setText(Integer.toString(H));
+                goal.setText(module.getTargetGrade());
 
                 DatabaseReference homeworkReference = userReference.child("homework");
                 setHomeworkRecyclerView(homeworkReference, module);
@@ -142,14 +160,6 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
             }
         });
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        DatabaseReference homeworkReference = userReference.child("homework");
-        setHomeworkRecyclerView(homeworkReference, module);
     }
 
     private void setStudyProgressBarSection(ArrayList<Double> studyTimings, DatabaseReference studySessionReference, Module module) {
