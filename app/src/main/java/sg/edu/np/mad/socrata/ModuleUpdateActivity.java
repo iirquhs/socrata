@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -110,6 +111,14 @@ public class ModuleUpdateActivity extends AppCompatActivity {
             editTextGoal.setText(module.getTargetGrade());
             selectedColour = module.getColor();
         }
+
+        ImageButton buttonBack = findViewById(R.id.backButton);
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         Button buttonUpdate = findViewById(R.id.buttonupdatemodule);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {

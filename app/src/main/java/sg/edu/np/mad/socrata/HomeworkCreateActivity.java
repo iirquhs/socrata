@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -78,7 +79,13 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         //Difficulty.setAdapter(adapter);
 
-        updateModuleDropDownList();
+        ImageButton buttonBack = findViewById(R.id.backButton);
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         Button buttonCreate = findViewById(R.id.buttoncreatehomework);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -204,11 +211,15 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
         spinnerModules = findViewById(R.id.moduleDropdown);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(HomeworkCreateActivity.this, android.R.layout.simple_spinner_item, nameList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerModules.setAdapter(adapter);
+
         spinnerModules.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 moduleName = spinnerModules.getSelectedItem().toString();
-
                 if (moduleName.equals(createNewModule)) {
                     Intent intent = new Intent(HomeworkCreateActivity.this, ModuleUpdateActivity.class);
                     startActivity(intent);
@@ -220,11 +231,6 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
             }
         });
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(HomeworkCreateActivity.this, android.R.layout.simple_spinner_item, nameList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerModules.setAdapter(adapter);
     }
 
     private String getTodaysDate ()
