@@ -230,9 +230,9 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
                 }
 
-                if(inProgressHomeworkArrayList.size() <= 0){
-                    addHomework.setVisibility(View.VISIBLE);
-                    viewMore.setVisibility(View.INVISIBLE);
+                if(inProgressHomeworkArrayList.size() > 0){
+                    //addHomework.setVisibility(View.VISIBLE);
+                    viewMore.setVisibility(View.VISIBLE);
                 }
 
                 Integer inProgress = inProgressHomeworkArrayList.size();
