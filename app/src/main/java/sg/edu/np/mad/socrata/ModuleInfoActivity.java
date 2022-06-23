@@ -175,18 +175,16 @@ public class ModuleInfoActivity extends AppCompatActivity {
                 }
 
                 // in hours
-                double holder = getTotalStudyTime(studyTimings);
-
-                module.setStudyTime(holder);
+                double totalStudyTime = getTotalStudyTime(studyTimings);
 
                 DecimalFormat df = new DecimalFormat("#.#");
 
                 checkWeek();
 
                 greyPercentage.setText(" / "+ module.getTargetHoursPerWeek()+"h");
-                purplePercentage.setText(df.format(module.getStudyTime())+"h");
+                purplePercentage.setText(totalStudyTime +"h");
 
-                Double percentage = (module.getStudyTime()/ module.getTargetHoursPerWeek()) * 100;
+                Double percentage = (totalStudyTime/ module.getTargetHoursPerWeek()) * 100;
 
                 progressBar.setProgress((int) Math.round(percentage));
 
