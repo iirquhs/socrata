@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    android:layout_height="match_parent">
 
     <!--The AppBarLayout allows for scrolling effects-->
     <com.google.android.material.appbar.AppBarLayout
@@ -32,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <TextView
-            android:id="@+id/textViewTitle"
+            android:id="@+id/sliderTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
@@ -42,10 +41,10 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+            app:layout_constraintTop_toBottomOf="@+id/sliderImage" />
 
         <TextView
-            android:id="@+id/textViewTitle2"
+            android:id="@+id/sliderDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -58,75 +57,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
-
-        <Button
-            android:id="@+id/buttonGetStarted"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/main_button"
-            android:fontFamily="@font/poppins_bold"
-            android:minHeight="48dp"
-            android:text="Get started"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/sliderTitle" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/sliderImage"
             android:layout_width="234dp"
             android:layout_height="344dp"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="270dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="70dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_undraw_process_re_gws7" />
-
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="130dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonGetStarted"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/welcomepage" />
-
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonGetStarted"
-            app:layout_constraintStart_toEndOf="@+id/imageView8"
-            app:srcCompat="@drawable/welcomepage2" />
-
-        <ImageView
-            android:id="@+id/imageView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonGetStarted"
-            app:layout_constraintStart_toEndOf="@+id/imageView11"
-            app:srcCompat="@drawable/welcomepage2" />
-
-        <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="24dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonGetStarted"
-            app:layout_constraintStart_toEndOf="@+id/imageView9"
-            app:srcCompat="@drawable/welcomepage2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
