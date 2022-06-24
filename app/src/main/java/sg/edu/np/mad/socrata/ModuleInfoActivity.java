@@ -182,7 +182,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
                 checkWeek();
 
                 greyPercentage.setText(" / "+ module.getTargetHoursPerWeek()+"h");
-                purplePercentage.setText(totalStudyTime +"h");
+                purplePercentage.setText(String.format("%.2fh", totalStudyTime));
 
                 Double percentage = (totalStudyTime/ module.getTargetHoursPerWeek()) * 100;
 
