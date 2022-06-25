@@ -19,9 +19,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+
+import java.util.Objects;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -117,30 +120,41 @@ public class SignupActivity extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    User user = new User(username, email);
+                                if (!task.isSuccessful()) {
+                                    try {
+                                         throw Objects.requireNonNull(task.getException());
+                                    } catch (FirebaseAuthUserCollisionException firebaseAuthUserCollisionException) {
+                                        Toast.makeText(SignupActivity.this, "Email already exists", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception exception) {
+                                        Toast.makeText(SignupActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
 
-                                    FirebaseDatabase.getInstance().getReference("Users")
-                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(SignupActivity.this, "Sign Up successful", Toast.LENGTH_SHORT).show();
-
-                                                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                progressDialog.dismiss();
-                                                startActivity(intent);
-                                            } else {
-                                                progressDialog.dismiss();
-                                                Toast.makeText(SignupActivity.this, "Failed to register. Please try again", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-
-
-                                    });
+                                    progressDialog.dismiss();
+                                    return;
                                 }
+
+                                User user = new User(username, email);
+
+                                FirebaseDatabase.getInstance().getReference("Users")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(SignupActivity.this, "Sign Up successful", Toast.LENGTH_SHORT).show();
+
+                                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            progressDialog.dismiss();
+                                            startActivity(intent);
+                                        } else {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(SignupActivity.this, "Failed to register. Please try again", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+
+                                });
                             }
                         });
             }
