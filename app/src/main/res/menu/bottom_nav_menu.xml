@@ -3,18 +3,18 @@
 
     <item
         android:id="@+id/nav_home"
-        android:title="Home"
-        android:icon="@drawable/ic_home_24px" />
+        android:icon="@drawable/ic_home_24px"
+        android:title="Home" />
     <item
         android:id="@+id/nav_modules"
-        android:title="Modules"
-        android:icon="@drawable/ic_view_module_24px" />
+        android:icon="@drawable/ic_view_module_24px"
+        android:title="Modules" />
     <item
         android:id="@+id/nav_homework"
-        android:title="Homework"
-        android:icon="@drawable/ic_assignment_24px" />
+        android:icon="@drawable/ic_assignment_24px"
+        android:title="Homework" />
     <item
         android:id="@+id/nav_profile"
-        android:title="Profile"
-        android:icon="@drawable/ic_account_circle_24px" />
+        android:icon="@drawable/ic_account_circle_24px"
+        android:title="Profile" />
 </menu>

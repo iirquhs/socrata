@@ -2,12 +2,11 @@ package sg.edu.np.mad.socrata;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
 
-public class Homework{
+public class Homework {
 
     private String homeworkName;
     private String status = "In Progress";
@@ -57,6 +56,11 @@ public class Homework{
         return dueDateTimeString;
     }
 
+    //PUT IN MMM dd yyyy HH:mm format eg JUN 12 2022
+    public void setDueDateTimeString(String dueDateTimeString) {
+        this.dueDateTimeString = dueDateTimeString;
+    }
+
     public LocalDateTime ConvertDueDateTime(String dueDateTimeString) {
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMM dd yyyy HH:mm")
@@ -73,11 +77,6 @@ public class Homework{
         Duration duration = Duration.between(currentTime, dueDateTime);
 
         return duration.getSeconds();
-    }
-
-    //PUT IN MMM dd yyyy HH:mm format eg JUN 12 2022
-    public void setDueDateTimeString(String dueDateTimeString) {
-        this.dueDateTimeString = dueDateTimeString;
     }
 
     public String getModuleRef() {

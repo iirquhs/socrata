@@ -48,18 +48,20 @@ public class ModuleUpdateActivity extends AppCompatActivity {
 
     Map<ImageView, Integer> colourSelectorToColour = new LinkedHashMap<>();
 
-    @ColorInt int colours[] = {
-        Color.parseColor("#ff00ddff"),
-        Color.parseColor("#ff0099cc"),
-        Color.parseColor("#ff669900"),
-        Color.parseColor("#ffff8800"),
-        Color.parseColor("#ff99cc00"),
-        Color.parseColor("#ffffbb33"),
-        Color.parseColor("#ffaa66cc"),
-        Color.parseColor("#ffff4444")
+    @ColorInt
+    int colours[] = {
+            Color.parseColor("#ff00ddff"),
+            Color.parseColor("#ff0099cc"),
+            Color.parseColor("#ff669900"),
+            Color.parseColor("#ffff8800"),
+            Color.parseColor("#ff99cc00"),
+            Color.parseColor("#ffffbb33"),
+            Color.parseColor("#ffaa66cc"),
+            Color.parseColor("#ffff4444")
     };
 
-    @ColorInt Integer selectedColour = colours[0];
+    @ColorInt
+    Integer selectedColour = colours[0];
 
     Map<Integer, View> colourToView = new LinkedHashMap<Integer, View>();
 
@@ -203,12 +205,12 @@ public class ModuleUpdateActivity extends AppCompatActivity {
             editTextGoal.requestFocus();
             return false;
         }
-        if(Integer.parseInt(targetHours) > 168){
+        if (Integer.parseInt(targetHours) > 168) {
             ModuleUpdateActivity.this.editTextTargetHours.setError("a week only has 168 hours");
             ModuleUpdateActivity.this.editTextTargetHours.requestFocus();
             return false;
         }
-        if(Integer.parseInt(targetHours) < 0 || Integer.parseInt(targetHours) == 0){
+        if (Integer.parseInt(targetHours) < 0 || Integer.parseInt(targetHours) == 0) {
             ModuleUpdateActivity.this.editTextTargetHours.setError("value cant be 0 or less");
             ModuleUpdateActivity.this.editTextTargetHours.requestFocus();
             return false;
@@ -332,7 +334,7 @@ public class ModuleUpdateActivity extends AppCompatActivity {
                 int colourImageViewId = view.getId();
                 Log.d("TAG", Integer.toString(colourImageViewId));
 
-                switch (colourImageViewId){
+                switch (colourImageViewId) {
                     case R.id.lightBlue:
                         lightBlueTick.setVisibility(View.VISIBLE);
                         selectedColour = colours[0];

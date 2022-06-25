@@ -1,15 +1,14 @@
 package sg.edu.np.mad.socrata;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -99,8 +98,7 @@ public class UpdatePasswordActivity extends AppCompatActivity {
                                         Toast.makeText(UpdatePasswordActivity.this, "Password updated successfully.", Toast.LENGTH_SHORT).show();
                                         progressDialog.dismiss();
                                         finish();
-                                    }
-                                    else {
+                                    } else {
                                         Toast.makeText(UpdatePasswordActivity.this, "Error occured. Please try again.", Toast.LENGTH_SHORT).show();
                                         progressDialog.dismiss();
                                     }
@@ -111,7 +109,6 @@ public class UpdatePasswordActivity extends AppCompatActivity {
                 });
             }
         });
-
 
 
     }

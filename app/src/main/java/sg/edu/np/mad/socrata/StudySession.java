@@ -6,10 +6,9 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
 
 public class StudySession {
+    private final String studyStartDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm"));
     // study time in seconds
     private double studyTime;
-
-    private final String studyStartDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm"));
 
     public StudySession() {
 

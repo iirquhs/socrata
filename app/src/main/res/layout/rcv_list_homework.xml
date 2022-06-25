@@ -4,147 +4,147 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewModule"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewModule"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/homeworkModule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/primary_color"
+                    android:fontFamily="@font/roboto"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/mobile_application_development"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintUrgentIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/homework_timer_rcv_shape"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                                <TextView
-                                    android:id="@+id/homeworkModule"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@color/primary_color"
-                                    android:fontFamily="@font/roboto"
-                                    android:paddingStart="16dp"
-                                    android:paddingTop="8dp"
-                                    android:paddingEnd="16dp"
-                                    android:paddingBottom="8dp"
-                                    android:text="@string/mobile_application_development"
-                                    android:textColor="@color/white"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:id="@+id/textViewTimeLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/_30_00h"
+                            android:textAlignment="textEnd"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView6"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:id="@+id/imageView6"
+                            android:layout_width="15dp"
+                            android:layout_height="17dp"
+                            android:layout_marginStart="16dp"
+                            android:contentDescription="@string/time_left"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/textViewTimeLeft"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_timer_24px" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                    <ImageButton
+                        android:id="@+id/imageButtonDeleteHomework"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/delete_module"
+                        android:minWidth="48dp"
+                        android:minHeight="48dp"
+                        android:src="@drawable/ic_baseline_delete_outline_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/buttonMarkDone" />
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="16dp"
-                                    android:layout_marginTop="16dp"
-                                    android:layout_marginEnd="16dp"
-                                    android:layout_marginBottom="16dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="1.0"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintVertical_bias="0.0">
+                    <Button
+                        android:id="@+id/buttonMarkDone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@color/primary_color"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/done"
+                        android:textAllCaps="false"
+                        app:cornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewHomeworkName" />
 
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:id="@+id/constraintUrgentIndicator"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:background="@drawable/homework_timer_rcv_shape"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:id="@+id/textViewHomeworkName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/homework_name"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/constraintUrgentIndicator"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                                                <TextView
-                                                    android:id="@+id/textViewTimeLeft"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_marginStart="4dp"
-                                                    android:layout_marginTop="8dp"
-                                                    android:layout_marginEnd="16dp"
-                                                    android:layout_marginBottom="8dp"
-                                                    android:text="@string/_30_00h"
-                                                    android:textAlignment="textEnd"
-                                                    android:textColor="#FFFFFF"
-                                                    android:textSize="12sp"
-                                                    android:textStyle="bold"
-                                                    app:layout_constraintBottom_toBottomOf="parent"
-                                                    app:layout_constraintEnd_toEndOf="parent"
-                                                    app:layout_constraintStart_toEndOf="@+id/imageView6"
-                                                    app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                                                <ImageView
-                                                    android:id="@+id/imageView6"
-                                                    android:layout_width="15dp"
-                                                    android:layout_height="17dp"
-                                                    android:layout_marginStart="16dp"
-                                                    android:contentDescription="@string/time_left"
-                                                    app:layout_constraintBottom_toBottomOf="parent"
-                                                    app:layout_constraintEnd_toStartOf="@+id/textViewTimeLeft"
-                                                    app:layout_constraintStart_toStartOf="parent"
-                                                    app:layout_constraintTop_toTopOf="parent"
-                                                    app:srcCompat="@drawable/ic_timer_24px" />
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                        <ImageButton
-                                            android:id="@+id/imageButtonDeleteHomework"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:background="@android:color/transparent"
-                                            android:contentDescription="@string/delete_module"
-                                            android:minWidth="48dp"
-                                            android:minHeight="48dp"
-                                            android:src="@drawable/ic_baseline_delete_outline_24"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/buttonMarkDone" />
-
-                                        <Button
-                                            android:id="@+id/buttonMarkDone"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="16dp"
-                                            android:backgroundTint="@color/primary_color"
-                                            android:fontFamily="@font/poppins_medium"
-                                            android:text="@string/done"
-                                            android:textAllCaps="false"
-                                            app:cornerRadius="10dp"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toBottomOf="@+id/textViewHomeworkName" />
-
-                                        <TextView
-                                            android:id="@+id/textViewHomeworkName"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/poppins"
-                                            android:text="@string/homework_name"
-                                            android:textColor="@color/black"
-                                            android:textSize="20sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintBottom_toBottomOf="@+id/constraintUrgentIndicator"
-                                            app:layout_constraintStart_toStartOf="parent" />
-
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

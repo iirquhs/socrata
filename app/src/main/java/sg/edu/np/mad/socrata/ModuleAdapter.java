@@ -31,25 +31,6 @@ import java.util.Map;
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleViewHolder> {
     Map<String, Module> moduleMap;
 
-    public class ModuleViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewModuleName, textViewGoal, textViewTargetHours;
-        Button buttonStudy;
-        CardView cardViewModule;
-        ImageButton imageButtonEditModule, imageButtonDeleteModule;
-
-        public ModuleViewHolder(View itemView) {
-            super(itemView);
-
-            textViewModuleName = itemView.findViewById(R.id.homework_module);
-            textViewGoal = itemView.findViewById(R.id.textViewHomeworkName);
-            textViewTargetHours = itemView.findViewById(R.id.textViewTargetHours);
-            buttonStudy = itemView.findViewById(R.id.buttonStudy);
-            cardViewModule = itemView.findViewById(R.id.cardViewModule);
-            imageButtonEditModule = itemView.findViewById(R.id.imageButtonEditModule);
-            imageButtonDeleteModule = itemView.findViewById(R.id.imageButtonDeleteModule);
-        }
-    }
-
     public ModuleAdapter(Map<String, Module> moduleMap) {
         this.moduleMap = moduleMap;
     }
@@ -145,7 +126,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
                         moduleDeleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                                     appleSnapshot.getRef().removeValue();
                                 }
                             }
@@ -177,5 +158,24 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     @Override
     public int getItemCount() {
         return moduleMap.size();
+    }
+
+    public class ModuleViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewModuleName, textViewGoal, textViewTargetHours;
+        Button buttonStudy;
+        CardView cardViewModule;
+        ImageButton imageButtonEditModule, imageButtonDeleteModule;
+
+        public ModuleViewHolder(View itemView) {
+            super(itemView);
+
+            textViewModuleName = itemView.findViewById(R.id.homework_module);
+            textViewGoal = itemView.findViewById(R.id.textViewHomeworkName);
+            textViewTargetHours = itemView.findViewById(R.id.textViewTargetHours);
+            buttonStudy = itemView.findViewById(R.id.buttonStudy);
+            cardViewModule = itemView.findViewById(R.id.cardViewModule);
+            imageButtonEditModule = itemView.findViewById(R.id.imageButtonEditModule);
+            imageButtonDeleteModule = itemView.findViewById(R.id.imageButtonDeleteModule);
+        }
     }
 }

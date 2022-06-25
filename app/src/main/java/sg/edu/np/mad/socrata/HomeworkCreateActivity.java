@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,9 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,12 +45,9 @@ public class HomeworkCreateActivity extends AppCompatActivity {
     EditText editTextHomeworkName;
 
     Spinner spinnerModules;
-
-    private DatePickerDialog datePickerDialog;
-
-    private Button dateButton;
-
     DatabaseReference currentUserRef;
+    private DatePickerDialog datePickerDialog;
+    private Button dateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,8 +188,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         return null;
     }
 
-    private void setModuleDropDown (Collection<Module> moduleArrayList)
-    {
+    private void setModuleDropDown(Collection<Module> moduleArrayList) {
         ArrayList<String> nameList = new ArrayList<>();
 
         if (moduleArrayList.size() <= 0) {
@@ -233,14 +225,12 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         });
     }
 
-    private String getTodaysDate ()
-    {
+    private String getTodaysDate() {
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         return makeDateString(zonedDateTime.getDayOfMonth(), zonedDateTime.getMonthValue(), zonedDateTime.getYear());
     }
 
-    private void initDatePicker ()
-    {
+    private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -263,18 +253,15 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
     }
 
-    private String makeDateString ( int day, int month, int year)
-    {
+    private String makeDateString(int day, int month, int year) {
         if (day >= 10) {
             return getMonthFormat(month) + " " + day + " " + year;
-        }
-        else {
+        } else {
             return getMonthFormat(month) + " 0" + day + " " + year;
         }
     }
 
-    private String getMonthFormat ( int month)
-    {
+    private String getMonthFormat(int month) {
         if (month == 1)
             return "JAN";
         if (month == 2)
@@ -304,8 +291,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         return "JAN";
     }
 
-    public void openDatePicker (View view)
-    {
+    public void openDatePicker(View view) {
         datePickerDialog.show();
     }
 

@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -21,12 +20,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.stream.Collectors;
 
 public class MotivationBackgroundService extends Service {
 
@@ -76,7 +73,7 @@ public class MotivationBackgroundService extends Service {
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
                 notificationManager.notify(1, builder.build());
-            // 21600000ms = 6h
+                // 21600000ms = 6h
             }
             //21600000ms is 6h
         }, 0, 21600000);
@@ -98,9 +95,10 @@ public class MotivationBackgroundService extends Service {
 
         String randomQuote = output.toString();
 
-        randomQuote = randomQuote.substring( 1, randomQuote.length() - 1 );
+        randomQuote = randomQuote.substring(1, randomQuote.length() - 1);
         Map<String, Object> quoteMap = new Gson().fromJson(
-                randomQuote, new TypeToken<HashMap<String, Object>>() {}.getType()
+                randomQuote, new TypeToken<HashMap<String, Object>>() {
+                }.getType()
         );
 
         return "\"" + quoteMap.get("q") + "\" - " + quoteMap.get("a") + ".";

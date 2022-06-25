@@ -14,13 +14,14 @@ public class Module {
 
     private int targetHoursPerWeek;
 
-    private @ColorInt int color;
+    private @ColorInt
+    int color;
 
     public Module() {
 
     }
 
-    public Module(String moduleName, String targetGrade, int targetHoursPerWeek , @ColorInt int color) {
+    public Module(String moduleName, String targetGrade, int targetHoursPerWeek, @ColorInt int color) {
         this.setColor(color);
         this.setModuleName(moduleName);
         this.setTargetGrade(targetGrade);
@@ -43,7 +44,8 @@ public class Module {
         this.homeworkArrayList.add(homework);
     }
 
-    public @ColorInt int getColor() {
+    public @ColorInt
+    int getColor() {
         return color;
     }
 
@@ -66,6 +68,7 @@ public class Module {
     public void addStudySession(StudySession studySession) {
         this.studySessionArrayList.add(studySession);
     }
+
     public int getTargetHoursPerWeek() {
         return targetHoursPerWeek;
     }

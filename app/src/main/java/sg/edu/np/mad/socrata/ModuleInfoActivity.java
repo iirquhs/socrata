@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -181,17 +180,17 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
                 checkWeek();
 
-                greyPercentage.setText(" / "+ module.getTargetHoursPerWeek()+"h");
+                greyPercentage.setText(" / " + module.getTargetHoursPerWeek() + "h");
                 purplePercentage.setText(String.format("%.2fh", totalStudyTime));
 
-                Double percentage = (totalStudyTime/ module.getTargetHoursPerWeek()) * 100;
+                Double percentage = (totalStudyTime / module.getTargetHoursPerWeek()) * 100;
 
                 progressBar.setProgress((int) Math.round(percentage));
 
-                percentageText.setText((df.format(percentage)+"%"));
+                percentageText.setText((df.format(percentage) + "%"));
 
-                if(percentage >= 100){
-                    percentageText.setTextColor( getResources().getColor(com.github.dhaval2404.colorpicker.R.color.light_green_A700));
+                if (percentage >= 100) {
+                    percentageText.setTextColor(getResources().getColor(com.github.dhaval2404.colorpicker.R.color.light_green_A700));
                 }
             }
 
@@ -216,21 +215,21 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
                     assert homework != null;
                     String moduleRef = homework.getModuleRef();
-                    Module moduleCheck =  moduleMap.get(moduleRef);
+                    Module moduleCheck = moduleMap.get(moduleRef);
 
                     assert moduleCheck != null;
-                    if(moduleCheck.getModuleName().equals(module.getModuleName()) && inProgressHomeworkArrayList.size() < 3 && homework.getStatus().equals("In Progress")){
+                    if (moduleCheck.getModuleName().equals(module.getModuleName()) && inProgressHomeworkArrayList.size() < 3 && homework.getStatus().equals("In Progress")) {
                         inProgressHomeworkArrayList.add(homework);
                     }
 
                     assert moduleCheck != null;
-                    if(moduleCheck.getModuleName().equals(module.getModuleName()) && homework.getStatus().equals("Done")){
+                    if (moduleCheck.getModuleName().equals(module.getModuleName()) && homework.getStatus().equals("Done")) {
                         doneHomeworkArrayList.add(homework);
                     }
 
                 }
 
-                if(inProgressHomeworkArrayList.size() > 0){
+                if (inProgressHomeworkArrayList.size() > 0) {
                     //addHomework.setVisibility(View.VISIBLE);
                     viewMore.setVisibility(View.VISIBLE);
                 }
@@ -288,7 +287,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 DatabaseReference Module = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
-                Query delete = Module.orderByChild("moduleName").equalTo( module.getModuleName());
+                Query delete = Module.orderByChild("moduleName").equalTo(module.getModuleName());
 
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -296,7 +295,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
                         delete.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
                                     appleSnapshot.getRef().removeValue();
                                 }
                             }
@@ -307,7 +306,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
                             }
                         });
 
-                        Toast.makeText(ModuleInfoActivity.this,"Module deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ModuleInfoActivity.this, "Module deleted", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });
@@ -339,21 +338,22 @@ public class ModuleInfoActivity extends AppCompatActivity {
         edit.setOnClickListener(editModule);
     }
 
-    public void checkWeek(){
+    public void checkWeek() {
         int lastCallDate = Calendar.MONDAY;
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_WEEK);
-        if (day %lastCallDate ==0){
+        if (day % lastCallDate == 0) {
             progressBar.setProgress(0);
         }
 
     }
+
     public double getTotalStudyTime(ArrayList<Double> timeList) {
         double sum = 0f;
         for (Double i : timeList) {
             sum += i;
         }
-        return sum/3600;
+        return sum / 3600;
     }
 
 

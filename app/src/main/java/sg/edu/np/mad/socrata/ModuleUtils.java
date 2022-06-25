@@ -8,7 +8,7 @@ import java.util.Map;
 public class ModuleUtils {
 
     // Parse the map from the firebase and convert it to hashmap
-    static Map<String, Module> parseModuleMap (Map < String, Object > modules){
+    static Map<String, Module> parseModuleMap(Map<String, Object> modules) {
         Map<String, Module> moduleMap = new HashMap<>();
 
         if (modules == null) {

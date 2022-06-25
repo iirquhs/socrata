@@ -1,11 +1,5 @@
 package sg.edu.np.mad.socrata;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -17,6 +11,12 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,12 +41,10 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
     TextView textViewModuleName;
 
     String moduleName;
-
-    private long pauseOffset;
     boolean isRunning = false;
-
     FirebaseAuth firebaseAuth;
     FirebaseDatabase database;
+    private long pauseOffset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,28 +107,26 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
                 pauseTimer();
             }
             isRunning = !isRunning;
-        }
-        else if (id == R.id.buttonStop) {
+        } else if (id == R.id.buttonStop) {
             pauseTimer();
             isRunning = false;
 
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setMessage("Are you sure you want to stop studying?")
-            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    insertStudySession();
-                }
-            })
-            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            insertStudySession();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                }
-            });
+                        }
+                    });
             builder.create().show();
-        }
-        else if (id == R.id.buttonRestart) {
+        } else if (id == R.id.buttonRestart) {
             pauseTimer();
             isRunning = false;
 
@@ -158,7 +154,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
 
     private void insertStudySession() {
         // Convert millisecond to second
-        double studyTime = ((double)(SystemClock.elapsedRealtime() - chronometer.getBase())) / 1000.0;
+        double studyTime = ((double) (SystemClock.elapsedRealtime() - chronometer.getBase())) / 1000.0;
         Log.d("TAG", Double.toString(studyTime));
         if (studyTime <= 60) {
             Toast.makeText(this, "You must study for more than 1 minute to save", Toast.LENGTH_SHORT).show();
@@ -175,7 +171,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         moduleQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot updateSnapshot: snapshot.getChildren()) {
+                for (DataSnapshot updateSnapshot : snapshot.getChildren()) {
                     DatabaseReference studySessionsReference = updateSnapshot.getRef().child("studySessions");
 
                     Map<String, Object> studySessionMap = new HashMap<>();
