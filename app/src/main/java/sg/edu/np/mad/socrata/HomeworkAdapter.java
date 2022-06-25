@@ -1,8 +1,6 @@
 package sg.edu.np.mad.socrata;
 
-import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,34 +32,11 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
     Map<String, Module> moduleMap;
 
-    public class HomeworkRecyclerViewHolder extends RecyclerView.ViewHolder {
-
-        TextView moduleText, textViewHomeworkName, textViewTimeLeft;
-
-        ImageButton imageButtonDeleteHomework;
-
-        Button buttonMarkDone;
-
-        ConstraintLayout constraintUrgentIndicator;
-
-        public HomeworkRecyclerViewHolder(@NonNull View itemView) {
-            super(itemView);
-            moduleText = itemView.findViewById(R.id.homeworkModule);
-            textViewHomeworkName = itemView.findViewById(R.id.textViewHomeworkName);
-            textViewTimeLeft = itemView.findViewById(R.id.textViewTimeLeft);
-
-            imageButtonDeleteHomework = itemView.findViewById(R.id.imageButtonDeleteHomework);
-
-            buttonMarkDone = itemView.findViewById(R.id.buttonMarkDone);
-
-            constraintUrgentIndicator = itemView.findViewById(R.id.constraintUrgentIndicator);
-        }
-    }
-
     public HomeworkAdapter(ArrayList<Homework> homeworkArrayList, Map<String, Module> moduleMap) {
         this.homeworkArrayList = homeworkArrayList;
         this.moduleMap = moduleMap;
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
@@ -84,7 +59,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             return;
         }
 
-        Module module =  moduleMap.get(moduleRef);
+        Module module = moduleMap.get(moduleRef);
 
         if (module == null) {
             return;
@@ -103,7 +78,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         // 7 Days
         if (second > 604800) {
             holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(holder.constraintUrgentIndicator.getContext(), R.color.homework_green_color));
-        // 1 Day
+            // 1 Day
         } else if (second > 86400) {
             holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(holder.constraintUrgentIndicator.getContext(), R.color.homework_yellow_color));
         } else {
@@ -206,5 +181,29 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     @Override
     public int getItemCount() {
         return homeworkArrayList.size();
+    }
+
+    public class HomeworkRecyclerViewHolder extends RecyclerView.ViewHolder {
+
+        TextView moduleText, textViewHomeworkName, textViewTimeLeft;
+
+        ImageButton imageButtonDeleteHomework;
+
+        Button buttonMarkDone;
+
+        ConstraintLayout constraintUrgentIndicator;
+
+        public HomeworkRecyclerViewHolder(@NonNull View itemView) {
+            super(itemView);
+            moduleText = itemView.findViewById(R.id.homeworkModule);
+            textViewHomeworkName = itemView.findViewById(R.id.textViewHomeworkName);
+            textViewTimeLeft = itemView.findViewById(R.id.textViewTimeLeft);
+
+            imageButtonDeleteHomework = itemView.findViewById(R.id.imageButtonDeleteHomework);
+
+            buttonMarkDone = itemView.findViewById(R.id.buttonMarkDone);
+
+            constraintUrgentIndicator = itemView.findViewById(R.id.constraintUrgentIndicator);
+        }
     }
 }

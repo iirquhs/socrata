@@ -12,13 +12,6 @@ import androidx.viewpager.widget.PagerAdapter;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
-    Context mContext;
-    public ViewPagerAdapter(Context context){
-
-        this.mContext = context;
-
-    }
-
     //Arrays
     public int[] sliderImage = {
             R.drawable.ic_undraw_process_re_gws7,
@@ -26,21 +19,25 @@ public class ViewPagerAdapter extends PagerAdapter {
             R.drawable.ic_undraw_color_palette_re_dwy7,
             R.drawable.ic_undraw_online_calendar_re_wk3t
     };
-
     public String[] sliderTitle = {
             "Track Progress",
             "Set Study Goals",
             "Customizations",
             "Never be late"
     };
-
     public String[] sliderDescription = {
             "Create modules and homework to organise your study plan",
             "Keep track of study time using the timer to reach your study goals",
             "Set your modules to your preferred colour, name and goals",
             "Set due dates to homework so that you would never be late for submission"
     };
+    Context mContext;
 
+    public ViewPagerAdapter(Context context) {
+
+        this.mContext = context;
+
+    }
 
     @Override
     public int getCount() {
@@ -58,9 +55,9 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position){
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layoutScreen = inflater.inflate(R.layout.sliderlayout,container, false);
+        View layoutScreen = inflater.inflate(R.layout.sliderlayout, container, false);
 
         ImageView image = layoutScreen.findViewById(R.id.sliderImage);
         TextView title = layoutScreen.findViewById(R.id.sliderTitle);
@@ -78,7 +75,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
 
-        container.removeView((View)object);
+        container.removeView((View) object);
 
     }
 }
