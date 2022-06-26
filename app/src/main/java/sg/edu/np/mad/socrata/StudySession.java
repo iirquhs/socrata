@@ -26,6 +26,7 @@ public class StudySession {
         return studyStartDateTime;
     }
 
+    //Convert date string eg. JUN 12 2004 23:59 into localdatetime
     public LocalDateTime ConvertDueDateTime(String dueDateTimeString) {
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMM dd yyyy HH:mm")

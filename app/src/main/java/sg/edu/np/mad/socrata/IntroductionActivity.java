@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.viewpager.widget.ViewPager;
 
-public class Introduction extends AppCompatActivity {
+public class IntroductionActivity extends AppCompatActivity {
 
     public ViewPager mSlideViewPager;
     public LinearLayout mDotLayout;
@@ -47,7 +47,7 @@ public class Introduction extends AppCompatActivity {
     View.OnClickListener exit = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(Introduction.this, LoginActivity.class);
+            Intent intent = new Intent(IntroductionActivity.this, LoginActivity.class);
             startActivity(intent);
             savePrefsData();
             finish();

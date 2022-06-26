@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socrata">
         <activity
-            android:name=".Introduction"
+            android:name=".IntroductionActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

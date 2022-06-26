@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Render a new fragment in the main activity
+     * @param fragment
+     */
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

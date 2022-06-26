@@ -90,6 +90,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         DatabaseReference homeworkRef = FirebaseDatabase.getInstance()
                 .getReference().child("Users").child(currentUser).child("homework");
 
+        // Mark homework as completed
         holder.buttonMarkDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,6 +126,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             }
         });
 
+        // Delete homework
         holder.imageButtonDeleteHomework.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

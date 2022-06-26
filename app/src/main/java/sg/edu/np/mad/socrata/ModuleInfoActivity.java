@@ -97,6 +97,10 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Redirect to timer activity
+     * @param module
+     */
     private void startTimer(Module module) {
         buttonStudy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +119,10 @@ public class ModuleInfoActivity extends AppCompatActivity {
         updateModuleInfo(moduleReference);
     }
 
+    /**
+     * Retrieve all user modules from firebase and update the module information
+     * @param moduleReference
+     */
     private void updateModuleInfo(DatabaseReference moduleReference) {
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -161,6 +169,13 @@ public class ModuleInfoActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Get the total study time divided by the target study time and multiplied by 100 to set the progress
+     * bar percentage and the percentage text
+     * @param studyTimings
+     * @param studySessionReference
+     * @param module
+     */
     private void setStudyProgressBarSection(ArrayList<Double> studyTimings, DatabaseReference studySessionReference, Module module) {
         studySessionReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -170,7 +185,6 @@ public class ModuleInfoActivity extends AppCompatActivity {
                     studyTimings.add(time);
 
                     assert time != null;
-                    Log.d("Asdasdf", time.toString());
                 }
 
                 // in hours
@@ -201,6 +215,11 @@ public class ModuleInfoActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Gets all user homework and modules and insert the top 3 most urgent homework into the recycler view
+     * @param homeworkReference
+     * @param module
+     */
     private void setHomeworkRecyclerView(DatabaseReference homeworkReference, Module module) {
         homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

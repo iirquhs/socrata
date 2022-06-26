@@ -67,47 +67,7 @@ public class SignupActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString().trim();
                 String confirmPassword = editTextConfirmPassword.getText().toString().trim();
 
-                if (username.isEmpty()) {
-                    editTextUsername.setError("Username is required!");
-                    editTextUsername.requestFocus();
-                    return;
-                }
-
-                if (email.isEmpty()) {
-                    editTextEmail.setError("Email is required!");
-                    editTextEmail.requestFocus();
-                    return;
-                }
-
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    editTextEmail.setError("Please provide a valid email");
-                    editTextEmail.requestFocus();
-                    return;
-                }
-
-                if (password.isEmpty()) {
-                    editTextPassword.setError("Password is required!");
-                    editTextPassword.requestFocus();
-                    return;
-                }
-
-                if (password.length() < 6) {
-                    editTextPassword.setError("Min password length should be 6 characters!");
-                    editTextPassword.requestFocus();
-                    return;
-                }
-
-                if (confirmPassword.isEmpty()) {
-                    editTextConfirmPassword.setError("Confirm Password is required!");
-                    editTextConfirmPassword.requestFocus();
-                    return;
-                }
-
-                if (!password.equals(confirmPassword)) {
-                    editTextConfirmPassword.setError("Password does not match");
-                    editTextConfirmPassword.requestFocus();
-                    return;
-                }
+                if (!isInputValid(username, email, password, confirmPassword)) return;
 
                 ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this);
                 progressDialog.setTitle("Creating your account");
@@ -134,6 +94,7 @@ public class SignupActivity extends AppCompatActivity {
 
                                 User user = new User(username, email);
 
+                                // Create a new user account in firebase
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -160,13 +121,56 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            //reload();
+    /**
+     * Check whether the sign up fields are valid
+     * @param username
+     * @param email
+     * @param password
+     * @param confirmPassword
+     * @return
+     */
+    private boolean isInputValid(String username, String email, String password, String confirmPassword) {
+        if (username.isEmpty()) {
+            editTextUsername.setError("Username is required!");
+            editTextUsername.requestFocus();
+            return false;
         }
+
+        if (email.isEmpty()) {
+            editTextEmail.setError("Email is required!");
+            editTextEmail.requestFocus();
+            return false;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editTextEmail.setError("Please provide a valid email");
+            editTextEmail.requestFocus();
+            return false;
+        }
+
+        if (password.isEmpty()) {
+            editTextPassword.setError("Password is required!");
+            editTextPassword.requestFocus();
+            return false;
+        }
+
+        if (password.length() < 6) {
+            editTextPassword.setError("Min password length should be 6 characters!");
+            editTextPassword.requestFocus();
+            return false;
+        }
+
+        if (confirmPassword.isEmpty()) {
+            editTextConfirmPassword.setError("Confirm Password is required!");
+            editTextConfirmPassword.requestFocus();
+            return false;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            editTextConfirmPassword.setError("Password does not match");
+            editTextConfirmPassword.requestFocus();
+            return false;
+        }
+        return true;
     }
 }

@@ -59,6 +59,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         holder.textViewGoal.setText("Goal: " + targetGrade);
         holder.textViewModuleName.setBackgroundColor(color);
 
+        // Redirect to timer activity
         holder.buttonStudy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +69,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             }
         });
 
+        // Redirect to module info activity
         holder.cardViewModule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +79,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             }
         });
 
+        // Redirect to edit module
         holder.imageButtonEditModule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +91,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             }
         });
 
+        // Delete module
         holder.imageButtonDeleteModule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

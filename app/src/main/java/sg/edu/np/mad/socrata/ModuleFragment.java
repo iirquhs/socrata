@@ -57,6 +57,10 @@ public class ModuleFragment extends Fragment {
 
     }
 
+    /**
+     * Retrieve modules from firebase and update the recycler view
+     * @param view
+     */
     private void updateModuleRecyclerView(@NonNull View view) {
         moduleReference.addListenerForSingleValueEvent(
                 new ValueEventListener() {

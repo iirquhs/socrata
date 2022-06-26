@@ -123,6 +123,11 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Set the value of the textView after getting the value from firebase
+     * @param dataRef
+     * @param textView
+     */
     public void readDataToTextView(DatabaseReference dataRef, TextView textView) {
 
         dataRef.addValueEventListener(new ValueEventListener() {

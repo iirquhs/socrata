@@ -146,23 +146,6 @@ public class ModuleUpdateActivity extends AppCompatActivity {
 
                     }
                 });
-//
-//                moduleMap.put(refKey, module);
-//
-//                Log.d("TAG", moduleMap.toString());
-//
-//                myRef.updateChildren(moduleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.d("TAG", task.toString());
-//                            return;
-//                        }
-//                        Toast.makeText(ModuleUpdateActivity.this,"Module updated", Toast.LENGTH_SHORT).show();
-//
-//                        finish();
-//                    }
-//                });
             }
 
         });

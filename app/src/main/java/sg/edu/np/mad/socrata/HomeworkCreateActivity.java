@@ -96,6 +96,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                     return;
                 }
 
+                // Check if homework name is taken for this module
                 for (Homework homework : homeworkArrayList) {
                     if (homework.getHomeworkName().equals(hwName) && moduleMap.get(homework.getModuleRef()).getModuleName().equals(moduleName)) {
                         editTextHomeworkName.setError("Homework name is taken");
@@ -162,6 +163,9 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Retrieve all the user homework from the database
+     */
     private void getHomework() {
         currentUserRef.child("homework").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -179,6 +183,12 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Find and return the specific module given the moduleName
+     * @param moduleMap
+     * @param moduleName
+     * @return
+     */
     private String findModule(Map<String, Module> moduleMap, String moduleName) {
         for (Map.Entry<String, Module> moduleEntry : moduleMap.entrySet()) {
             if (moduleEntry.getValue().getModuleName().equals(moduleName)) {
@@ -188,6 +198,10 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Set module drop down list to display to the user
+     * @param moduleArrayList
+     */
     private void setModuleDropDown(Collection<Module> moduleArrayList) {
         ArrayList<String> nameList = new ArrayList<>();
 
@@ -225,6 +239,10 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Convert today's date into string
+     * @return
+     */
     private String getTodaysDate() {
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         return makeDateString(zonedDateTime.getDayOfMonth(), zonedDateTime.getMonthValue(), zonedDateTime.getYear());

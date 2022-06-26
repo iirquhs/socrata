@@ -74,6 +74,11 @@ public class HomeFragment extends Fragment {
 
     }
 
+    /**
+     * Retrieve all study sessions from firebase that belongs to the user
+     * and calculate how much time the user has studied this week
+     * @param moduleReference
+     */
     private void updateTotalTimeStudiedThisWeek(DatabaseReference moduleReference) {
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -88,6 +93,8 @@ public class HomeFragment extends Fragment {
                         if (studySession == null) {
                             continue;
                         }
+
+                        //Check if the study session is within this week and sum it to the total study time for this week
 
                         LocalDateTime studyStartDateTime = studySession.ConvertDueDateTime(studySession.getStudyStartDateTime());
 
@@ -113,6 +120,11 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Retrieve all homework from firebase that belongs to the user
+     * and calculate how many homework is not completed that is due this week
+     * @param homeworkReference
+     */
     private void updateHomeworkDueThisWeek(DatabaseReference homeworkReference) {
         homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -122,6 +134,8 @@ public class HomeFragment extends Fragment {
 
                 for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
                     Homework homework = homeworkSnapshot.getValue(Homework.class);
+
+                    //Check if the homework is due this week and sum it to the total homework that needs to be submitted
 
                     LocalDateTime dueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
 
@@ -145,6 +159,10 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Retrieve the username from firebase and update to the textViewUsername
+     * @param usernameReference
+     */
     private void updateUsername(DatabaseReference usernameReference) {
         usernameReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -160,6 +178,10 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Retrieve module and homework map from firebase, convert it into an object
+     * and set the recycler view adapter for homework
+     */
     private void setHomeworkAdapter() {
         DatabaseReference moduleReference = userReference.child("modules");
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -176,6 +198,7 @@ public class HomeFragment extends Fragment {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             ArrayList<Homework> urgentHomeworkArrayList = new ArrayList<>();
 
+                            // Get homework that has less than 24h before the due data and is not done yet.
                             for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
                                 Homework homework = homeworkSnapshot.getValue(Homework.class);
 

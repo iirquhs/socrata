@@ -57,8 +57,6 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
 
         Intent intent = getIntent();
 
-        Gson gson = new Gson();
-
         moduleName = intent.getStringExtra("module_name");
 
         textViewModuleName = findViewById(R.id.textViewModuleName);
@@ -152,6 +150,9 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /**
+     * Insert the study session into firebase for that specific module
+     */
     private void insertStudySession() {
         // Convert millisecond to second
         double studyTime = ((double) (SystemClock.elapsedRealtime() - chronometer.getBase())) / 1000.0;

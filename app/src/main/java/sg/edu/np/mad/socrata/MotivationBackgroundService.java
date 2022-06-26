@@ -52,8 +52,7 @@ public class MotivationBackgroundService extends Service {
                     int importance = NotificationManager.IMPORTANCE_DEFAULT;
                     NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
                     channel.setDescription(description);
-                    // Register the channel with the system; you can't change the importance
-                    // or other notification behaviors after this
+                    // Register the channel with the system
                     NotificationManager notificationManager = getSystemService(NotificationManager.class);
                     notificationManager.createNotificationChannel(channel);
                 }
@@ -65,7 +64,7 @@ public class MotivationBackgroundService extends Service {
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
                         .setSmallIcon(R.mipmap.ic_launcher_round)
-                        .setContentTitle("Quote of the day!")
+                        .setContentTitle("Motivational Quote!")
                         .setContentText(randomQuote) //+ " Start studying now!")
                         .setContentIntent(pendingIntent)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
@@ -81,6 +80,7 @@ public class MotivationBackgroundService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    // Send a get request to the website to get a random quote
     private String getRandomQuote() throws Exception {
 
         StringBuilder output = new StringBuilder();

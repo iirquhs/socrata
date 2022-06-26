@@ -61,6 +61,11 @@ public class Homework {
         this.dueDateTimeString = dueDateTimeString;
     }
 
+    /**
+     * Convert dueDateTimeString into LocalDateTime
+     * @param dueDateTimeString
+     * @return
+     */
     public LocalDateTime ConvertDueDateTime(String dueDateTimeString) {
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive().appendPattern("MMM dd yyyy HH:mm")
@@ -70,6 +75,11 @@ public class Homework {
         return dueDateTime;
     }
 
+    /**
+     * Calculate the time between the current time and the due date time and return the seconds left
+     * @param dueDateTime
+     * @return
+     */
     public long CalculateSecondsLeftBeforeDueDate(LocalDateTime dueDateTime) {
 
         LocalDateTime currentTime = LocalDateTime.now();

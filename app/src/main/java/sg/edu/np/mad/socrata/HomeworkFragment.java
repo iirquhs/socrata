@@ -73,6 +73,10 @@ public class HomeworkFragment extends Fragment {
 
     }
 
+    /**
+     * Retrieve modules and homework from firebase, parse the object
+     * and set it to the recycler view
+     */
     private void updateHomework() {
         DatabaseReference moduleReference = userReference.child("modules");
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -130,6 +134,10 @@ public class HomeworkFragment extends Fragment {
         });
     }
 
+    /**
+     * Retrieve homework from firebase, count the number of homework in progress and homework
+     * completed and update the dashboard
+     */
     private void updateHomeworkStatus() {
         DatabaseReference homeworkReference = userReference.child("homework");
 
