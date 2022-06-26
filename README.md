@@ -1,6 +1,10 @@
 # socrata
 
-team: Yuntao (S10219150), Ray zin (S10222457), Shuqri, Elliot
+####Team:
+    Leo Yun Tao (10219150H)
+    Ng Ray Zin (10222457H)
+    Shuqri Shaifuddin (10227932G)
+    Elliot Ng
 
 
 ### Description:
