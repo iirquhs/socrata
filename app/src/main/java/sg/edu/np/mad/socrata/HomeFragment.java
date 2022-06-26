@@ -174,7 +174,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w("tah", "onCancelled", databaseError.toException());
+                Log.w("Error", "onCancelled", databaseError.toException());
             }
         });
     }
