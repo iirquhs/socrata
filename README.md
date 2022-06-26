@@ -25,7 +25,7 @@ Create new homework tasks to stop your procrastination!
 
 ## Contributions/roles:
 
-###Leo Yun Tao (backend + frontend): 
+### Leo Yun Tao (backend + frontend): 
 - basically everything 
 - improve code on everything
 - homework 
