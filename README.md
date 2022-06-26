@@ -44,6 +44,7 @@ Create new homework tasks to stop your procrastination!
 - introduction sliders/user guide
 - firebase
 - slides
+- github
 
 ### Shuqri Bin Shaifuddin (backend + frontend + google play console guy): 
 - everything in profile
