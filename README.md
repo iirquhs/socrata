@@ -49,8 +49,6 @@ appendix:
 prototypes:
 https://www.figma.com/file/QRCPsSVYvD4QMdfuZrFKYs/User-Stories-map?node-id=0%3A1
 
-screenshots:
-
 homepage:
 ![homepage:](https://user-images.githubusercontent.com/94064635/175819023-32f4a4f4-874e-4299-9f64-78711d0e7970.png)
 
