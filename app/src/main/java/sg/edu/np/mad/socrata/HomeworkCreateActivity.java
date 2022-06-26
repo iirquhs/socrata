@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class HomeworkCreateActivity extends AppCompatActivity {
@@ -98,7 +99,8 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
                 // Check if homework name is taken for this module
                 for (Homework homework : homeworkArrayList) {
-                    if (homework.getHomeworkName().equals(hwName) && moduleMap.get(homework.getModuleRef()).getModuleName().equals(moduleName)) {
+                    if (homework.getHomeworkName().equalsIgnoreCase(hwName) &&
+                            moduleMap.get(homework.getModuleRef()).getModuleName().equals(moduleName)) {
                         editTextHomeworkName.setError("Homework name is taken");
                         editTextHomeworkName.requestFocus();
                         return;

@@ -3,6 +3,7 @@ package sg.edu.np.mad.socrata;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,7 +70,8 @@ public class ModuleFragment extends Fragment {
                         //Get map of users in datasnapshot
                         Map<String, Module> moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
 
-                        if (moduleMap == null) {
+                        if (moduleMap == null || moduleMap.size() <= 0) {
+                            Toast.makeText(getContext(), "You have no module created", Toast.LENGTH_SHORT).show();
                             return;
                         }
 

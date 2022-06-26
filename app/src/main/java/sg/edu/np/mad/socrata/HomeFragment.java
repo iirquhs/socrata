@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -210,6 +211,11 @@ public class HomeFragment extends Fragment {
                                 if (secondsLeft / 3600.0 < 24 && homework.getStatus().equals("In Progress")) {
                                     urgentHomeworkArrayList.add(homework);
                                 }
+                            }
+
+                            if (urgentHomeworkArrayList.size() <= 0) {
+                                Toast.makeText(getContext(), "You currently have no homework that is due in 24h", Toast.LENGTH_SHORT).show();
+                                return;
                             }
 
                             HomeworkAdapter homeworkAdapter = new HomeworkAdapter(urgentHomeworkArrayList, moduleMap);

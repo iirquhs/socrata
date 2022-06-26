@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -113,6 +114,10 @@ public class HomeworkFragment extends Fragment {
                             }
 
                             homeworkArrayList.add(homework);
+                        }
+
+                        if (homeworkArrayList.size() <= 0) {
+                            Toast.makeText(getContext(), "You currently have no homework", Toast.LENGTH_SHORT).show();
                         }
 
                         HomeworkAdapter adapter = new HomeworkAdapter(homeworkArrayList, moduleMap);

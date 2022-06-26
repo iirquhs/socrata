@@ -29,7 +29,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class ModuleUpdateActivity extends AppCompatActivity {
 
@@ -199,7 +201,7 @@ public class ModuleUpdateActivity extends AppCompatActivity {
             return false;
         }
 
-        if (moduleNameList.contains(name)) {
+        if (moduleNameList.contains(name.toLowerCase())) {
             editTextModuleName.setError("Module already exists");
             editTextModuleName.requestFocus();
             return false;
@@ -220,7 +222,7 @@ public class ModuleUpdateActivity extends AppCompatActivity {
                 for (Map.Entry<String, Object> entry : moduleMap.entrySet()) {
                     //Get user map
                     Map singleUser = (Map) entry.getValue();
-                    String name = (String) singleUser.get("moduleName");
+                    String name = ((String) Objects.requireNonNull(singleUser.get("moduleName"))).toLowerCase();
 
                     if (name.equals(currentModuleName)) {
                         continue;
