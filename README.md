@@ -41,7 +41,7 @@ Shuqri (backend + frontend):
 - design and screen shot for google play store
 - upload and update app in google play store
 - set up github
-- -firebase
+- firebase
 
 Elliot (lost): 
 - nothing
