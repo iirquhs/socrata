@@ -1,7 +1,7 @@
 # socrata
 
 team: Yuntao (S10219150), Ray zin (S10222457), Shuqri, Elliot
-
+```
 Description:
 Track your homework and study times in one app.
 An assignment for partial fulfilment of the coursework of Mobile Applications development AY2022/23 in Ngee Ann Polytechnic
@@ -82,3 +82,4 @@ Users can only create homework if they had already made a module
 Users can click into the modules made to see module information
 Users can record study sessions to hit their set study goal
 Users may edit/ delete their account
+```
