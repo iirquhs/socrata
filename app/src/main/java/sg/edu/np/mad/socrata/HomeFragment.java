@@ -188,47 +188,45 @@ public class HomeFragment extends Fragment {
         moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Map<String, Module> moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) snapshot.getValue());
-
-                    Log.d("TAG", moduleMap.toString());
-
-                    DatabaseReference homeworkReference = userReference.child("homework");
-                    homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            ArrayList<Homework> urgentHomeworkArrayList = new ArrayList<>();
-
-                            // Get homework that has less than 24h before the due data and is not done yet.
-                            for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                                Homework homework = homeworkSnapshot.getValue(Homework.class);
-
-                                assert homework != null;
-                                LocalDateTime homeworkDueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
-
-                                long secondsLeft = homework.CalculateSecondsLeftBeforeDueDate(homeworkDueDate);
-
-                                if (secondsLeft / 3600.0 < 24 && homework.getStatus().equals("In Progress")) {
-                                    urgentHomeworkArrayList.add(homework);
-                                }
-                            }
-
-                            if (urgentHomeworkArrayList.size() <= 0) {
-                                Toast.makeText(getContext(), "You currently have no homework that is due in 24h", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-
-                            HomeworkAdapter homeworkAdapter = new HomeworkAdapter(urgentHomeworkArrayList, moduleMap);
-
-                            recyclerView.setAdapter(homeworkAdapter);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                if (!snapshot.exists()) {
+                    Toast.makeText(getContext(), "You currently have no homework that is due in 24h", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                Map<String, Module> moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) snapshot.getValue());
+
+                Log.d("TAG", moduleMap.toString());
+
+                DatabaseReference homeworkReference = userReference.child("homework");
+                homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<Homework> urgentHomeworkArrayList = new ArrayList<>();
+
+                        // Get homework that has less than 24h before the due data and is not done yet.
+                        for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
+                            Homework homework = homeworkSnapshot.getValue(Homework.class);
+
+                            assert homework != null;
+                            LocalDateTime homeworkDueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
+
+                            long secondsLeft = homework.CalculateSecondsLeftBeforeDueDate(homeworkDueDate);
+
+                            if (secondsLeft / 3600.0 < 24 && homework.getStatus().equals("In Progress")) {
+                                urgentHomeworkArrayList.add(homework);
+                            }
+                        }
+
+                        HomeworkAdapter homeworkAdapter = new HomeworkAdapter(urgentHomeworkArrayList, moduleMap);
+
+                        recyclerView.setAdapter(homeworkAdapter);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override
