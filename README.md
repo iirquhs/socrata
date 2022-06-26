@@ -8,20 +8,16 @@ Description:
 
 Track your homework and study times in one app.
 
-
 An assignment for partial fulfilment of the coursework of Mobile Applications development AY2022/23 in Ngee Ann Polytechnic
-
 
 Socrata is a FREE student productivity app that enables you to stay on track and keep you stress free!
 
-
 A numbered progress section allows you to see a brief overview of the current week's progress! Take care of urgent tasks needed to be completed by the week!
-
 
 Study for your modules with our in-built stopwatch! Add goals to keep you focused!
 
-
 Create new homework tasks to stop your procrastination!
+
 
 Contributions/roles:
 Yuntao (backend + frontend): 
