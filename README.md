@@ -37,6 +37,7 @@ Rayzin (backend + frontend):
 
 Shuqri (backend + frontend + google play console guy): 
 - everything in profile
+- homework design
 - navigation bar
 - design and screen shot for google play store
 - upload and update app in google play store
