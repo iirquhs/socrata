@@ -35,13 +35,14 @@ Rayzin (backend + frontend):
 - firebase
 - slides
 
-Shuqri (backend + frontend): 
+Shuqri (backend + frontend + google play console guy): 
 - everything in profile
 - navigation bar
 - design and screen shot for google play store
 - upload and update app in google play store
 - set up github
 - firebase
+
 
 Elliot (lost): 
 - nothing
