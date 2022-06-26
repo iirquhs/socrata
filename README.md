@@ -1,9 +1,9 @@
-## socrata
+# socrata
 
 team: Yuntao (S10219150), Ray zin (S10222457), Shuqri, Elliot
 
 
-# Description:
+### Description:
 
 
 Track your homework and study times in one app.
@@ -14,7 +14,7 @@ Study for your modules with our in-built stopwatch! Add goals to keep you focuse
 Create new homework tasks to stop your procrastination!
 
 
-# Contributions/roles:
+### Contributions/roles:
 Yuntao (backend + frontend): 
 - basically everything 
 - improve code on everything
@@ -50,7 +50,7 @@ Elliot (lost):
 
 
 
-# Appendix:
+### Appendix:
 
 prototypes:
 https://www.figma.com/file/QRCPsSVYvD4QMdfuZrFKYs/User-Stories-map?node-id=0%3A1
