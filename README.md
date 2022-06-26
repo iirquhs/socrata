@@ -1,7 +1,6 @@
 # socrata
 
 team: Yuntao (S10219150), Ray zin (S10222457), Shuqri, Elliot
-```
 Description:
 Track your homework and study times in one app.
 An assignment for partial fulfilment of the coursework of Mobile Applications development AY2022/23 in Ngee Ann Polytechnic
@@ -12,36 +11,36 @@ Create new homework tasks to stop your procrastination!
 
 Contributions/roles:
 Yuntao (backend + frontend): 
--basically everything 
--improve code on everything
--homework 
--backend of home page 
--login/sign-up page
--study timer
--set up firebase
--quote notification
--firebase
--slides
+- basically everything 
+- improve code on everything
+- homework 
+- backend of home page 
+- login/sign-up page
+- study timer
+- set up firebase
+- quote notification
+- firebase
+- slides
 
 Rayzin (backend + frontend): 
--whole of module
--moderate amount on homework
--homepage design
--introduction sliders/user guide
--firebase
--slides
+- whole of module
+- moderate amount on homework
+- homepage design
+- introduction sliders/user guide
+- firebase
+- slides
 
 Shuqri (backend + frontend): 
--everything in profile
--navigation bar
--design and screen shot for google play store
--upload and update app in google play store
--set up github
+- everything in profile
+- navigation bar
+- design and screen shot for google play store
+- upload and update app in google play store
+- set up github
 
 Elliot (lost): 
--nothing
--joined google developers
--pulled code from github
+- nothing
+- joined google developers
+- pulled code from github
 
 
 
@@ -82,4 +81,3 @@ Users can only create homework if they had already made a module
 Users can click into the modules made to see module information
 Users can record study sessions to hit their set study goal
 Users may edit/ delete their account
-```
