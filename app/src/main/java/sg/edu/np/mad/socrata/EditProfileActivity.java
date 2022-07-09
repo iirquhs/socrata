@@ -19,11 +19,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -33,18 +30,18 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+        LocalStorage localStorage = new LocalStorage(this);
+        FirebaseUtils firebaseUtils = new FirebaseUtils();
+
+        User user = localStorage.getUser();
 
         // GET USERNAME STRING
         TextView profileUsername = findViewById(R.id.editProfileUsername);
-        DatabaseReference usernameRef = userRef.child("username");
-        readDataToTextView(usernameRef, profileUsername);
+        profileUsername.setText(user.getUsername());
 
         // GET EMAIL STRING
         TextView profileEmail = findViewById(R.id.editProfileEmail);
-        DatabaseReference emailRef = userRef.child("email");
-        readDataToTextView(emailRef, profileEmail);
+        profileEmail.setText(user.getEmail());
 
         // IF SAVE BUTTON IS CLICKED
         Button profileSaveBtn = findViewById(R.id.profileSaveBtn);
@@ -57,8 +54,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 String newUsername = profileUsername.getText().toString();
                 String newEmailAddr = profileEmail.getText().toString();
 
-                usernameRef.setValue(newUsername);
-                emailRef.setValue(newEmailAddr);
+                user.setUsername(newUsername);
+                user.setEmail(newEmailAddr);
+
+                localStorage.setUser(user);
+                firebaseUtils.updateUser(user);
 
                 dialog.dismiss();
                 finish();
@@ -122,27 +122,5 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-    /**
-     * Set the value of the textView after getting the value from firebase
-     * @param dataRef
-     * @param textView
-     */
-    public void readDataToTextView(DatabaseReference dataRef, TextView textView) {
-
-        dataRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                String value = snapshot.getValue(String.class);
-                textView.setText(value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Log.w(TAG, textView.toString() + ":onCancelled", error.toException());
-            }
-        });
-    }
-
 
 }

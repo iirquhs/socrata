@@ -6,25 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomeworkFragment extends Fragment {
 
@@ -32,8 +21,8 @@ public class HomeworkFragment extends Fragment {
 
     RecyclerView recyclerView;
 
-    String currentUser;
-    DatabaseReference userReference;
+    LocalStorage localStorage;
+    FirebaseUtils firebaseUtils;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,13 +41,8 @@ public class HomeworkFragment extends Fragment {
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
 
-        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
-
-        updateHomeworkStatus();
-
-        updateHomework();
+        localStorage = new LocalStorage(requireActivity());
+        firebaseUtils = new FirebaseUtils();
 
         setAddHomeworkButton(view);
 
@@ -69,112 +53,45 @@ public class HomeworkFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        updateHomeworkStatus();
-        updateHomework();
+        ArrayList<Module> moduleArrayList = localStorage.getModuleArrayList();
+
+        ArrayList<Homework> homeworkArrayList = HomeworkUtils.getAllHomework(moduleArrayList);
+
+        updateHomeworkStatus(homeworkArrayList);
+        updateHomework(moduleArrayList);
 
     }
 
-    /**
-     * Retrieve modules and homework from firebase, parse the object
-     * and set it to the recycler view
-     */
-    private void updateHomework() {
-        DatabaseReference moduleReference = userReference.child("modules");
-        moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Map<String, Module> moduleMap = new HashMap<>();
+    private void updateHomework(ArrayList<Module> moduleArrayList) {
 
-                for (DataSnapshot moduleEntry : snapshot.getChildren()) {
-                    String moduleRef = moduleEntry.getKey();
+        ArrayList<Homework> notCompletedHomework = HomeworkUtils.splitByIsCompletedHomeworkArrayList(moduleArrayList)[0];
 
-                    int targetHoursPerWeek = moduleEntry.child("targetHoursPerWeek").getValue(int.class);
-                    @ColorInt int color = moduleEntry.child("color").getValue(int.class);
-                    String moduleName = moduleEntry.child("moduleName").getValue(String.class);
-                    String targetGrade = moduleEntry.child("targetGrade").getValue(String.class);
-
-                    Module module = new Module(moduleName, targetGrade, targetHoursPerWeek, color);
-
-                    moduleMap.put(moduleRef, module);
-                }
-
-
-                DatabaseReference homeworkReference = userReference.child("homework");
-                homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ArrayList<Homework> homeworkArrayList = new ArrayList<>();
-
-                        for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                            Homework homework = homeworkSnapshot.getValue(Homework.class);
-
-                            assert homework != null;
-                            if (homework.getStatus().equals("Done")) {
-                                continue;
-                            }
-
-                            homeworkArrayList.add(homework);
-                        }
-
-                        if (homeworkArrayList.size() <= 0) {
-                            Toast.makeText(getContext(), "You currently have no homework", Toast.LENGTH_SHORT).show();
-                        }
-
-                        HomeworkAdapter adapter = new HomeworkAdapter(homeworkArrayList, moduleMap);
-
-                        recyclerView.setAdapter(adapter);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        HomeworkAdapter adapter = new HomeworkAdapter(notCompletedHomework, moduleArrayList);
+        recyclerView.setAdapter(adapter);
     }
 
     /**
-     * Retrieve homework from firebase, count the number of homework in progress and homework
+     * count the number of homework in progress and homework
      * completed and update the dashboard
+     * @param homeworkArrayList
      */
-    private void updateHomeworkStatus() {
-        DatabaseReference homeworkReference = userReference.child("homework");
+    private void updateHomeworkStatus(ArrayList<Homework> homeworkArrayList) {
+        int homeworkInProgressCount = 0;
+        int homeworkCompletedCount = 0;
 
-        homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        for (Homework homework : homeworkArrayList) {
+            boolean isCompleted = homework.getIsCompleted();
 
-                int homeworkInProgressCount = 0;
-                int homeworkCompletedCount = 0;
-
-                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                    Homework homework = homeworkSnapshot.getValue(Homework.class);
-
-                    String homeworkStatus = homework.getStatus();
-
-                    if (homeworkStatus.equals("In Progress")) {
-                        homeworkInProgressCount++;
-                    } else if (homeworkStatus.equals("Done")) {
-                        homeworkCompletedCount++;
-                    }
-                }
-
-                textViewCompleted.setText(Integer.toString(homeworkCompletedCount));
-                textViewInProgress.setText(Integer.toString(homeworkInProgressCount));
-
+            if (isCompleted) {
+                homeworkCompletedCount++;
+            } else {
+                homeworkInProgressCount++;
             }
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        textViewCompleted.setText(Integer.toString(homeworkCompletedCount));
+        textViewInProgress.setText(Integer.toString(homeworkInProgressCount));
 
-            }
-        });
     }
 
     private void setAddHomeworkButton(View view) {

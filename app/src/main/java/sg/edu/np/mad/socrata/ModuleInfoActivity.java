@@ -3,7 +3,6 @@ package sg.edu.np.mad.socrata;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,40 +11,43 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Map;
 
 public class ModuleInfoActivity extends AppCompatActivity {
-    TextView textViewModuleName, hours, goal, purplePercentage, greyPercentage, viewMore, percentageText, completedStatus, inProgressStatus, addHomework;
+    TextView textViewModuleName, hours, goal,
+            purplePercentage, greyPercentage,
+            viewMore, percentageText,
+            completedStatus, inProgressStatus,
+            addHomework;
+
     ImageButton backButton;
+
     ImageView edit, delete;
+
     ProgressBar progressBar;
+
     Button buttonStudy;
 
     RecyclerView recyclerView;
 
-    Map<String, Module> moduleMap;
+    Module module;
 
-    DatabaseReference userReference;
+    String moduleName;
 
-    String moduleRef;
+    LocalStorage localStorage;
+
+    ArrayList<Module> moduleArrayList;
+
+    FirebaseUtils firebaseUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        moduleRef = intent.getStringExtra("moduleRef");
+        moduleName = intent.getStringExtra("module_name");
 
         textViewModuleName = findViewById(R.id.moduleName);
         hours = findViewById(R.id.targetHours);
@@ -88,17 +90,30 @@ public class ModuleInfoActivity extends AppCompatActivity {
 
         LinearLayoutManager layout = new LinearLayoutManager(ModuleInfoActivity.this);
 
+        firebaseUtils = new FirebaseUtils();
+
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
+    }
 
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
+        localStorage = new LocalStorage(this);
 
+        User user = localStorage.getUser();
+
+        moduleArrayList = user.getModuleArrayList();
+
+        module = moduleArrayList.get(ModuleUtils.findModule(moduleArrayList, moduleName));
+
+        updateModuleInfo();
     }
 
     /**
      * Redirect to timer activity
+     *
      * @param module
      */
     private void startTimer(Module module) {
@@ -112,166 +127,93 @@ public class ModuleInfoActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        DatabaseReference moduleReference = userReference.child("modules");
-        updateModuleInfo(moduleReference);
-    }
-
     /**
-     * Retrieve all user modules from firebase and update the module information
-     * @param moduleReference
+     * update the module information
+     *
      */
-    private void updateModuleInfo(DatabaseReference moduleReference) {
-        moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    private void updateModuleInfo() {
+        startTimer(module);
+        editModule(module);
+        deleteModule(module);
 
-                moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) snapshot.getValue());
+        int hoursStudied = module.getTargetHoursPerWeek();
 
-                assert moduleMap != null;
-                Module module = moduleMap.get(moduleRef);
+        textViewModuleName.setText(module.getModuleName());
 
-                startTimer(module);
-                editModule(module);
-                deleteModule(module);
+        hours.setText(Integer.toString(hoursStudied));
 
-                assert module != null;
-                int H = module.getTargetHoursPerWeek();
-                textViewModuleName.setText(module.getModuleName());
-                hours.setText(Integer.toString(H));
-                goal.setText(module.getTargetGrade());
+        goal.setText(module.getTargetGrade());
 
-                DatabaseReference homeworkReference = userReference.child("homework");
-                setHomeworkRecyclerView(homeworkReference, module);
+        setHomeworkRecyclerView();
 
-                String moduleRef = "";
+        ArrayList<Double> studyTimings = new ArrayList<>();
 
-                for (Map.Entry<String, Module> moduleEntry : moduleMap.entrySet()) {
-                    if (moduleEntry.getValue().getModuleName().equals(module.getModuleName())) {
-                        moduleRef = moduleEntry.getKey();
-                        break;
-                    }
-                }
-
-                ArrayList<Double> studyTimings = new ArrayList<>();
-
-                DatabaseReference studySessionReference = userReference.child("modules").child(moduleRef).child("studySessions");
-
-                setStudyProgressBarSection(studyTimings, studySessionReference, module);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        setStudyProgressBarSection(studyTimings, module);
     }
 
     /**
      * Get the total study time divided by the target study time and multiplied by 100 to set the progress
      * bar percentage and the percentage text
+     *
      * @param studyTimings
-     * @param studySessionReference
      * @param module
      */
-    private void setStudyProgressBarSection(ArrayList<Double> studyTimings, DatabaseReference studySessionReference, Module module) {
-        studySessionReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot studySessionSnapshot : snapshot.getChildren()) {
-                    Double time = studySessionSnapshot.child("studyTime").getValue(Double.class);
-                    studyTimings.add(time);
+    private void setStudyProgressBarSection(ArrayList<Double> studyTimings,  Module module) {
+        for (StudySession studySession : module.getStudySessionArrayList()) {
+            Double time = studySession.getStudyTime();
+            studyTimings.add(time);
+        }
 
-                    assert time != null;
-                }
+        // in hours
+        double totalStudyTime = getTotalStudyTime(studyTimings);
 
-                // in hours
-                double totalStudyTime = getTotalStudyTime(studyTimings);
+        DecimalFormat df = new DecimalFormat("#.#");
 
-                DecimalFormat df = new DecimalFormat("#.#");
+        checkWeek();
 
-                checkWeek();
+        greyPercentage.setText(" / " + module.getTargetHoursPerWeek() + "h");
+        purplePercentage.setText(String.format("%.2fh", totalStudyTime));
 
-                greyPercentage.setText(" / " + module.getTargetHoursPerWeek() + "h");
-                purplePercentage.setText(String.format("%.2fh", totalStudyTime));
+        Double percentage = (totalStudyTime / module.getTargetHoursPerWeek()) * 100;
 
-                Double percentage = (totalStudyTime / module.getTargetHoursPerWeek()) * 100;
+        progressBar.setProgress((int) Math.round(percentage));
 
-                progressBar.setProgress((int) Math.round(percentage));
+        percentageText.setText((df.format(percentage) + "%"));
 
-                percentageText.setText((df.format(percentage) + "%"));
-
-                if (percentage >= 100) {
-                    percentageText.setTextColor(getResources().getColor(com.github.dhaval2404.colorpicker.R.color.light_green_A700));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        if (percentage >= 100) {
+            percentageText.setTextColor(getResources().getColor(com.github.dhaval2404.colorpicker.R.color.light_green_A700));
+        }
     }
 
     /**
      * Gets all user homework and modules and insert the top 3 most urgent homework into the recycler view
-     * @param homeworkReference
-     * @param module
+     *
      */
-    private void setHomeworkRecyclerView(DatabaseReference homeworkReference, Module module) {
-        homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    private void setHomeworkRecyclerView() {
+        ArrayList<Homework> inProgressHomeworkArrayList = HomeworkUtils.splitByIsCompletedHomeworkArrayList(module)[0];
+        ArrayList<Homework> doneHomeworkArrayList = HomeworkUtils.splitByIsCompletedHomeworkArrayList(module)[1];
 
-                ArrayList<Homework> inProgressHomeworkArrayList = new ArrayList<>();
+        if (inProgressHomeworkArrayList.size() > 0) {
+            //addHomework.setVisibility(View.VISIBLE);
+            viewMore.setVisibility(View.VISIBLE);
+        }
 
-                ArrayList<Homework> doneHomeworkArrayList = new ArrayList<>();
+        int inProgress = inProgressHomeworkArrayList.size();
 
-                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                    Homework homework = homeworkSnapshot.getValue(Homework.class);
+        int done = doneHomeworkArrayList.size();
 
-                    assert homework != null;
-                    String moduleRef = homework.getModuleRef();
-                    Module moduleCheck = moduleMap.get(moduleRef);
+        inProgressStatus.setText(Integer.toString(inProgress));
 
-                    assert moduleCheck != null;
-                    if (moduleCheck.getModuleName().equals(module.getModuleName()) && inProgressHomeworkArrayList.size() < 3 && homework.getStatus().equals("In Progress")) {
-                        inProgressHomeworkArrayList.add(homework);
-                    }
+        completedStatus.setText(Integer.toString(done));
 
-                    assert moduleCheck != null;
-                    if (moduleCheck.getModuleName().equals(module.getModuleName()) && homework.getStatus().equals("Done")) {
-                        doneHomeworkArrayList.add(homework);
-                    }
+        if (inProgressHomeworkArrayList.size() > 3) {
+            inProgressHomeworkArrayList = new ArrayList<>(inProgressHomeworkArrayList.subList(0, 3));
+        }
 
-                }
-
-                if (inProgressHomeworkArrayList.size() > 0) {
-                    //addHomework.setVisibility(View.VISIBLE);
-                    viewMore.setVisibility(View.VISIBLE);
-                }
-
-                Integer inProgress = inProgressHomeworkArrayList.size();
-
-                Integer done = doneHomeworkArrayList.size();
-
-                inProgressStatus.setText(inProgress.toString());
-
-                completedStatus.setText(done.toString());
-
-                HomeworkAdapter adapter = new HomeworkAdapter(inProgressHomeworkArrayList, moduleMap);
-
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        HomeworkAdapter adapter = new HomeworkAdapter(inProgressHomeworkArrayList, localStorage.getModuleArrayList());
+        recyclerView.setAdapter(adapter);
     }
+
 
     private void createHomeWork() {
         View.OnClickListener createHw = new View.OnClickListener() {
@@ -302,33 +244,23 @@ public class ModuleInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ModuleInfoActivity.this);
 
-                builder.setMessage("Are you sure you want to delete " + module.getModuleName() + " module?");
-
-                String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference Module = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
-                Query delete = Module.orderByChild("moduleName").equalTo(module.getModuleName());
+                builder.setMessage("Are you sure you want to delete " + moduleName + " module?");
 
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        delete.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot appleSnapshot : dataSnapshot.getChildren()) {
-                                    appleSnapshot.getRef().removeValue();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.e("tag", "onCancelled", databaseError.toException());
-                            }
-                        });
-
                         Toast.makeText(ModuleInfoActivity.this, "Module deleted", Toast.LENGTH_SHORT).show();
+
+                        ModuleUtils.removeModule(moduleArrayList, module);
+
+                        localStorage.setModuleArrayList(moduleArrayList);
+
+                        firebaseUtils.updateModuleArrayList(moduleArrayList);
+
                         finish();
                     }
                 });
+
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

@@ -18,12 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -62,55 +56,49 @@ public class ModuleUpdateActivity extends AppCompatActivity {
             Color.parseColor("#ffff4444")
     };
 
+    User user;
+
     @ColorInt
     Integer selectedColour = colours[0];
 
     Map<Integer, View> colourToView = new LinkedHashMap<Integer, View>();
 
-    List<String> moduleNameList = new ArrayList<>();
-
-    DatabaseReference myRef;
-
-    String refKey;
+    boolean isEditing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_module);
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Intent intent = getIntent();
 
-        myRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser).child("modules");
-        refKey = myRef.push().getKey();
+        LocalStorage localStorage = new LocalStorage(this);
+        FirebaseUtils firebaseUtils = new FirebaseUtils();
+
+        user = localStorage.getUser();
+
+        Intent intent = getIntent();
 
         Gson gson = new Gson();
         Module module = gson.fromJson(intent.getStringExtra("module"), Module.class);
 
         textViewTitle = findViewById(R.id.sliderTitle);
 
-        if (module != null) {
-            textViewTitle.setText("Edit Module");
-            selectedColour = module.getColor();
-            getModuleNames(myRef, module.getModuleName());
-            getModuleRefKey(module.getModuleName());
-
-        } else {
-            getModuleNames(myRef, null);
-        }
-
-        //Gets the colour
-        colourPicker();
-
         editTextModuleName = findViewById(R.id.updatemodulename);
         editTextTargetHours = findViewById(R.id.updatehours);
         editTextGoal = findViewById(R.id.updategoal);
 
         if (module != null) {
+            textViewTitle.setText("Edit Module");
+            selectedColour = module.getColor();
+
             editTextModuleName.setText(module.getModuleName());
             editTextTargetHours.setText(Integer.toString(module.getTargetHoursPerWeek()));
             editTextGoal.setText(module.getTargetGrade());
             selectedColour = module.getColor();
+            isEditing = true;
         }
+
+        //Gets the colour
+        colourPicker();
 
         ImageButton buttonBack = findViewById(R.id.backButton);
         buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -130,47 +118,25 @@ public class ModuleUpdateActivity extends AppCompatActivity {
 
                 if (!isInputValid(name, targetHours, goal)) return;
 
-                Module module = new Module(name, goal, Integer.parseInt(targetHours), selectedColour);
+                Module newModule = new Module(name, goal, Integer.parseInt(targetHours), selectedColour);
 
-                myRef.child(refKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        myRef.child(refKey).child("color").setValue(module.getColor());
-                        myRef.child(refKey).child("moduleName").setValue(module.getModuleName());
-                        myRef.child(refKey).child("targetGrade").setValue(module.getTargetGrade());
-                        myRef.child(refKey).child("targetHoursPerWeek").setValue(module.getTargetHoursPerWeek());
-
-                        finish();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-
-        });
-
-    }
-
-    private void getModuleRefKey(String moduleName) {
-        Query q = myRef.orderByChild("moduleName").equalTo(moduleName);
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot module : snapshot.getChildren()) {
-                    Log.d("TAGss", module.getKey());
-
-                    refKey = module.getKey();
+                if (isEditing) {
+                    assert module != null;
+                    newModule.setHomeworkArrayList(module.getHomeworkArrayList());
+                    newModule.setStudySessionArrayList(module.getStudySessionArrayList());
+                    ModuleUtils.replaceModule(user.getModuleArrayList(), newModule, module.getModuleName());
+                } else {
+                    user.getModuleArrayList().add(newModule);
                 }
+
+                localStorage.setUser(user);
+                firebaseUtils.updateUser(user);
+
+                finish();
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
         });
+
     }
 
     private boolean isInputValid(String name, String targetHours, String goal) {
@@ -181,8 +147,8 @@ public class ModuleUpdateActivity extends AppCompatActivity {
         }
 
         if (targetHours.isEmpty()) {
-            ModuleUpdateActivity.this.editTextTargetHours.setError("set the target hours");
-            ModuleUpdateActivity.this.editTextTargetHours.requestFocus();
+            editTextTargetHours.setError("set the target hours");
+            editTextTargetHours.requestFocus();
             return false;
         }
         if (goal.isEmpty()) {
@@ -191,17 +157,18 @@ public class ModuleUpdateActivity extends AppCompatActivity {
             return false;
         }
         if (Integer.parseInt(targetHours) > 168) {
-            ModuleUpdateActivity.this.editTextTargetHours.setError("a week only has 168 hours");
-            ModuleUpdateActivity.this.editTextTargetHours.requestFocus();
+            editTextTargetHours.setError("a week only has 168 hours");
+            editTextTargetHours.requestFocus();
             return false;
         }
         if (Integer.parseInt(targetHours) < 0 || Integer.parseInt(targetHours) == 0) {
-            ModuleUpdateActivity.this.editTextTargetHours.setError("value cant be 0 or less");
-            ModuleUpdateActivity.this.editTextTargetHours.requestFocus();
+            editTextTargetHours.setError("value cant be 0 or less");
+            editTextTargetHours.requestFocus();
             return false;
         }
 
-        if (moduleNameList.contains(name.toLowerCase())) {
+        ArrayList<String> moduleNames = ModuleUtils.getModuleNames(user.getModuleArrayList());
+        if (moduleNames.contains(name.toLowerCase()) && !isEditing) {
             editTextModuleName.setError("Module already exists");
             editTextModuleName.requestFocus();
             return false;
@@ -209,35 +176,6 @@ public class ModuleUpdateActivity extends AppCompatActivity {
         return true;
     }
 
-    private void getModuleNames(DatabaseReference myRef, String currentModuleName) {
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Map<String, Object> moduleMap = (Map<String, Object>) snapshot.getValue();
-
-                if (moduleMap == null) {
-                    return;
-                }
-
-                for (Map.Entry<String, Object> entry : moduleMap.entrySet()) {
-                    //Get user map
-                    Map singleUser = (Map) entry.getValue();
-                    String name = ((String) Objects.requireNonNull(singleUser.get("moduleName"))).toLowerCase();
-
-                    if (name.equals(currentModuleName)) {
-                        continue;
-                    }
-
-                    moduleNameList.add(name);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
     //#ff00ddff, #ff0099cc, #ff669900, #ffff8800,  #ff99cc00, #ffffbb33, #ffaa66cc, #ffff4444
     private void colourPicker() {

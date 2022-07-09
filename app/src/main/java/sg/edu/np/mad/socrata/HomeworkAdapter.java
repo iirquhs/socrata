@@ -1,5 +1,6 @@
 package sg.edu.np.mad.socrata;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,25 +17,22 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.HomeworkRecyclerViewHolder> {
-    ArrayList<Homework> homeworkArrayList;
 
-    Map<String, Module> moduleMap;
+    ArrayList<Homework> homeworkViewArrayList;
+    ArrayList<Module> moduleArrayList;
 
-    public HomeworkAdapter(ArrayList<Homework> homeworkArrayList, Map<String, Module> moduleMap) {
-        this.homeworkArrayList = homeworkArrayList;
-        this.moduleMap = moduleMap;
+    FirebaseUtils firebaseUtils;
+    LocalStorage localStorage;
+
+    public HomeworkAdapter(ArrayList<Homework> homeworkArrayList, ArrayList<Module> moduleArrayList) {
+        this.homeworkViewArrayList = homeworkArrayList;
+        this.moduleArrayList = moduleArrayList;
     }
 
     @Override
@@ -46,24 +44,18 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     @Override
     public HomeworkRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View c = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_list_homework, parent, false);
+
+        firebaseUtils = new FirebaseUtils();
+        localStorage = new LocalStorage((Activity) parent.getContext());
+
         return new HomeworkRecyclerViewHolder(c);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HomeworkRecyclerViewHolder holder, int position) {
-        Homework homework = homeworkArrayList.get(position);
+        Homework homework = homeworkViewArrayList.get(position);
 
-        String moduleRef = homework.getModuleRef();
-
-        if (moduleMap == null) {
-            return;
-        }
-
-        Module module = moduleMap.get(moduleRef);
-
-        if (module == null) {
-            return;
-        }
+        Module module = moduleArrayList.get(ModuleUtils.findModule(moduleArrayList, homework.getModuleName()));
 
         holder.moduleText.setBackgroundColor(module.getColor());
         holder.moduleText.setText(module.getModuleName());
@@ -85,42 +77,25 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(holder.constraintUrgentIndicator.getContext(), R.color.homework_red_color));
         }
 
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        DatabaseReference homeworkRef = FirebaseDatabase.getInstance()
-                .getReference().child("Users").child(currentUser).child("homework");
-
         // Mark homework as completed
         holder.buttonMarkDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                homework.setStatus("Completed");
-
-                Query homeworkQuery = homeworkRef.orderByChild("moduleRef").equalTo(moduleRef);
-
-                homeworkQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                            Homework newHomework = homeworkSnapshot.getValue(Homework.class);
-
-                            assert newHomework != null;
-                            if (newHomework.getHomeworkName().equals(homework.getHomeworkName())) {
-                                homeworkSnapshot.getRef().child("status").setValue("Done");
-                                break;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                homework.setIsCompleted(true);
 
                 Toast.makeText(view.getContext(), homework.getHomeworkName() + " Mark as Done", Toast.LENGTH_SHORT).show();
 
-                homeworkArrayList.remove(holder.getAdapterPosition());
+                ArrayList<Module> moduleArrayList = localStorage.getModuleArrayList();
+                ArrayList<Homework> homeworkArrayList = moduleArrayList
+                        .get(ModuleUtils.findModule(moduleArrayList, module.getModuleName()))
+                        .getHomeworkArrayList();
+
+                HomeworkUtils.replaceHomework(homeworkArrayList, homework, homework.getHomeworkName(), homework.getModuleName());
+
+                firebaseUtils.updateHomeworkArrayList(homeworkArrayList, moduleArrayList, module.getModuleName());
+                localStorage.setHomeworkArrayList(homeworkArrayList, module.getModuleName());
+
+                homeworkViewArrayList.remove(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
 
             }
@@ -137,31 +112,20 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Query homeworkQuery = homeworkRef.orderByChild("moduleRef").equalTo(moduleRef);
+                        homeworkViewArrayList.remove(holder.getAdapterPosition());
 
-                        homeworkQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                                    Homework newHomework = homeworkSnapshot.getValue(Homework.class);
+                        ArrayList<Module> moduleArrayList = localStorage.getModuleArrayList();
+                        ArrayList<Homework> homeworkArrayList = moduleArrayList
+                                .get(ModuleUtils.findModule(moduleArrayList, module.getModuleName()))
+                                .getHomeworkArrayList();
 
-                                    assert newHomework != null;
-                                    if (newHomework.getHomeworkName().equals(homework.getHomeworkName())) {
-                                        homeworkSnapshot.getRef().removeValue();
-                                        break;
-                                    }
-                                }
-                            }
+                        HomeworkUtils.removeHomework(homeworkArrayList, homework.getHomeworkName(), homework.getModuleName());
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
+                        firebaseUtils.updateHomeworkArrayList(homeworkArrayList, moduleArrayList, module.getModuleName());
+                        localStorage.setHomeworkArrayList(homeworkArrayList, module.getModuleName());
 
                         Toast.makeText(view.getContext(), "Homework Removed Successfully", Toast.LENGTH_SHORT).show();
 
-                        homeworkArrayList.remove(holder.getAdapterPosition());
                         notifyItemRemoved(holder.getAdapterPosition());
 
                     }
@@ -182,10 +146,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
     @Override
     public int getItemCount() {
-        return homeworkArrayList.size();
+        return homeworkViewArrayList.size();
     }
 
-    public class HomeworkRecyclerViewHolder extends RecyclerView.ViewHolder {
+    public static class HomeworkRecyclerViewHolder extends RecyclerView.ViewHolder {
 
         TextView moduleText, textViewHomeworkName, textViewTimeLeft;
 

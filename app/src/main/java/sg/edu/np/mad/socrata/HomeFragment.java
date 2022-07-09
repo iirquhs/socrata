@@ -15,11 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -30,10 +25,6 @@ import java.util.Map;
 public class HomeFragment extends Fragment {
 
     TextView textViewUsername, textViewHoursStudied, textViewHomeworkDueThisWeek;
-
-    String username;
-
-    DatabaseReference userReference;
 
     RecyclerView recyclerView;
 
@@ -58,182 +49,115 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
 
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        LocalStorage localStorage = new LocalStorage(requireActivity());
 
-        userReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
+        User user = localStorage.getUser();
 
-        setHomeworkAdapter();
+        ArrayList<Module> moduleArrayList = user.getModuleArrayList();
 
-        DatabaseReference moduleReference = userReference.child("modules");
-        updateTotalTimeStudiedThisWeek(moduleReference);
+        updateTotalTimeStudiedThisWeek(moduleArrayList);
 
-        DatabaseReference homeworkReference = userReference.child("homework");
-        updateHomeworkDueThisWeek(homeworkReference);
+        ArrayList<Homework> homeworkArrayList = HomeworkUtils.getAllHomework(moduleArrayList);
+        updateHomeworkDueThisWeek(homeworkArrayList);
 
-        DatabaseReference usernameReference = userReference.child("username");
-        updateUsername(usernameReference);
+        setHomeworkAdapter(moduleArrayList, homeworkArrayList);
 
+        updateUsername(user.getUsername());
     }
+
 
     /**
      * Retrieve all study sessions from firebase that belongs to the user
      * and calculate how much time the user has studied this week
-     * @param moduleReference
+     *
+     * @param moduleArrayList
      */
-    private void updateTotalTimeStudiedThisWeek(DatabaseReference moduleReference) {
-        moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    private void updateTotalTimeStudiedThisWeek(ArrayList<Module> moduleArrayList) {
+        Double totalStudyTimeForThisWeek = 0.0;
 
-                Double totalStudyTimeForThisWeek = 0.0;
+        for (Module module : moduleArrayList) {
+            for (StudySession studySession : module.getStudySessionArrayList()) {
 
-                for (DataSnapshot moduleSnapshot : snapshot.getChildren()) {
-                    for (DataSnapshot studySessionSnapshot : moduleSnapshot.child("studySessions").getChildren()) {
-                        StudySession studySession = studySessionSnapshot.getValue(StudySession.class);
+                //Check if the study session is within this week and sum it to the total study time for this week
 
-                        if (studySession == null) {
-                            continue;
-                        }
+                LocalDateTime studyStartDateTime = studySession.ConvertDueDateTime(studySession.getStudyStartDateTime());
 
-                        //Check if the study session is within this week and sum it to the total study time for this week
+                LocalDateTime previousSunday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
+                LocalDateTime nextSunday = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 
-                        LocalDateTime studyStartDateTime = studySession.ConvertDueDateTime(studySession.getStudyStartDateTime());
-
-                        LocalDateTime previousSunday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
-                        LocalDateTime nextSunday = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-
-                        if (studyStartDateTime.isAfter(previousSunday) && studyStartDateTime.isBefore(nextSunday)) {
-                            totalStudyTimeForThisWeek += studySession.getStudyTime();
-                        }
-                    }
+                if (studyStartDateTime.isAfter(previousSunday) && studyStartDateTime.isBefore(nextSunday)) {
+                    totalStudyTimeForThisWeek += studySession.getStudyTime();
                 }
-
-                // Convert second to hour
-                totalStudyTimeForThisWeek /= 3600;
-
-                textViewHoursStudied.setText(String.format("%.2fh", totalStudyTimeForThisWeek));
             }
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        // Convert second to hour
+        totalStudyTimeForThisWeek /= 3600;
 
-            }
-        });
+        textViewHoursStudied.setText(String.format("%.2fh", totalStudyTimeForThisWeek));
     }
 
     /**
      * Retrieve all homework from firebase that belongs to the user
      * and calculate how many homework is not completed that is due this week
-     * @param homeworkReference
+     *
+     * @param homeworkArrayList
      */
-    private void updateHomeworkDueThisWeek(DatabaseReference homeworkReference) {
-        homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    private void updateHomeworkDueThisWeek(ArrayList<Homework> homeworkArrayList) {
+        int homeworkDueThisWeek = 0;
 
-                int homeworkDueThisWeek = 0;
+        for (Homework homework : homeworkArrayList) {
 
-                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                    Homework homework = homeworkSnapshot.getValue(Homework.class);
+            //Check if the homework is due this week and sum it to the total homework that needs to be submitted
 
-                    //Check if the homework is due this week and sum it to the total homework that needs to be submitted
+            LocalDateTime dueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
 
-                    LocalDateTime dueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
+            LocalDateTime previousSunday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
+            LocalDateTime nextSunday = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 
-                    LocalDateTime previousSunday = LocalDateTime.now().with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
-                    LocalDateTime nextSunday = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-
-                    if (dueDate.isAfter(previousSunday) && dueDate.isBefore(nextSunday) && homework.getStatus().equals("In Progress")) {
-                        homeworkDueThisWeek++;
-                    }
-
-                }
-
-                textViewHomeworkDueThisWeek.setText(Integer.toString(homeworkDueThisWeek));
-
+            if (dueDate.isAfter(previousSunday) && dueDate.isBefore(nextSunday) && !homework.getIsCompleted()) {
+                homeworkDueThisWeek++;
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        }
 
-            }
-        });
+        textViewHomeworkDueThisWeek.setText(Integer.toString(homeworkDueThisWeek));
+
     }
 
-    /**
-     * Retrieve the username from firebase and update to the textViewUsername
-     * @param usernameReference
-     */
-    private void updateUsername(DatabaseReference usernameReference) {
-        usernameReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                username = dataSnapshot.getValue(String.class);
-                textViewUsername.setText(username + "!" + " \uD83D\uDC4B");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("Error", "onCancelled", databaseError.toException());
-            }
-        });
+    private void updateUsername(String username) {
+        textViewUsername.setText(username + "!" + " \uD83D\uDC4B");
     }
 
     /**
      * Retrieve module and homework map from firebase, convert it into an object
      * and set the recycler view adapter for homework
      */
-    private void setHomeworkAdapter() {
-        DatabaseReference moduleReference = userReference.child("modules");
-        moduleReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    Toast.makeText(getContext(), "You currently have no homework that is due in 24h", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+    private void setHomeworkAdapter(ArrayList<Module> moduleArrayList, ArrayList<Homework> homeworkArrayList) {
 
-                Map<String, Module> moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) snapshot.getValue());
+        if (homeworkArrayList.size() <= 0) {
+            Toast.makeText(getContext(), "You currently have no homework that is due in 24h", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                Log.d("TAG", moduleMap.toString());
+        ArrayList<Homework> urgentHomeworkArrayList = new ArrayList<>();
 
-                DatabaseReference homeworkReference = userReference.child("homework");
-                homeworkReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ArrayList<Homework> urgentHomeworkArrayList = new ArrayList<>();
+        // Get homework that has less than 24h before the due data and is not done yet.
+        for (Homework homework : homeworkArrayList) {
 
-                        // Get homework that has less than 24h before the due data and is not done yet.
-                        for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                            Homework homework = homeworkSnapshot.getValue(Homework.class);
+            LocalDateTime homeworkDueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
 
-                            assert homework != null;
-                            LocalDateTime homeworkDueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
+            long secondsLeft = homework.CalculateSecondsLeftBeforeDueDate(homeworkDueDate);
 
-                            long secondsLeft = homework.CalculateSecondsLeftBeforeDueDate(homeworkDueDate);
-
-                            if (secondsLeft / 3600.0 < 24 && homework.getStatus().equals("In Progress")) {
-                                urgentHomeworkArrayList.add(homework);
-                            }
-                        }
-
-                        HomeworkAdapter homeworkAdapter = new HomeworkAdapter(urgentHomeworkArrayList, moduleMap);
-
-                        recyclerView.setAdapter(homeworkAdapter);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+            if (secondsLeft / 3600.0 < 24 && !homework.getIsCompleted()) {
+                urgentHomeworkArrayList.add(homework);
             }
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        HomeworkAdapter homeworkAdapter = new HomeworkAdapter(urgentHomeworkArrayList, moduleArrayList);
 
-            }
-        });
+        recyclerView.setAdapter(homeworkAdapter);
     }
+
 
 }

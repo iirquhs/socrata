@@ -14,41 +14,30 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 public class HomeworkCreateActivity extends AppCompatActivity {
     String hwName, moduleName, dueDate;
 
     String createNewModule = "Create New Module + ";
 
-    Map<String, Module> moduleMap;
-    ArrayList<Homework> homeworkArrayList = new ArrayList<>();
+    ArrayList<Module> moduleArrayList;
 
     EditText editTextHomeworkName;
 
     Spinner spinnerModules;
-    DatabaseReference currentUserRef;
+
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
+
+    FirebaseUtils firebaseUtils;
+
+    LocalStorage localStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +46,13 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
         initDatePicker();
 
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        currentUserRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUser);
-
-        getHomework();
-
         dateButton = findViewById(R.id.datePickerButton);
-        dateButton.setText(getTodaysDate());
+        dateButton.setText(getTodayDate());
 
         editTextHomeworkName = findViewById(R.id.editTextHomeworkName);
+
+        localStorage = new LocalStorage(this);
+        firebaseUtils = new FirebaseUtils();
 
         //Difficulty = findViewById(R.id.Difficulty);
         //String[] items = new String[]{"Easy", "Medium", "Hard"};
@@ -97,44 +83,28 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                     return;
                 }
 
+                Module module = moduleArrayList.get(ModuleUtils.findModule(moduleArrayList, moduleName));
+
                 // Check if homework name is taken for this module
-                for (Homework homework : homeworkArrayList) {
-                    if (homework.getHomeworkName().equalsIgnoreCase(hwName) &&
-                            moduleMap.get(homework.getModuleRef()).getModuleName().equals(moduleName)) {
+                for (Homework homework : module.getHomeworkArrayList()) {
+                    if (homework.getHomeworkName().equalsIgnoreCase(hwName)) {
                         editTextHomeworkName.setError("Homework name is taken");
                         editTextHomeworkName.requestFocus();
                         return;
                     }
                 }
 
-                currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String moduleKey = findModule(moduleMap, moduleName);
+                String dueDateTimeString = dateButton.getText() + " 23:59";
 
-                        String dueDateTimeString = dateButton.getText() + " 23:59";
+                Homework homework = new Homework(hwName, dueDateTimeString, module.getModuleName());
 
-                        Map<String, Object> homeworkMap = new HashMap<>();
+                ArrayList<Homework> moduleHomeworkArrayList = module.getHomeworkArrayList();
+                moduleHomeworkArrayList.add(homework);
 
-                        String refKey = snapshot.child("homework").getRef().push().getKey();
+                localStorage.setHomeworkArrayList(moduleHomeworkArrayList, module.getModuleName());
+                firebaseUtils.updateHomeworkArrayList(moduleHomeworkArrayList, moduleArrayList, module.getModuleName());
 
-                        Homework homework = new Homework(hwName, dueDateTimeString, moduleKey);
-
-                        homeworkMap.put(refKey, homework);
-
-                        snapshot.child("homework").getRef().updateChildren(homeworkMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                finish();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                finish();
             }
         });
     }
@@ -142,69 +112,15 @@ public class HomeworkCreateActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateModuleDropDownList();
-    }
-
-    private void updateModuleDropDownList() {
-        currentUserRef.child("modules").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                moduleMap = ModuleUtils.parseModuleMap((Map<String, Object>) dataSnapshot.getValue());
-
-                if (moduleMap == null) {
-                    moduleMap = new HashMap<>();
-                }
-
-                setModuleDropDown(moduleMap.values());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    /**
-     * Retrieve all the user homework from the database
-     */
-    private void getHomework() {
-        currentUserRef.child("homework").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot homeworkSnapshot : snapshot.getChildren()) {
-                    Homework homework = homeworkSnapshot.getValue(Homework.class);
-                    homeworkArrayList.add(homework);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    /**
-     * Find and return the specific module given the moduleName
-     * @param moduleMap
-     * @param moduleName
-     * @return
-     */
-    private String findModule(Map<String, Module> moduleMap, String moduleName) {
-        for (Map.Entry<String, Module> moduleEntry : moduleMap.entrySet()) {
-            if (moduleEntry.getValue().getModuleName().equals(moduleName)) {
-                return moduleEntry.getKey();
-            }
-        }
-        return null;
+        moduleArrayList = localStorage.getModuleArrayList();
+        setModuleDropDown(moduleArrayList);
     }
 
     /**
      * Set module drop down list to display to the user
      * @param moduleArrayList
      */
-    private void setModuleDropDown(Collection<Module> moduleArrayList) {
+    private void setModuleDropDown(ArrayList<Module> moduleArrayList) {
         ArrayList<String> nameList = new ArrayList<>();
 
         if (moduleArrayList.size() <= 0) {
@@ -245,7 +161,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
      * Convert today's date into string
      * @return
      */
-    private String getTodaysDate() {
+    private String getTodayDate() {
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         return makeDateString(zonedDateTime.getDayOfMonth(), zonedDateTime.getMonthValue(), zonedDateTime.getYear());
     }
