@@ -2,33 +2,48 @@ package sg.edu.np.mad.socrata;
 
 import androidx.annotation.ColorInt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ModuleUtils {
 
-    // Parse the map from the firebase and convert it to hashmap
-    static Map<String, Module> parseModuleMap(Map<String, Object> modules) {
-        Map<String, Module> moduleMap = new HashMap<>();
-
-        if (modules == null) {
-            return null;
+    static ArrayList<String> getModuleNames(ArrayList<Module> moduleArrayList) {
+        ArrayList<String> moduleNames = new ArrayList<>();
+        for (Module module : moduleArrayList) {
+            moduleNames.add(module.getModuleName());
         }
-
-        for (Map.Entry<String, Object> moduleMapEntry : modules.entrySet()) {
-            Map moduleMapValue = (Map) moduleMapEntry.getValue();
-
-            String name = (String) moduleMapValue.get("moduleName");
-            String goal = (String) moduleMapValue.get("targetGrade");
-            int targetHoursPerWeek = ((Number) moduleMapValue.get("targetHoursPerWeek")).intValue();
-            @ColorInt int colorInt = ((Number) moduleMapValue.get("color")).intValue();
-            ;
-
-            Module module = new Module(name, goal, targetHoursPerWeek, colorInt);
-
-            moduleMap.put(moduleMapEntry.getKey(), module);
-        }
-
-        return moduleMap;
+        return moduleNames;
     }
+
+    static boolean doesModuleExists(ArrayList<Module> moduleArrayList, String moduleName) {
+        for (Module module : moduleArrayList) {
+            if (module.getModuleName().equals(moduleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static int findModule(ArrayList<Module> moduleArrayList, String moduleName) {
+        for (int i = 0; i < moduleArrayList.size(); i++) {
+            if (moduleArrayList.get(i).getModuleName().equals(moduleName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    static void replaceModule(ArrayList<Module> moduleArrayList, Module module, String moduleName) {
+        for (int i = 0; i < moduleArrayList.size(); i++) {
+            if (moduleArrayList.get(i).getModuleName().equals(moduleName)) {
+                moduleArrayList.set(i, module);
+            }
+        }
+    }
+
+    static void removeModule(ArrayList<Module> moduleArrayList, Module module) {
+        moduleArrayList.remove(module);
+    }
+
 }

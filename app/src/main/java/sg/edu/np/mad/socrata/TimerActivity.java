@@ -22,14 +22,9 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,18 +37,19 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
 
     String moduleName;
     boolean isRunning = false;
-    FirebaseAuth firebaseAuth;
-    FirebaseDatabase database;
+
     private long pauseOffset;
+
+    User user;
+
+    FirebaseUtils firebaseUtils;
+
+    LocalStorage localStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        database = FirebaseDatabase.getInstance();
 
         Intent intent = getIntent();
 
@@ -85,6 +81,10 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         // Set the font here cuz its not working in the xml
         chronometer.setTypeface(ResourcesCompat.getFont(this, R.font.poppins_bold));
 
+        localStorage = new LocalStorage(this);
+        user = localStorage.getUser();
+
+        firebaseUtils = new FirebaseUtils();
 
     }
 
@@ -164,40 +164,16 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
 
         StudySession studySession = new StudySession(studyTime);
 
-        String uId = firebaseAuth.getCurrentUser().getUid();
+        ArrayList<Module> moduleArrayList = user.getModuleArrayList();
 
-        Query moduleQuery = database.getReference("Users").child(uId).child("modules")
-                .orderByChild("moduleName").equalTo(moduleName);
+        int moduleIndex = ModuleUtils.findModule(moduleArrayList, moduleName);
+        moduleArrayList.get(moduleIndex).addStudySession(studySession);
 
-        moduleQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot updateSnapshot : snapshot.getChildren()) {
-                    DatabaseReference studySessionsReference = updateSnapshot.getRef().child("studySessions");
+        localStorage.setModuleArrayList(moduleArrayList);
+        firebaseUtils.updateModuleArrayList(moduleArrayList);
 
-                    Map<String, Object> studySessionMap = new HashMap<>();
-                    studySessionMap.put(studySessionsReference.push().getKey(), studySession);
+        finish();
 
-                    studySessionsReference.updateChildren(studySessionMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (!task.isSuccessful()) {
-                                return;
-                            }
-
-                            finish();
-
-                            Log.d("TAG", studySessionMap.toString());
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     private void pauseTimer() {

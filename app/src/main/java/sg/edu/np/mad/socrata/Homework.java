@@ -9,14 +9,11 @@ import java.util.Locale;
 public class Homework {
 
     private String homeworkName;
-    private String status = "In Progress";
-
-    private float timeSpent = 0f;
+    private boolean isCompleted = false;
 
     private String dueDateTimeString;
 
-    // The path for the specific module
-    private String moduleRef;
+    private String moduleName;
 
     public Homework() {
 
@@ -36,20 +33,12 @@ public class Homework {
         this.homeworkName = homeworkName;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean getIsCompleted() {
+        return isCompleted;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public float getTimeSpent() {
-        return timeSpent;
-    }
-
-    public void setTimeSpent(float timeSpent) {
-        this.timeSpent = timeSpent;
+    public void setIsCompleted(boolean status) {
+        this.isCompleted = status;
     }
 
     public String getDueDateTimeString() {
@@ -89,11 +78,11 @@ public class Homework {
         return duration.getSeconds();
     }
 
-    public String getModuleRef() {
-        return moduleRef;
+    public String getModuleName() {
+        return moduleName;
     }
 
-    public void setModuleRef(String moduleRef) {
-        this.moduleRef = moduleRef;
+    public void setModuleRef(String moduleName) {
+        this.moduleName = moduleName;
     }
 }

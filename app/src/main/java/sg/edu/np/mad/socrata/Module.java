@@ -40,6 +40,10 @@ public class Module {
         return homeworkArrayList;
     }
 
+    public void setHomeworkArrayList(ArrayList<Homework> homeworkArrayList) {
+        this.homeworkArrayList = homeworkArrayList;
+    }
+
     public void addHomework(Homework homework) {
         this.homeworkArrayList.add(homework);
     }
@@ -63,6 +67,10 @@ public class Module {
 
     public ArrayList<StudySession> getStudySessionArrayList() {
         return studySessionArrayList;
+    }
+
+    public void setStudySessionArrayList(ArrayList<StudySession> studySessionArrayList) {
+        this.studySessionArrayList = studySessionArrayList;
     }
 
     public void addStudySession(StudySession studySession) {

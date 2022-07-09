@@ -16,13 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class ProfileFragment extends Fragment {
+
+    TextView profileUsername, accountName, profileEmail;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,45 +55,10 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profileUsername = getView().findViewById(R.id.profileUsername);
+        accountName = getView().findViewById(R.id.accountName);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid);
-
-        // GET USERNAME STRING
-        TextView profileUsername = getView().findViewById(R.id.profileUsername);
-        TextView accountName = getView().findViewById(R.id.accountName);
-        DatabaseReference usernameRef = userRef.child("username");
-        usernameRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String username = dataSnapshot.getValue(String.class);
-                profileUsername.setText(username);
-                accountName.setText(username);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadUsername:onCancelled", databaseError.toException());
-            }
-        });
-
-        // GET EMAIL STRING
-        TextView profileEmail = getView().findViewById(R.id.profileEmail);
-        DatabaseReference emailRef = userRef.child("email");
-        emailRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String email = dataSnapshot.getValue(String.class);
-                profileEmail.setText(email);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadEmail:onCancelled", databaseError.toException());
-            }
-        });
+        profileEmail = getView().findViewById(R.id.profileEmail);
 
 //        // DELETE ACCOUNT FROM DATABASE
 //        TextView deleteAccBtn = getView().findViewById(R.id.deleteAccBtn);
@@ -137,5 +99,20 @@ public class ProfileFragment extends Fragment {
 //        });
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalStorage localStorage = new LocalStorage(requireActivity());
+
+        User user = localStorage.getUser();
+
+        String username = user.getUsername();
+        profileUsername.setText(username);
+        accountName.setText(username);
+
+        String email = user.getEmail();
+        profileEmail.setText(email);
     }
 }
