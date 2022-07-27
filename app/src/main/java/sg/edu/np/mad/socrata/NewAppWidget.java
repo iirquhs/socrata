@@ -46,6 +46,7 @@ public class NewAppWidget extends AppWidgetProvider {
                         .setFlags(
                                 Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
+
             case ADD:
                 //change your activity name
                 context.startActivity(new Intent(context,
@@ -55,21 +56,21 @@ public class NewAppWidget extends AppWidgetProvider {
                 break;
 
             case ACTION_AUTO_UPDATE:
-                //int i = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
                 //RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
                 int i = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 appWidgetManager.notifyAppWidgetViewDataChanged(i,R.id.widget_list);
                 Toast.makeText(context, "refreshed", Toast.LENGTH_SHORT).show();
+                Log.d("pppoooopeeee", "onReceive: ");
                 break;
 
             //refresh button
-            /*case REFRESH:
-                int i = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                appWidgetManager.notifyAppWidgetViewDataChanged(i, R.id.widget_list);
+            case REFRESH:
+                int si = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
+                AppWidgetManager ahh = AppWidgetManager.getInstance(context);
+                ahh.notifyAppWidgetViewDataChanged(si, R.id.widget_list);
                 Toast.makeText(context, "refreshed", Toast.LENGTH_SHORT).show();
-                break;*/
+                break;
         }
 
     }
@@ -85,10 +86,10 @@ public class NewAppWidget extends AppWidgetProvider {
 
         //refresh button
         Intent refresh = new Intent(context, NewAppWidget.class);
-        refresh.setAction(NewAppWidget.ACTION_AUTO_UPDATE);
+        refresh.setAction(NewAppWidget.REFRESH);
         refresh.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0 ,refresh,PendingIntent.FLAG_IMMUTABLE);
-        refresh.setData(Uri.parse(refresh.toUri(Intent.URI_INTENT_SCHEME)));
+        //refresh.setData(Uri.parse(refresh.toUri(Intent.URI_INTENT_SCHEME)));
 
         Intent intent = new Intent(context, WidgetListAdapter.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
