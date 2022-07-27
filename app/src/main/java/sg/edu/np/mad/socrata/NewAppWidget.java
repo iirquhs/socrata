@@ -82,13 +82,13 @@ public class NewAppWidget extends AppWidgetProvider {
         Intent add = new Intent(context, NewAppWidget.class);
         add.setAction(NewAppWidget.ADD);
         add.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        PendingIntent addPendingIntent = PendingIntent.getBroadcast(context, 0 ,add,PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent addPendingIntent = PendingIntent.getBroadcast(context, 0 ,add,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         //refresh button
         Intent refresh = new Intent(context, NewAppWidget.class);
         refresh.setAction(NewAppWidget.REFRESH);
         refresh.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0 ,refresh,PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0 ,refresh,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //refresh.setData(Uri.parse(refresh.toUri(Intent.URI_INTENT_SCHEME)));
 
         Intent intent = new Intent(context, WidgetListAdapter.class);

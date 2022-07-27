@@ -29,7 +29,7 @@ public class AppWidgetAlarm {
         Intent alarmIntent=new Intent(mContext, NewAppWidget.class);
         alarmIntent.setAction(NewAppWidget.ACTION_AUTO_UPDATE);
         //alarmIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.EXTRA_APPWIDGET_ID);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, ALARM_ID, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, ALARM_ID, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         // RTC does not wake the device up
@@ -40,7 +40,7 @@ public class AppWidgetAlarm {
     public void stopAlarm()
     {
         Intent alarmIntent = new Intent(NewAppWidget.ACTION_AUTO_UPDATE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, ALARM_ID, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, ALARM_ID, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
