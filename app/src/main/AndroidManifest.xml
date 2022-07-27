@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socrata">
         <activity
+            android:name=".NoteCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".IntroductionActivity"
             android:exported="true">
             <intent-filter>

@@ -2,6 +2,7 @@ package sg.edu.np.mad.socrata;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -142,6 +144,15 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             }
         });
 
+        holder.cardViewModule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), NoteActivity.class);
+                intent.putExtra("homework_name", homework.getHomeworkName());
+                view.getContext().startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -159,6 +170,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         ConstraintLayout constraintUrgentIndicator;
 
+        CardView cardViewModule;
+
         public HomeworkRecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             moduleText = itemView.findViewById(R.id.homeworkModule);
@@ -170,6 +183,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             buttonMarkDone = itemView.findViewById(R.id.buttonMarkDone);
 
             constraintUrgentIndicator = itemView.findViewById(R.id.constraintUrgentIndicator);
+
+            cardViewModule = itemView.findViewById(R.id.cardViewModule);
         }
     }
 }
