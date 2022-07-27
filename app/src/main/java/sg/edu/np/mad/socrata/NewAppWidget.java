@@ -60,7 +60,7 @@ public class NewAppWidget extends AppWidgetProvider {
                 int i = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 appWidgetManager.notifyAppWidgetViewDataChanged(i,R.id.widget_list);
-                Toast.makeText(context, "refreshed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "refreshed", Toast.LENGTH_SHORT).show();
                 Log.d("pppoooopeeee", "onReceive: ");
                 break;
 

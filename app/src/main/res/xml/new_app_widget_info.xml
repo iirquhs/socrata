@@ -7,8 +7,8 @@
     android:minHeight="180dp"
     android:previewImage="@drawable/example_appwidget_preview"
     android:previewLayout="@layout/new_app_widget"
-    android:resizeMode="horizontal|vertical"
+    android:resizeMode="vertical"
     android:targetCellWidth="3"
-    android:targetCellHeight="3"
+    android:targetCellHeight="2"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen" />
