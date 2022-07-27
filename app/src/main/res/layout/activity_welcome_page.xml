@@ -31,11 +31,14 @@
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager2"
-            android:layout_width="366dp"
-            android:layout_height="496dp"
+            android:layout_width="423dp"
+            android:layout_height="653dp"
+            android:contentDescription="intro"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.666" />
 
         <Button
             android:id="@+id/buttonGetStarted"

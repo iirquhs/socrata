@@ -17,6 +17,9 @@ public class LocalStorage {
     public LocalStorage(Activity activity) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
     }
+    public LocalStorage(Context context) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
 
     public User getUser() {
         String userString = sharedPreferences.getString("user", null);

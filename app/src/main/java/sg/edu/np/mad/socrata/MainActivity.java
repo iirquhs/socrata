@@ -64,6 +64,15 @@ public class MainActivity extends AppCompatActivity {
                         loadFragments();
                     }
                 });
+        Intent intent =  getIntent();
+        String s = intent.getStringExtra("homework");
+        if(s != null){
+            if(s.equals("homework")){
+                HomeworkFragment homeworkFragment = new HomeworkFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            }
+        }
     }
 
     private void loadFragments() {
