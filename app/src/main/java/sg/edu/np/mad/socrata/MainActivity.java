@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         if (localStorage.getMotivationalQuoteSetting() == null) {
             List<String> dateFrequencyList = Arrays.asList(getResources().getStringArray(R.array.date_frequency_array));
             MotivationalQuoteSetting motivationalQuoteSetting = new MotivationalQuoteSetting(true,
-                    LocalTime.of(8,0), dateFrequencyList.get(0), 1);
+                    LocalTime.of(8,0), dateFrequencyList.get(2), 1);
             localStorage.setMotivationalQuoteSetting(motivationalQuoteSetting);
         }
 
