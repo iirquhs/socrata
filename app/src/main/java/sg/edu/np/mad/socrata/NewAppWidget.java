@@ -108,6 +108,9 @@ public class NewAppWidget extends AppWidgetProvider {
         views.setPendingIntentTemplate(R.id.widget_list, toastPendingIntent);
         views.setOnClickPendingIntent(R.id.refreshButton, refreshPendingIntent);
         views.setOnClickPendingIntent(R.id.addButton, addPendingIntent);
+        // The empty view is displayed when the collection has no items. It should be a sibling
+        // of the collection view.
+        views.setEmptyView(R.id.widget_list, R.id.empty_view);
         setRemoteAdapter(context, views);
         //Request that the AppWidgetManager updates the application widget//
         appWidgetManager.updateAppWidget(appWidgetId, views);

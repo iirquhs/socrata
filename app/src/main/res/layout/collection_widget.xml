@@ -8,7 +8,7 @@
     android:layout_centerVertical="true"
     android:layout_marginTop="6dp"
     android:layout_marginBottom="6dp"
-    android:background="@drawable/homework_timer_rcv_shape"
+    android:background="@drawable/widget_colour1"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -33,7 +33,7 @@
 
         <TextView
             android:id="@+id/widgetHomework"
-            android:layout_width="match_parent"
+            android:layout_width="291dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
             android:layout_marginBottom="6dp"
@@ -46,13 +46,6 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/constraintUrgentIndicator"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/hero_secondary_shape" />
 
     </LinearLayout>
 

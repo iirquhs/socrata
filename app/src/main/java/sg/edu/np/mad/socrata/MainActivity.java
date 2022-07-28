@@ -68,9 +68,10 @@ public class MainActivity extends AppCompatActivity {
         String s = intent.getStringExtra("homework");
         if(s != null){
             if(s.equals("homework")){
-                HomeworkFragment homeworkFragment = new HomeworkFragment();
+                Fragment homeworkFragment = new HomeworkFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.commit();
             }
         }
     }
