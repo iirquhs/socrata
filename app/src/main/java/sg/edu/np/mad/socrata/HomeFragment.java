@@ -145,9 +145,7 @@ public class HomeFragment extends Fragment {
         // Get homework that has less than 24h before the due data and is not done yet.
         for (Homework homework : homeworkArrayList) {
 
-            LocalDateTime homeworkDueDate = homework.ConvertDueDateTime(homework.getDueDateTimeString());
-
-            long secondsLeft = homework.CalculateSecondsLeftBeforeDueDate(homeworkDueDate);
+            long secondsLeft = homework.CalculateSecondsLeftBeforeDueDate();
 
             if (secondsLeft / 3600.0 < 24 && !homework.getIsCompleted()) {
                 urgentHomeworkArrayList.add(homework);

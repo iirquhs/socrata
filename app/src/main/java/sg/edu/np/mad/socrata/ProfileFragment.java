@@ -1,10 +1,7 @@
 package sg.edu.np.mad.socrata;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileFragment extends Fragment {
 
-    TextView profileUsername, accountName, profileEmail;
+    TextView profileUsername, accountName,
+            profileEmail, textViewNotification;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +57,15 @@ public class ProfileFragment extends Fragment {
         accountName = getView().findViewById(R.id.accountName);
 
         profileEmail = getView().findViewById(R.id.profileEmail);
+
+        textViewNotification = getView().findViewById(R.id.textViewNotification);
+        textViewNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), NotificationSettingActivity.class);
+                startActivity(intent);
+            }
+        });
 
 //        // DELETE ACCOUNT FROM DATABASE
 //        TextView deleteAccBtn = getView().findViewById(R.id.deleteAccBtn);

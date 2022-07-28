@@ -1,9 +1,15 @@
 package sg.edu.np.mad.socrata;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,10 +18,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,9 +38,11 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
     ArrayList<Module> moduleArrayList;
 
-    EditText editTextHomeworkName;
+    EditText editTextHomeworkName, editTextTimeBeforeDueDate;
 
-    Spinner spinnerModules;
+    TextView textViewDueTime;
+
+    Spinner spinnerModules, spinnerDateFrequency;
 
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
@@ -39,6 +51,8 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
     LocalStorage localStorage;
 
+    ArrayAdapter<CharSequence> adapterDateFrequency;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +60,26 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
         initDatePicker();
 
+        textViewDueTime = findViewById(R.id.textViewDueTime);
+        textViewDueTime.setText("23:59");
+
+        editTextTimeBeforeDueDate = findViewById(R.id.editTextTimeInterval);
+        editTextTimeBeforeDueDate.setText("1");
+
         dateButton = findViewById(R.id.datePickerButton);
         dateButton.setText(getTodayDate());
 
         editTextHomeworkName = findViewById(R.id.editTextHomeworkName);
+
+        spinnerDateFrequency = findViewById(R.id.spinnerDateFrequency);
+
+        adapterDateFrequency = ArrayAdapter.createFromResource(this, R.array.date_frequency_array,
+                android.R.layout.simple_spinner_item);
+
+        adapterDateFrequency.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerDateFrequency.setAdapter(adapterDateFrequency);
+        spinnerDateFrequency.setSelection(2);
 
         localStorage = new LocalStorage(this);
         firebaseUtils = new FirebaseUtils();
@@ -58,6 +88,25 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         //String[] items = new String[]{"Easy", "Medium", "Hard"};
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         //Difficulty.setAdapter(adapter);
+
+        textViewDueTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener()
+                {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String dueTime = selectedHour + ":" + selectedMinute;
+                        textViewDueTime.setText(String.format(dueTime, "%02d:%02d"));
+                    }
+                };
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(HomeworkCreateActivity.this, onTimeSetListener,
+                        23, 59, true);
+
+                timePickerDialog.show();
+            }
+        });
 
         ImageButton buttonBack = findViewById(R.id.backButton);
         buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -94,9 +143,16 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                     }
                 }
 
-                String dueDateTimeString = dateButton.getText() + " 23:59";
+                String dueDateTimeString = dateButton.getText() + " " + textViewDueTime.getText();
 
                 Homework homework = new Homework(hwName, dueDateTimeString, module.getModuleName());
+
+                AlarmManagerHelper alarmManagerHelper = new AlarmManagerHelper(HomeworkCreateActivity.this);
+
+                long minutesBeforeDueDate = Long.parseLong(editTextTimeBeforeDueDate.getText().toString());
+                String dateFrequency = spinnerDateFrequency.getSelectedItem().toString();
+
+                alarmManagerHelper.setHomeworkReminderAlarm(homework, minutesBeforeDueDate, dateFrequency);
 
                 ArrayList<Homework> moduleHomeworkArrayList = module.getHomeworkArrayList();
                 moduleHomeworkArrayList.add(homework);

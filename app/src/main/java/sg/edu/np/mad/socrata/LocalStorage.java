@@ -56,4 +56,18 @@ public class LocalStorage {
         setModuleArrayList(moduleArrayList);
     }
 
+    public void setMotivationalQuoteSetting(MotivationalQuoteSetting motivationalQuoteSetting) {
+        sharedPreferences.edit().putString("motivationalQuoteSetting", gson.toJson(motivationalQuoteSetting)).apply();
+    }
+
+    public MotivationalQuoteSetting getMotivationalQuoteSetting() {
+        String motivationalQuoteSettingString = sharedPreferences.getString("motivationalQuoteSetting", null);
+
+        if (motivationalQuoteSettingString == null) {
+            return null;
+        }
+
+        return gson.fromJson(motivationalQuoteSettingString, MotivationalQuoteSetting.class);
+    }
+
 }
