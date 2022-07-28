@@ -47,4 +47,12 @@
     <string name="target_hours_per_week">Target hours (per week)</string>
     <string name="goal">Goal</string>
     <string name="save">Save</string>
+    <string-array name="date_frequency_array">
+        <item>Minute</item>
+        <item>Hour</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
+    </string-array>
 </resources>
