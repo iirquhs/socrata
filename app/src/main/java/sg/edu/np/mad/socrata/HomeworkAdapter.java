@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,8 +165,14 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         reminderIntent.putExtra("homeworkName", homework.getHomeworkName());
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
-                homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
+                    homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
+                    homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         alarmManager.cancel(pendingIntent);
     }
