@@ -1,13 +1,10 @@
 package sg.edu.np.mad.socrata;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,10 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Objects;
 
-
-public class EditProfileActivity extends AppCompatActivity {
+public class ProfileEditActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +43,7 @@ public class EditProfileActivity extends AppCompatActivity {
         profileSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProgressDialog dialog = ProgressDialog.show(EditProfileActivity.this,
+                ProgressDialog dialog = ProgressDialog.show(ProfileEditActivity.this,
                         "Updating your profile", "Loading. Please wait...", true);
 
                 String newUsername = profileUsername.getText().toString();
@@ -79,7 +74,7 @@ public class EditProfileActivity extends AppCompatActivity {
         changePwdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EditProfileActivity.this, UpdatePasswordActivity.class);
+                Intent intent = new Intent(ProfileEditActivity.this, UpdatePasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -89,7 +84,7 @@ public class EditProfileActivity extends AppCompatActivity {
         deleteAccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileEditActivity.this);
                 builder
                         .setTitle("Confirm your selection")
                         .setMessage("Are you sure you want to delete your account? Your data will be permanently lost.")
@@ -102,7 +97,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                ProgressDialog dialog = ProgressDialog.show(EditProfileActivity.this,
+                                ProgressDialog dialog = ProgressDialog.show(ProfileEditActivity.this,
                                         "Deleting your account", "Loading. Please wait...", true);
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 user.delete()
@@ -110,7 +105,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
-                                                    Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
+                                                    Intent intent = new Intent(ProfileEditActivity.this, LoginActivity.class);
                                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                     dialog.dismiss();
                                                     startActivity(intent);
