@@ -165,7 +165,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         reminderIntent.putExtra("homeworkName", homework.getHomeworkName());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
-                homework.getHomeworkId(), reminderIntent, 0);
+                homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_IMMUTABLE);
 
         alarmManager.cancel(pendingIntent);
     }
