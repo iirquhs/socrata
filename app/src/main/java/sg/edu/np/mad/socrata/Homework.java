@@ -6,8 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
 import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Homework {
     private String homeworkName;
@@ -90,7 +88,7 @@ public class Homework {
     }
 
     public void setModuleRef(String moduleName) {
-        this.moduleName = moduleName;
+        this.setModuleName(moduleName);
     }
 
 
@@ -100,5 +98,9 @@ public class Homework {
 
     public void setHomeworkId(int homeworkId) {
         this.homeworkId = homeworkId;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 }
