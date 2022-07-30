@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
@@ -15,7 +16,11 @@ public class Homework {
 
     private String moduleName;
 
+
+    private ArrayList<Note> noteArrayList = new ArrayList<>();
+
     private int homeworkId;
+
 
     public Homework() {
 
@@ -48,6 +53,17 @@ public class Homework {
     public String getDueDateTimeString() {
         return dueDateTimeString;
     }
+
+    public ArrayList<Note> getNoteArrayList() {return noteArrayList; }
+
+    public void setNoteArrayList(ArrayList<Note> noteArrayList) {
+        this.noteArrayList = noteArrayList;
+    }
+
+    public void addNote(Note note) {
+        this.noteArrayList.add(note);
+    }
+
 
     //PUT IN MMM dd yyyy HH:mm format eg JUN 12 2022
     public void setDueDateTimeString(String dueDateTimeString) {

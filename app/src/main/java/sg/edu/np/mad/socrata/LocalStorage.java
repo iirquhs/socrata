@@ -56,6 +56,14 @@ public class LocalStorage {
         setModuleArrayList(moduleArrayList);
     }
 
+
+    public void setNoteArrayList(ArrayList<Note> noteArrayList, ArrayList<Homework> homeworkArrayList,
+                                 String homeworkName, String moduleName) {
+        Homework homework = homeworkArrayList.get(HomeworkUtils.findHomework(homeworkArrayList, homeworkName));
+        homework.setNoteArrayList(noteArrayList);
+
+        setHomeworkArrayList(homeworkArrayList, moduleName);
+
     public void setMotivationalQuoteSetting(MotivationalQuoteSetting motivationalQuoteSetting) {
         sharedPreferences.edit().putString("motivationalQuoteSetting", gson.toJson(motivationalQuoteSetting)).apply();
     }
@@ -68,6 +76,7 @@ public class LocalStorage {
         }
 
         return gson.fromJson(motivationalQuoteSettingString, MotivationalQuoteSetting.class);
+
     }
 
 }

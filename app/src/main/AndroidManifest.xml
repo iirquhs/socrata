@@ -32,6 +32,15 @@
             android:name=".NotificationSettingActivity"
             android:exported="false" />
         <activity
+            android:name=".NoteDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NoteCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".IntroductionActivity"
             android:exported="true">
             <intent-filter>
@@ -44,7 +53,7 @@
             android:name=".UpdatePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".ProfileEditActivity"
             android:exported="false" />
         <activity
             android:name=".ModuleInfoActivity"
