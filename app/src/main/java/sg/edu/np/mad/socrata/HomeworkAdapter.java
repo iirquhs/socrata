@@ -149,6 +149,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), NoteActivity.class);
                 intent.putExtra("homework_name", homework.getHomeworkName());
+
                 view.getContext().startActivity(intent);
             }
         });

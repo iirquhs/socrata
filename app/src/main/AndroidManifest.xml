@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socrata">
         <activity
+            android:name=".NoteDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".NoteCreateActivity"
             android:exported="false" />
         <activity
@@ -28,7 +31,7 @@
             android:name=".UpdatePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".ProfileEditActivity"
             android:exported="false" />
         <activity
             android:name=".ModuleInfoActivity"

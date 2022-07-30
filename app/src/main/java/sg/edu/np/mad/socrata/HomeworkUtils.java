@@ -62,4 +62,13 @@ public class HomeworkUtils {
             }
         }
     }
+
+    static int findHomework(ArrayList<Homework> homeworkArrayList, String homeworkName) {
+        for (int i = 0; i < homeworkArrayList.size(); i++) {
+            if (homeworkArrayList.get(i).getHomeworkName().equals(homeworkName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

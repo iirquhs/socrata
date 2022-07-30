@@ -1,15 +1,14 @@
 package sg.edu.np.mad.socrata;
 
 public class Note {
-    private String title;
     private String content;
+    private String homeworkName;
 
     public Note() {
 
     }
 
-    public Note(String title, String content) {
-        this.setTitle(title);
+    public Note(String content) {
         this.setContent(content);
     }
 
@@ -21,11 +20,8 @@ public class Note {
         this.content = content;
     }
 
-    String getTitle() {
-        return title;
-    }
+    public String getHomeworkName() {return homeworkName;}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setHomeworkName(String homeworkName) {this.homeworkName = homeworkName; }
+
 }

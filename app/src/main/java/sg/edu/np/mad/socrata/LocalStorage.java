@@ -53,4 +53,12 @@ public class LocalStorage {
         setModuleArrayList(moduleArrayList);
     }
 
+    public void setNoteArrayList(ArrayList<Note> noteArrayList, ArrayList<Homework> homeworkArrayList,
+                                 String homeworkName, String moduleName) {
+        Homework homework = homeworkArrayList.get(HomeworkUtils.findHomework(homeworkArrayList, homeworkName));
+        homework.setNoteArrayList(noteArrayList);
+
+        setHomeworkArrayList(homeworkArrayList, moduleName);
+    }
+
 }
