@@ -1,26 +1,39 @@
 package sg.edu.np.mad.socrata;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import sg.edu.np.mad.socrata.databinding.ActivityMainBinding;
 
@@ -38,8 +51,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent serviceIntent = new Intent(MainActivity.this, MotivationBackgroundService.class);
-        startService(serviceIntent);
+        // Create NotificationChannel if the API is 26+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Socrata";
+            String description = "Reminder for socrata";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("SocrataChannel", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -50,6 +72,17 @@ public class MainActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
+
+        if (localStorage.getMotivationalQuoteSetting() == null) {
+            List<String> dateFrequencyList = Arrays.asList(getResources().getStringArray(R.array.date_frequency_array));
+            MotivationalQuoteSetting motivationalQuoteSetting = new MotivationalQuoteSetting(true,
+                    LocalTime.of(8,0), dateFrequencyList.get(2), 1);
+            localStorage.setMotivationalQuoteSetting(motivationalQuoteSetting);
+        }
+
+        MotivationalQuoteSetting motivationalQuoteSetting = localStorage.getMotivationalQuoteSetting();
+        AlarmManagerHelper alarmManagerHelper = new AlarmManagerHelper(this);
+        alarmManagerHelper.setMotivationalSettingAlarm(motivationalQuoteSetting);
 
         userUID = user.getUid();
 
@@ -63,12 +96,30 @@ public class MainActivity extends AppCompatActivity {
 
                         loadFragments();
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                    }
                 });
+
+        Intent intent =  getIntent();
+        String s = intent.getStringExtra("homework");
+        if(s != null){
+            if(s.equals("homework")){
+                Fragment homeworkFragment = new HomeworkFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.commit();
+            }
+        }
     }
 
     private void loadFragments() {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         replaceFragment(new HomeFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {

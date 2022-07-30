@@ -6,9 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 
 public class Homework {
-
     private String homeworkName;
     private boolean isCompleted = false;
 
@@ -16,16 +16,22 @@ public class Homework {
 
     private String moduleName;
 
+
     private ArrayList<Note> noteArrayList = new ArrayList<>();
+
+    private int homeworkId;
+
 
     public Homework() {
 
     }
 
     public Homework(String homeworkName, String dueDateTimeString, String moduleRef) {
+        Random random = new Random();
         this.setHomeworkName(homeworkName);
         this.setDueDateTimeString(dueDateTimeString);
         this.setModuleRef(moduleRef);
+        this.setHomeworkId(random.nextInt(Integer.MAX_VALUE));
     }
 
     public String getHomeworkName() {
@@ -80,12 +86,13 @@ public class Homework {
 
     /**
      * Calculate the time between the current time and the due date time and return the seconds left
-     * @param dueDateTime
      * @return
      */
-    public long CalculateSecondsLeftBeforeDueDate(LocalDateTime dueDateTime) {
+    public long CalculateSecondsLeftBeforeDueDate() {
 
         LocalDateTime currentTime = LocalDateTime.now();
+
+        LocalDateTime dueDateTime = this.ConvertDueDateTime(dueDateTimeString);
 
         Duration duration = Duration.between(currentTime, dueDateTime);
 
@@ -97,6 +104,19 @@ public class Homework {
     }
 
     public void setModuleRef(String moduleName) {
+        this.setModuleName(moduleName);
+    }
+
+
+    public int getHomeworkId() {
+        return homeworkId;
+    }
+
+    public void setHomeworkId(int homeworkId) {
+        this.homeworkId = homeworkId;
+    }
+
+    public void setModuleName(String moduleName) {
         this.moduleName = moduleName;
     }
 }

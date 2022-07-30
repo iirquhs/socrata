@@ -1,8 +1,15 @@
 package sg.edu.np.mad.socrata;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
+import android.os.Build;
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +39,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     FirebaseUtils firebaseUtils;
     LocalStorage localStorage;
 
+    Context context;
+
     public HomeworkAdapter(ArrayList<Homework> homeworkArrayList, ArrayList<Module> moduleArrayList) {
         this.homeworkViewArrayList = homeworkArrayList;
         this.moduleArrayList = moduleArrayList;
@@ -47,8 +56,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     public HomeworkRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View c = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcv_list_homework, parent, false);
 
+        context = parent.getContext();
+
         firebaseUtils = new FirebaseUtils();
-        localStorage = new LocalStorage((Activity) parent.getContext());
+        localStorage = new LocalStorage((Activity) context);
 
         return new HomeworkRecyclerViewHolder(c);
     }
@@ -63,20 +74,18 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         holder.moduleText.setText(module.getModuleName());
         holder.textViewHomeworkName.setText(homework.getHomeworkName());
 
-        LocalDateTime dueDateTime = homework.ConvertDueDateTime(homework.getDueDateTimeString());
-
-        long second = homework.CalculateSecondsLeftBeforeDueDate(dueDateTime);
+        long second = homework.CalculateSecondsLeftBeforeDueDate();
 
         holder.textViewTimeLeft.setText(String.format("%.2f h", (float) second / 3600.0));
 
         // 7 Days
         if (second > 604800) {
-            holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(holder.constraintUrgentIndicator.getContext(), R.color.homework_green_color));
+            holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.homework_green_color));
             // 1 Day
         } else if (second > 86400) {
-            holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(holder.constraintUrgentIndicator.getContext(), R.color.homework_yellow_color));
+            holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.homework_yellow_color));
         } else {
-            holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(holder.constraintUrgentIndicator.getContext(), R.color.homework_red_color));
+            holder.constraintUrgentIndicator.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.homework_red_color));
         }
 
         // Mark homework as completed
@@ -96,6 +105,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
                 firebaseUtils.updateHomeworkArrayList(homeworkArrayList, moduleArrayList, module.getModuleName());
                 localStorage.setHomeworkArrayList(homeworkArrayList, module.getModuleName());
+
+                cancelReminderNotification(homework, module);
 
                 homeworkViewArrayList.remove(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
@@ -122,6 +133,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
                                 .getHomeworkArrayList();
 
                         HomeworkUtils.removeHomework(homeworkArrayList, homework.getHomeworkName(), homework.getModuleName());
+
+                        cancelReminderNotification(homework, module);
 
                         firebaseUtils.updateHomeworkArrayList(homeworkArrayList, moduleArrayList, module.getModuleName());
                         localStorage.setHomeworkArrayList(homeworkArrayList, module.getModuleName());
@@ -154,6 +167,27 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             }
         });
 
+    }
+
+    private void cancelReminderNotification(Homework homework, Module module) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Log.d("TAG", Integer.parseInt(Integer.toString(moduleArrayList.size()) + module.getHomeworkArrayList().size()) + "notog");
+
+        Intent reminderIntent = new Intent(context.getApplicationContext(), ReminderReceiver.class);
+
+        reminderIntent.putExtra("homeworkName", homework.getHomeworkName());
+
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
+                    homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
+                    homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        alarmManager.cancel(pendingIntent);
     }
 
     @Override

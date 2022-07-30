@@ -17,6 +17,9 @@ public class LocalStorage {
     public LocalStorage(Activity activity) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
     }
+    public LocalStorage(Context context) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
 
     public User getUser() {
         String userString = sharedPreferences.getString("user", null);
@@ -53,12 +56,27 @@ public class LocalStorage {
         setModuleArrayList(moduleArrayList);
     }
 
+
     public void setNoteArrayList(ArrayList<Note> noteArrayList, ArrayList<Homework> homeworkArrayList,
                                  String homeworkName, String moduleName) {
         Homework homework = homeworkArrayList.get(HomeworkUtils.findHomework(homeworkArrayList, homeworkName));
         homework.setNoteArrayList(noteArrayList);
 
         setHomeworkArrayList(homeworkArrayList, moduleName);
+
+    public void setMotivationalQuoteSetting(MotivationalQuoteSetting motivationalQuoteSetting) {
+        sharedPreferences.edit().putString("motivationalQuoteSetting", gson.toJson(motivationalQuoteSetting)).apply();
+    }
+
+    public MotivationalQuoteSetting getMotivationalQuoteSetting() {
+        String motivationalQuoteSettingString = sharedPreferences.getString("motivationalQuoteSetting", null);
+
+        if (motivationalQuoteSettingString == null) {
+            return null;
+        }
+
+        return gson.fromJson(motivationalQuoteSettingString, MotivationalQuoteSetting.class);
+
     }
 
 }

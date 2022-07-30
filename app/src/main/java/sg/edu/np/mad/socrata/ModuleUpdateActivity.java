@@ -123,6 +123,11 @@ public class ModuleUpdateActivity extends AppCompatActivity {
                 if (isEditing) {
                     assert module != null;
                     newModule.setHomeworkArrayList(module.getHomeworkArrayList());
+
+                    for (int i = 0; i < newModule.getHomeworkArrayList().size(); i++) {
+                        newModule.getHomeworkArrayList().get(i).setModuleName(name);
+                    }
+
                     newModule.setStudySessionArrayList(module.getStudySessionArrayList());
                     ModuleUtils.replaceModule(user.getModuleArrayList(), newModule, module.getModuleName());
                 } else {
