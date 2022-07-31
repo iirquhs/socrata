@@ -20,6 +20,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.noteArrayList = noteArrayList;
     }
 
+    public void setFilteredList(ArrayList<Note> filteredNoteArrayList) {
+        this.noteArrayList = filteredNoteArrayList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
