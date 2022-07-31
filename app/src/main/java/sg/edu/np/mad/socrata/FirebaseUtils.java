@@ -48,4 +48,12 @@ public class FirebaseUtils {
         updateModuleArrayList(moduleArrayList);
 
     }
+
+    public void updateNoteArrayList(ArrayList<Note> noteArrayList, ArrayList<Homework> homeworkArrayList,
+                                    ArrayList<Module> moduleArrayList, String homeworkTitle, String moduleName) {
+        Homework homework = homeworkArrayList.get(HomeworkUtils.findHomework(homeworkArrayList, homeworkTitle));
+        homework.setNoteArrayList(noteArrayList);
+
+        updateHomeworkArrayList(homeworkArrayList, moduleArrayList, moduleName);
+    }
 }
