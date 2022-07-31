@@ -8,12 +8,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class NoteActivity extends AppCompatActivity {
+
+
+    private ArrayList<Note> noteArrayList;
+    private NoteAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +37,7 @@ public class NoteActivity extends AppCompatActivity {
 
         ArrayList<Module> moduleArrayList = user.getModuleArrayList();
         ArrayList<Homework> homeworkArrayList = HomeworkUtils.getAllHomework(moduleArrayList);
-        ArrayList<Note> noteArrayList = new ArrayList<>();
+        noteArrayList = new ArrayList<>();
         Homework homework = homeworkArrayList.get(HomeworkUtils.findHomework(homeworkArrayList, homeworkName));
         noteArrayList.addAll(homework.getNoteArrayList());
         for (Note note : noteArrayList) {
@@ -42,11 +50,25 @@ public class NoteActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        SearchView searchView = findViewById(R.id.searchView);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filterList(s);
+                return false;
+            }
+        });
         RecyclerView rcv = findViewById(R.id.noteRecyclerView);
         rcv.setHasFixedSize(true);
 
         rcv.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        NoteAdapter adapter = new NoteAdapter(noteArrayList);
+        adapter = new NoteAdapter(noteArrayList);
         rcv.setAdapter(adapter);
 
 
@@ -59,5 +81,21 @@ public class NoteActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void filterList(String text) {
+        ArrayList<Note> filteredList = new ArrayList<>();
+        for (Note item : noteArrayList) {
+            if (item.getContent().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(this, "No note found.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            adapter.setFilteredList(filteredList);
+        }
     }
 }

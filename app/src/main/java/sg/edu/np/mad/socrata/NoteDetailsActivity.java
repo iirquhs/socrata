@@ -53,8 +53,10 @@ public class NoteDetailsActivity extends AppCompatActivity {
                 localStorage.setNoteArrayList(noteArrayList, homeworkArrayList, homeworkName, homework.getModuleName());
                 firebaseUtils.updateNoteArrayList(noteArrayList, homeworkArrayList, moduleArrayList, homeworkName, homework.getModuleName());
 
+
                 Intent intent = new Intent(NoteDetailsActivity.this, NoteActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("homework_name", homeworkName);
                 startActivity(intent);
             }
         });
