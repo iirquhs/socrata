@@ -55,14 +55,17 @@ public class HomeFragment extends Fragment {
 
         ArrayList<Module> moduleArrayList = user.getModuleArrayList();
 
+        updateUsername(user.getUsername());
+
+        if (moduleArrayList == null) {
+            return;
+        }
         updateTotalTimeStudiedThisWeek(moduleArrayList);
 
         ArrayList<Homework> homeworkArrayList = HomeworkUtils.getAllHomework(moduleArrayList);
         updateHomeworkDueThisWeek(homeworkArrayList);
 
         setHomeworkAdapter(moduleArrayList, homeworkArrayList);
-
-        updateUsername(user.getUsername());
     }
 
 
