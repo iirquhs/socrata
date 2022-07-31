@@ -63,6 +63,7 @@ public class LocalStorage {
         homework.setNoteArrayList(noteArrayList);
 
         setHomeworkArrayList(homeworkArrayList, moduleName);
+    }
 
     public void setMotivationalQuoteSetting(MotivationalQuoteSetting motivationalQuoteSetting) {
         sharedPreferences.edit().putString("motivationalQuoteSetting", gson.toJson(motivationalQuoteSetting)).apply();
