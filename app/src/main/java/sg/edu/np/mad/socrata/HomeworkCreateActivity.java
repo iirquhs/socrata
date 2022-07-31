@@ -1,15 +1,10 @@
 package sg.edu.np.mad.socrata;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,12 +19,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class HomeworkCreateActivity extends AppCompatActivity {
     String hwName, moduleName, dueDate;
@@ -40,12 +35,11 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
     EditText editTextHomeworkName, editTextTimeBeforeDueDate;
 
-    TextView textViewDueTime;
+    TextView textViewDueTime, textViewDatePicker;
 
     Spinner spinnerModules, spinnerDateFrequency;
 
     private DatePickerDialog datePickerDialog;
-    private Button dateButton;
 
     FirebaseUtils firebaseUtils;
 
@@ -66,8 +60,8 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         editTextTimeBeforeDueDate = findViewById(R.id.editTextTimeInterval);
         editTextTimeBeforeDueDate.setText("1");
 
-        dateButton = findViewById(R.id.datePickerButton);
-        dateButton.setText(getTodayDate());
+        textViewDatePicker = findViewById(R.id.textViewDatePicker);
+        textViewDatePicker.setText(getTodayDate());
 
         editTextHomeworkName = findViewById(R.id.editTextHomeworkName);
 
@@ -96,8 +90,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                 {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        String dueTime = selectedHour + ":" + selectedMinute;
-                        textViewDueTime.setText(String.format(dueTime, "%02d:%02d"));
+                        textViewDueTime.setText(String.format(Locale.getDefault() ,"%02d:%02d", selectedHour, selectedMinute));
                     }
                 };
 
@@ -143,9 +136,15 @@ public class HomeworkCreateActivity extends AppCompatActivity {
                     }
                 }
 
-                String dueDateTimeString = dateButton.getText() + " " + textViewDueTime.getText();
+                String dueDateTimeString = textViewDatePicker.getText() + " " + textViewDueTime.getText();
 
                 Homework homework = new Homework(hwName, dueDateTimeString, module.getModuleName());
+
+                if (LocalDateTime.now().isAfter(homework.ConvertDueDateTime(homework.getDueDateTimeString()))) {
+                    textViewDatePicker.setError("Cannot set the due date time to be before the current date time");
+                    textViewDatePicker.requestFocus();
+                    return;
+                }
 
                 AlarmManagerHelper alarmManagerHelper = new AlarmManagerHelper(HomeworkCreateActivity.this);
 
@@ -228,7 +227,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
                 String date = makeDateString(day, month, year);
-                dateButton.setText(date);
+                textViewDatePicker.setText(date);
                 dueDate = date;
             }
         };
