@@ -33,9 +33,10 @@ Create new homework tasks to stop your procrastination!
 - login/sign-up page
 - study timer
 - set up firebase
-- quote notification
+- quote notification & quote notification settings
 - firebase
 - slides
+- Homeowrk Reminder
 
 ### Ng Ray Zin (backend + frontend): 
 - whole of module (create, edit, info)
@@ -45,6 +46,7 @@ Create new homework tasks to stop your procrastination!
 - firebase
 - slides
 - github
+- Widgets
 
 ### Shuqri Bin Shaifuddin (backend + frontend + google play console guy): 
 - everything in profile
@@ -54,7 +56,7 @@ Create new homework tasks to stop your procrastination!
 - upload and update app in google play store
 - set up github
 - firebase
-
+- Notes
 
 ### Elliot (lost): 
 - nothing
