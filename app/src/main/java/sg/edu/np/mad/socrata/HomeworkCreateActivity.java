@@ -61,12 +61,13 @@ public class HomeworkCreateActivity extends AppCompatActivity {
         HomeworkReminderAdapter homeworkReminderAdapter = new HomeworkReminderAdapter();
 
         recyclerViewNotification = findViewById(R.id.recyclerViewNotification);
-        recyclerViewNotification.setAdapter(homeworkReminderAdapter);
 
         LinearLayoutManager layout = new LinearLayoutManager(this);
 
         recyclerViewNotification.setLayoutManager(layout);
         recyclerViewNotification.setNestedScrollingEnabled(false);
+
+        recyclerViewNotification.setAdapter(homeworkReminderAdapter);
 
         textViewAddNotification = findViewById(R.id.textViewAddNotification);
         textViewAddNotification.setOnClickListener(new View.OnClickListener() {
