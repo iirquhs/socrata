@@ -4,15 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.Group;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,14 +15,11 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 public class NotificationSettingActivity extends AppCompatActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, TextWatcher {
@@ -63,7 +55,7 @@ public class NotificationSettingActivity extends AppCompatActivity implements Vi
         imageButtonBack = findViewById(R.id.buttonBack);
         imageButtonBack.setOnClickListener(this);
 
-        editTextTimeInterval = findViewById(R.id.editTextTimeInterval);
+        editTextTimeInterval = findViewById(R.id.editTextTimeBeforeDueDate);
 
         buttonSave = findViewById(R.id.buttonSave);
 

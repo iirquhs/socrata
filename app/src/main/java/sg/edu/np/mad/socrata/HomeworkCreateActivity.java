@@ -2,9 +2,11 @@ package sg.edu.np.mad.socrata;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +20,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -33,11 +37,11 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
     ArrayList<Module> moduleArrayList;
 
-    EditText editTextHomeworkName, editTextTimeBeforeDueDate;
+    EditText editTextHomeworkName;
 
-    TextView textViewDueTime, textViewDatePicker;
+    TextView textViewDueTime, textViewDatePicker, textViewAddNotification;
 
-    Spinner spinnerModules, spinnerDateFrequency;
+    Spinner spinnerModules;
 
     private DatePickerDialog datePickerDialog;
 
@@ -45,7 +49,7 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
     LocalStorage localStorage;
 
-    ArrayAdapter<CharSequence> adapterDateFrequency;
+    RecyclerView recyclerViewNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,26 +58,33 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
         initDatePicker();
 
+        HomeworkReminderAdapter homeworkReminderAdapter = new HomeworkReminderAdapter();
+
+        recyclerViewNotification = findViewById(R.id.recyclerViewNotification);
+        recyclerViewNotification.setAdapter(homeworkReminderAdapter);
+
+        LinearLayoutManager layout = new LinearLayoutManager(this);
+
+        recyclerViewNotification.setLayoutManager(layout);
+        recyclerViewNotification.setNestedScrollingEnabled(false);
+
+        textViewAddNotification = findViewById(R.id.textViewAddNotification);
+        textViewAddNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddNotificationDialog addNotificationDialog = new AddNotificationDialog(
+                        HomeworkCreateActivity.this, homeworkReminderAdapter);
+                addNotificationDialog.show();
+            }
+        });
+
         textViewDueTime = findViewById(R.id.textViewDueTime);
         textViewDueTime.setText("23:59");
-
-        editTextTimeBeforeDueDate = findViewById(R.id.editTextTimeInterval);
-        editTextTimeBeforeDueDate.setText("1");
 
         textViewDatePicker = findViewById(R.id.textViewDatePicker);
         textViewDatePicker.setText(getTodayDate());
 
         editTextHomeworkName = findViewById(R.id.editTextHomeworkName);
-
-        spinnerDateFrequency = findViewById(R.id.spinnerDateFrequency);
-
-        adapterDateFrequency = ArrayAdapter.createFromResource(this, R.array.date_frequency_array,
-                android.R.layout.simple_spinner_item);
-
-        adapterDateFrequency.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerDateFrequency.setAdapter(adapterDateFrequency);
-        spinnerDateFrequency.setSelection(2);
 
         localStorage = new LocalStorage(this);
         firebaseUtils = new FirebaseUtils();
@@ -148,10 +159,16 @@ public class HomeworkCreateActivity extends AppCompatActivity {
 
                 AlarmManagerHelper alarmManagerHelper = new AlarmManagerHelper(HomeworkCreateActivity.this);
 
-                long minutesBeforeDueDate = Long.parseLong(editTextTimeBeforeDueDate.getText().toString());
-                String dateFrequency = spinnerDateFrequency.getSelectedItem().toString();
+                ArrayList<PendingIntent> notificationPendingIntents = new ArrayList<>();
 
-                alarmManagerHelper.setHomeworkReminderAlarm(homework, minutesBeforeDueDate, dateFrequency);
+                for (int i = 0; i < homeworkReminderAdapter.getItemCount(); i++) {
+                    HomeworkReminder homeworkReminder = homeworkReminderAdapter.getHomeworkReminderArrayList().get(i);
+
+                    PendingIntent notificationPendingIntent = alarmManagerHelper.setHomeworkReminderAlarm(homework, homeworkReminder);
+                    notificationPendingIntents.add(notificationPendingIntent);
+                }
+
+                localStorage.addHomeworkNotificationPendingIntents(homework, notificationPendingIntents);
 
                 ArrayList<Homework> moduleHomeworkArrayList = module.getHomeworkArrayList();
                 moduleHomeworkArrayList.add(homework);

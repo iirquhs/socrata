@@ -94,25 +94,6 @@
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
             app:layout_constraintVertical_bias="0.0">
 
-            <EditText
-                android:id="@+id/editTextTimeInterval"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:background="@drawable/custom_input"
-                android:drawablePadding="8dp"
-                android:ems="10"
-                android:inputType="numberSigned"
-                android:minHeight="48dp"
-                android:paddingStart="15dp"
-                android:paddingTop="15dp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="15dp"
-                android:textSize="18sp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
-                tools:ignore="SpeakableTextPresentCheck" />
-
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
@@ -190,7 +171,7 @@
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remind before due date"
+                android:text="Remind due date"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -221,22 +202,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/datePickerButton"
                 tools:ignore="TouchTargetSizeCheck" />-->
-
-            <Spinner
-                android:id="@+id/spinnerDateFrequency"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginLeft="8dp"
-                android:background="@drawable/custom_input"
-                android:minHeight="48dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:spinnerMode="dropdown"
-                app:layout_constraintBottom_toBottomOf="@+id/editTextTimeInterval"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editTextTimeInterval"
-                app:layout_constraintTop_toTopOf="@+id/editTextTimeInterval"
-                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/textViewDatePicker"
@@ -288,6 +253,40 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView9"
                 tools:ignore="SpeakableTextPresentCheck" />
 
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewAddNotification"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:fontFamily="@font/roboto"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="Add Notification"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/text_color"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
             <Button
                 android:id="@+id/buttoncreatehomework"
                 android:layout_width="0dp"
@@ -296,13 +295,13 @@
                 android:fontFamily="@font/poppins_bold"
                 android:minHeight="47dp"
                 android:text="Save"
-                android:layout_marginTop="32dp"
                 android:textAllCaps="false"
                 android:textSize="18sp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTimeInterval" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewAddNotification" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

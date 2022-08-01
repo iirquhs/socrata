@@ -14,27 +14,33 @@ import androidx.core.app.NotificationManagerCompat;
 
 public class ReminderReceiver extends BroadcastReceiver {
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
 
         String homeworkName = intent.getStringExtra("homeworkName");
+        int notificationID = intent.getIntExtra("notificationID", -1);
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         Intent mainActivityIntent = new Intent(context.getApplicationContext(), MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(),
-                0, mainActivityIntent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getActivity(context.getApplicationContext(),
+                    0, mainActivityIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getActivity(context.getApplicationContext(),
+                    0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "SocrataChannel")
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle("Homework Reminder!")
-                .setContentText(homeworkName + " is due in < " + intent.getStringExtra("reminder") + ".")
+                .setContentText(homeworkName + " is due in < " + intent.getStringExtra("reminder") + ".\nStart grinding now!")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify(notificationID, builder.build());
     }
 }

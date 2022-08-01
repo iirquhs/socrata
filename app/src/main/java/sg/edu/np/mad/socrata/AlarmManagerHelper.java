@@ -13,6 +13,9 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
 public class AlarmManagerHelper {
 
@@ -89,8 +92,15 @@ public class AlarmManagerHelper {
         alarmManager.cancel(pendingIntent);
     }
 
-    public void setHomeworkReminderAlarm(Homework homework, long minutesBeforeDueDate, String dateFrequency) {
+    public PendingIntent setHomeworkReminderAlarm(Homework homework, HomeworkReminder homeworkReminder) {
         Intent reminderIntent = new Intent(context.getApplicationContext(), ReminderReceiver.class);
+
+        int notificationID = new Random().nextInt(Integer.MAX_VALUE);
+
+        reminderIntent.putExtra("notificationID", notificationID);
+
+        long minutesBeforeDueDate = homeworkReminder.getTimeBeforeDueDate();
+        String dateFrequency = homeworkReminder.getDateFrequency();
 
         reminderIntent.putExtra("homeworkName", homework.getHomeworkName());
 
@@ -120,10 +130,10 @@ public class AlarmManagerHelper {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
-                    homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                    notificationID, reminderIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
             pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
-                    homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    notificationID, reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP,
@@ -134,5 +144,18 @@ public class AlarmManagerHelper {
                 ZoneId.systemDefault());
 
         Log.d("TAG", zonedDateTime.toString());
+
+        return pendingIntent;
+    }
+
+    public void cancelReminderNotification(Homework homework, Map<Integer, ArrayList<PendingIntent>> homeworkNotificationMap) {
+
+        ArrayList<PendingIntent> notificationReminderIntent = homeworkNotificationMap.get(homework.getHomeworkId());
+
+        if (notificationReminderIntent == null) { return; }
+
+        for (PendingIntent pendingIntent : notificationReminderIntent) {
+            alarmManager.cancel(pendingIntent);
+        }
     }
 }

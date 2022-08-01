@@ -41,6 +41,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
     Context context;
 
+    AlarmManagerHelper alarmManagerHelper;
+
     public HomeworkAdapter(ArrayList<Homework> homeworkArrayList, ArrayList<Module> moduleArrayList) {
         this.homeworkViewArrayList = homeworkArrayList;
         this.moduleArrayList = moduleArrayList;
@@ -60,6 +62,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         firebaseUtils = new FirebaseUtils();
         localStorage = new LocalStorage((Activity) context);
+        alarmManagerHelper = new AlarmManagerHelper((Activity) context);
 
         return new HomeworkRecyclerViewHolder(c);
     }
@@ -106,7 +109,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
                 firebaseUtils.updateHomeworkArrayList(homeworkArrayList, moduleArrayList, module.getModuleName());
                 localStorage.setHomeworkArrayList(homeworkArrayList, module.getModuleName());
 
-                cancelReminderNotification(homework, module);
+                alarmManagerHelper.cancelReminderNotification(homework, localStorage.getHomeworkNotificationMap());
+                localStorage.removeHomeworkNotification(homework);
 
                 homeworkViewArrayList.remove(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
@@ -134,7 +138,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
                         HomeworkUtils.removeHomework(homeworkArrayList, homework.getHomeworkName(), homework.getModuleName());
 
-                        cancelReminderNotification(homework, module);
+                        alarmManagerHelper.cancelReminderNotification(homework, localStorage.getHomeworkNotificationMap());
+                        localStorage.removeHomeworkNotification(homework);
 
                         firebaseUtils.updateHomeworkArrayList(homeworkArrayList, moduleArrayList, module.getModuleName());
                         localStorage.setHomeworkArrayList(homeworkArrayList, module.getModuleName());
@@ -167,27 +172,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             }
         });
 
-    }
-
-    private void cancelReminderNotification(Homework homework, Module module) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        Log.d("TAG", Integer.parseInt(Integer.toString(moduleArrayList.size()) + module.getHomeworkArrayList().size()) + "notog");
-
-        Intent reminderIntent = new Intent(context.getApplicationContext(), ReminderReceiver.class);
-
-        reminderIntent.putExtra("homeworkName", homework.getHomeworkName());
-
-        PendingIntent pendingIntent;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
-                    homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        } else {
-            pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
-                    homework.getHomeworkId(), reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-
-        alarmManager.cancel(pendingIntent);
     }
 
     @Override
