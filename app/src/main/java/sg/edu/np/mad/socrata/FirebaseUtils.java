@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FirebaseUtils {
@@ -48,6 +49,15 @@ public class FirebaseUtils {
         updateModuleArrayList(moduleArrayList);
 
     }
+
+//    public void updateNoteArrayList(Homework homework, User user) {
+//        ArrayList<Module> moduleArrayList = user.getModuleArrayList();
+//        ArrayList<Homework> homeworkArrayList = HomeworkUtils.getAllHomework(moduleArrayList);
+//
+//        homeworkArrayList.set(HomeworkUtils.findHomework(homeworkArrayList, homework.getHomeworkName()), homework);
+//
+//        updateHomeworkArrayList(homeworkArrayList, moduleArrayList, homework.getModuleName());
+//    }
 
     public void updateNoteArrayList(ArrayList<Note> noteArrayList, ArrayList<Homework> homeworkArrayList,
                                     ArrayList<Module> moduleArrayList, String homeworkTitle, String moduleName) {

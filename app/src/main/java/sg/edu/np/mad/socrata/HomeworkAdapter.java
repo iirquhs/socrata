@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Build;
-import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,6 +166,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), NoteActivity.class);
                 intent.putExtra("homework_name", homework.getHomeworkName());
+                intent.putExtra("module_name", module.getModuleName());
 
                 view.getContext().startActivity(intent);
             }

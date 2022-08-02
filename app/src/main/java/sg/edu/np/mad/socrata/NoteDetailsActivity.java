@@ -20,6 +20,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
         Intent intentFromNote = getIntent();
         String content = intentFromNote.getStringExtra("note_content");
         String homeworkName = intentFromNote.getStringExtra("homework_name");
+        String moduleName = intentFromNote.getStringExtra("module_name");
 
         TextView noteDetailsText = findViewById(R.id.noteDetailsText);
         noteDetailsText.setText(content);
@@ -30,14 +31,14 @@ public class NoteDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String content = noteDetailsText.getText().toString();
 
-
                 LocalStorage localStorage = new LocalStorage(NoteDetailsActivity.this);
                 User user = localStorage.getUser();
                 ArrayList<Module> moduleArrayList = user.getModuleArrayList();
-                ArrayList<Homework> homeworkArrayList = HomeworkUtils.getAllHomework(moduleArrayList);
+                Module module = moduleArrayList.get(ModuleUtils.findModule(moduleArrayList, moduleName));
+                ArrayList<Homework> homeworkArrayList = module.getHomeworkArrayList();
                 Homework homework = homeworkArrayList.get(HomeworkUtils.findHomework(homeworkArrayList, homeworkName));
-
                 ArrayList<Note> noteArrayList = homework.getNoteArrayList();
+
                 int pos = 0;
                 for (int i = 0; i < noteArrayList.size(); i++) {
                     if (noteArrayList.get(i).getContent().equals(content)) {
@@ -45,11 +46,8 @@ public class NoteDetailsActivity extends AppCompatActivity {
                     }
                 }
                 noteArrayList.remove(pos);
-                homework.setNoteArrayList(noteArrayList);
 
-                localStorage = new LocalStorage(NoteDetailsActivity.this);
                 FirebaseUtils firebaseUtils = new FirebaseUtils();
-
                 localStorage.setNoteArrayList(noteArrayList, homeworkArrayList, homeworkName, homework.getModuleName());
                 firebaseUtils.updateNoteArrayList(noteArrayList, homeworkArrayList, moduleArrayList, homeworkName, homework.getModuleName());
 
@@ -57,6 +55,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(NoteDetailsActivity.this, NoteActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("homework_name", homeworkName);
+                intent.putExtra("module_name", moduleName);
                 startActivity(intent);
             }
         });

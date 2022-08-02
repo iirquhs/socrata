@@ -14,11 +14,6 @@ import java.util.ArrayList;
 
 public class NoteCreateActivity extends AppCompatActivity {
 
-    FirebaseUtils firebaseUtils;
-    ArrayList<Homework> homeworkArrayList;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +21,7 @@ public class NoteCreateActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String homeworkName = intent.getStringExtra("homework_name");
+        String moduleName = intent.getStringExtra("module_name");
 
         Button button = findViewById(R.id.btnCreateNote);
         button.setOnClickListener(new View.OnClickListener() {
@@ -40,21 +36,21 @@ public class NoteCreateActivity extends AppCompatActivity {
                 LocalStorage localStorage = new LocalStorage(NoteCreateActivity.this);
                 User user = localStorage.getUser();
                 ArrayList<Module> moduleArrayList = user.getModuleArrayList();
-                homeworkArrayList = HomeworkUtils.getAllHomework(moduleArrayList);
+                Module module = moduleArrayList.get(ModuleUtils.findModule(moduleArrayList, moduleName));
+                ArrayList<Homework> homeworkArrayList = module.getHomeworkArrayList();
                 Homework homework = homeworkArrayList.get(HomeworkUtils.findHomework(homeworkArrayList, homeworkName));
 
                 ArrayList<Note> noteArrayList = homework.getNoteArrayList();
                 homework.addNote(note);
 
-                localStorage = new LocalStorage(NoteCreateActivity.this);
-                firebaseUtils = new FirebaseUtils();
-
+                FirebaseUtils firebaseUtils = new FirebaseUtils();
                 localStorage.setNoteArrayList(noteArrayList, homeworkArrayList, homeworkName, homework.getModuleName());
                 firebaseUtils.updateNoteArrayList(noteArrayList, homeworkArrayList, moduleArrayList, homeworkName, homework.getModuleName());
 
                 Intent intent = new Intent(NoteCreateActivity.this, NoteActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("homework_name", homeworkName);
+                intent.putExtra("module_name", moduleName);
                 startActivity(intent);
             }
         });

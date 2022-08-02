@@ -3,6 +3,7 @@ package sg.edu.np.mad.socrata;
 public class Note {
     private String content;
     private String homeworkName;
+    private String moduleName;
 
     public Note() {
 
@@ -22,6 +23,10 @@ public class Note {
 
     public String getHomeworkName() {return homeworkName;}
 
-    public void setHomeworkName(String homeworkName) {this.homeworkName = homeworkName; }
+    public void setHomeworkName(String homeworkName) { this.homeworkName = homeworkName; }
+
+    public String getModuleName() { return moduleName; }
+
+    public void setModuleName(String moduleName) { this.moduleName = moduleName; }
 
 }

@@ -30,23 +30,25 @@ public class NoteActivity extends AppCompatActivity {
 
         Intent intentFromHomework = getIntent();
         String homeworkName = intentFromHomework.getStringExtra("homework_name");
+        String moduleName = intentFromHomework.getStringExtra("module_name");
 
-        FirebaseUtils firebaseUtils;
         LocalStorage localStorage = new LocalStorage(NoteActivity.this);
         User user = localStorage.getUser();
-
         ArrayList<Module> moduleArrayList = user.getModuleArrayList();
-        ArrayList<Homework> homeworkArrayList = HomeworkUtils.getAllHomework(moduleArrayList);
-        noteArrayList = new ArrayList<>();
+        Module module = moduleArrayList.get(ModuleUtils.findModule(moduleArrayList, moduleName));
+        ArrayList<Homework> homeworkArrayList = module.getHomeworkArrayList();
         Homework homework = homeworkArrayList.get(HomeworkUtils.findHomework(homeworkArrayList, homeworkName));
+        noteArrayList = new ArrayList<>();
         noteArrayList.addAll(homework.getNoteArrayList());
         for (Note note : noteArrayList) {
             note.setHomeworkName(homework.getHomeworkName());
+            note.setModuleName(module.getModuleName());
         }
 
         if (noteArrayList.size() == 0) {
             Intent intent = new Intent(NoteActivity.this, NoteCreateActivity.class);
             intent.putExtra("homework_name", homeworkName);
+            intent.putExtra("module_name", moduleName);
             startActivity(intent);
         }
 
@@ -78,6 +80,7 @@ public class NoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(NoteActivity.this, NoteCreateActivity.class);
                 intent.putExtra("homework_name", homeworkName);
+                intent.putExtra("module_name", moduleName);
                 startActivity(intent);
             }
         });
