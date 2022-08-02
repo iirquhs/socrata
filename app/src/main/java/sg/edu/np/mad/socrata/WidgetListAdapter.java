@@ -84,7 +84,7 @@ public class WidgetListAdapter implements RemoteViewsService.RemoteViewsFactory{
             case "FFFF8800":
                 view.setInt(R.id.item_frame, "setBackgroundResource", R.drawable.widget_colour4);
                 break;
-            case "FF99cc00":
+            case "FF99CC00":
                 view.setInt(R.id.item_frame, "setBackgroundResource", R.drawable.widget_colour5);
                 break;
             case "FFFFBB33":
