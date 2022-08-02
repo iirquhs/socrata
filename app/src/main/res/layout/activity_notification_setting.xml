@@ -170,6 +170,7 @@
         android:background="@drawable/custom_input"
         android:drawablePadding="8dp"
         android:ems="10"
+        android:maxLength="3"
         android:inputType="numberSigned"
         app:layout_constraintHorizontal_weight="6"
         android:minHeight="48dp"

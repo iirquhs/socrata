@@ -16,15 +16,6 @@ public class ModuleUtils {
         return moduleNames;
     }
 
-    static boolean doesModuleExists(ArrayList<Module> moduleArrayList, String moduleName) {
-        for (Module module : moduleArrayList) {
-            if (module.getModuleName().equals(moduleName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     static int findModule(ArrayList<Module> moduleArrayList, String moduleName) {
         for (int i = 0; i < moduleArrayList.size(); i++) {
             if (moduleArrayList.get(i).getModuleName().equals(moduleName)) {
