@@ -30,6 +30,7 @@
         android:orientation="horizontal" >
 
         <EditText
+            android:maxLength="3"
             android:id="@+id/editTextTimeBeforeDueDate"
             android:layout_width="0dp"
             android:layout_height="52dp"

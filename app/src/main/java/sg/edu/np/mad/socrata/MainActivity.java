@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        Intent intent =  getIntent();
+        /*Intent intent =  getIntent();
         String s = intent.getStringExtra("homework");
         if(s != null){
             if(s.equals("homework")){
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.commit();
             }
-        }
+        }*/
     }
 
     private void loadFragments() {
@@ -148,9 +148,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
+        if (!fragmentManager.isDestroyed()) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_layout, fragment);
+            fragmentTransaction.commit();
+        }
+
     }
 
 
