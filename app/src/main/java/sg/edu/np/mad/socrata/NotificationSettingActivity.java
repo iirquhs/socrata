@@ -8,7 +8,6 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,10 +18,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 
 public class NotificationSettingActivity extends AppCompatActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener, TextWatcher {
@@ -115,15 +112,9 @@ public class NotificationSettingActivity extends AppCompatActivity implements Vi
             localStorage.setMotivationalQuoteSetting(motivationalQuoteSetting);
 
             AlarmManagerHelper alarmManagerHelper = new AlarmManagerHelper(this);
-            ZonedDateTime nextMotivationQuoteZonedDateTime = alarmManagerHelper.setMotivationalSettingAlarm(motivationalQuoteSetting);
-
-            if (nextMotivationQuoteZonedDateTime != null) {
-                Toast.makeText(NotificationSettingActivity.this, "Next Motivational quote will be in: " + nextMotivationQuoteZonedDateTime.toString(),
-                        Toast.LENGTH_LONG).show();
-            }
+            alarmManagerHelper.setMotivationalSettingAlarm(motivationalQuoteSetting);
 
             finish();
-
         } else if (id == R.id.textViewSetTime) {
             TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener()
             {
