@@ -78,11 +78,10 @@ public class MainActivity extends AppCompatActivity {
             MotivationalQuoteSetting motivationalQuoteSetting = new MotivationalQuoteSetting(true,
                     LocalTime.of(8,0), dateFrequencyList.get(2), 1);
             localStorage.setMotivationalQuoteSetting(motivationalQuoteSetting);
-        }
 
-        MotivationalQuoteSetting motivationalQuoteSetting = localStorage.getMotivationalQuoteSetting();
-        AlarmManagerHelper alarmManagerHelper = new AlarmManagerHelper(this);
-        alarmManagerHelper.setMotivationalSettingAlarm(motivationalQuoteSetting);
+            AlarmManagerHelper alarmManagerHelper = new AlarmManagerHelper(this);
+            alarmManagerHelper.setMotivationalSettingAlarm(motivationalQuoteSetting);
+        }
 
         userUID = user.getUid();
 

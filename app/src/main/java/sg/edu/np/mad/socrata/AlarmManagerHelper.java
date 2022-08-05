@@ -28,7 +28,7 @@ public class AlarmManagerHelper {
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
-    public void setMotivationalSettingAlarm(MotivationalQuoteSetting motivationalQuoteSetting) {
+    public ZonedDateTime setMotivationalSettingAlarm(MotivationalQuoteSetting motivationalQuoteSetting) {
         Intent serviceIntent = new Intent(context.getApplicationContext(), MotivationBackgroundReceiver.class);
 
         PendingIntent pendingIntent;
@@ -77,19 +77,22 @@ public class AlarmManagerHelper {
                 interval *= AlarmManager.INTERVAL_DAY*365;
                 break;
             default:
-                nextZonedDateTime = nextZonedDateTime.plusDays(multiplier);
+                if (LocalTime.now().isAfter(localTime)) {
+                    nextZonedDateTime = nextZonedDateTime.plusDays(multiplier);
+                }
                 interval *= AlarmManager.INTERVAL_DAY;
                 break;
         }
 
         if (motivationalQuoteSetting.isNotificationOn()) {
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, nextZonedDateTime.toInstant().toEpochMilli()
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nextZonedDateTime.toInstant().toEpochMilli()
                     , interval, pendingIntent);
-            Log.d("TAG", nextZonedDateTime.toString());
-            return;
+            return nextZonedDateTime;
         }
 
         alarmManager.cancel(pendingIntent);
+
+        return null;
     }
 
     public PendingIntent setHomeworkReminderAlarm(Homework homework, HomeworkReminder homeworkReminder) {
@@ -136,12 +139,12 @@ public class AlarmManagerHelper {
                     notificationID, reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + (homework.CalculateSecondsLeftBeforeDueDate() - Duration.ofMinutes(1).getSeconds() * minutesBeforeDueDate) * 1000,
-                pendingIntent);
-
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis() + (homework.CalculateSecondsLeftBeforeDueDate() - Duration.ofMinutes(1).getSeconds() * minutesBeforeDueDate) * 1000),
                 ZoneId.systemDefault());
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                zonedDateTime.toInstant().toEpochMilli(),
+                pendingIntent);
 
         Log.d("TAG", zonedDateTime.toString());
 
