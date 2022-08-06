@@ -83,7 +83,7 @@ public class AlarmManagerHelper {
         }
 
         if (motivationalQuoteSetting.isNotificationOn()) {
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, nextZonedDateTime.toInstant().toEpochMilli()
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nextZonedDateTime.toInstant().toEpochMilli()
                     , interval, pendingIntent);
             Log.d("TAG", nextZonedDateTime.toString());
             return;
@@ -136,9 +136,15 @@ public class AlarmManagerHelper {
                     notificationID, reminderIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + (homework.CalculateSecondsLeftBeforeDueDate() - Duration.ofMinutes(1).getSeconds() * minutesBeforeDueDate) * 1000,
-                pendingIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + (homework.CalculateSecondsLeftBeforeDueDate() - Duration.ofMinutes(1).getSeconds() * minutesBeforeDueDate) * 1000,
+                    pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + (homework.CalculateSecondsLeftBeforeDueDate() - Duration.ofMinutes(1).getSeconds() * minutesBeforeDueDate) * 1000,
+                    pendingIntent);
+        }
 
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis() + (homework.CalculateSecondsLeftBeforeDueDate() - Duration.ofMinutes(1).getSeconds() * minutesBeforeDueDate) * 1000),
                 ZoneId.systemDefault());
