@@ -77,7 +77,9 @@ public class AlarmManagerHelper {
                 interval *= AlarmManager.INTERVAL_DAY*365;
                 break;
             default:
-                nextZonedDateTime = nextZonedDateTime.plusDays(multiplier);
+                if (LocalTime.now().isAfter(localTime)) {
+                    nextZonedDateTime = nextZonedDateTime.plusDays(multiplier);
+                }
                 interval *= AlarmManager.INTERVAL_DAY;
                 break;
         }
