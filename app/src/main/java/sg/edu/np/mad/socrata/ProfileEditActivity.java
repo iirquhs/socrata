@@ -36,6 +36,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         // GET EMAIL STRING
         TextView profileEmail = findViewById(R.id.editProfileEmail);
+
         profileEmail.setText(user.getEmail());
 
         // IF SAVE BUTTON IS CLICKED
@@ -114,6 +115,15 @@ public class ProfileEditActivity extends AppCompatActivity {
                                         });
                             }
                         });
+            }
+        });
+        TextView EditIcon = findViewById(R.id.EditIcon);
+        EditIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(ProfileEditActivity.this, UpdateIconActivity.class);
+                startActivity(intent);
             }
         });
     }
